@@ -1,1 +1,2 @@
 Añadir en esta carpeta los archivos .h y .cpp de las librerias que creemos (clases principalmente)
+Nuevo código más comprensible
