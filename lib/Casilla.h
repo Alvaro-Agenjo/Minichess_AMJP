@@ -1,12 +1,13 @@
 #pragma once
+
 #include"Vector2D.h"
 
-Class Casilla
+class Casilla
 {
 private:
-Vector2D _posición{};
-int _ocupación;
-bool _atacada;
+	Vector2D _posicion{};
+	int _ocupación;
+	bool _atacada;
 
 public:
 	// Constructor 
@@ -18,5 +19,5 @@ public:
 	// Otros métodos 
 
 	//Métodos gráficos 
-	void dibujar();
+	void dibujar();
 };
