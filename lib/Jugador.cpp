@@ -12,10 +12,25 @@ Jugador::Jugador(Vector2D pos, Player j) :
 {
 	// creacion de los distintos objetos pieza:subtipo
 	// buscar solucion si es posible para evitar la inclusion de las librerias de Pieza:subtipo en jugador
+	
 	for (int i = 0; i < 8; i++)
 	{
-		 Peon *p_aux = new Peon (Vector2D{ 1,i }, Player::J1);
-		_misPiezas.push_back(p_aux);
+		if (j == J1)
+		{
+			Peon* p_aux = new Peon({ _posicion.x+1,i }, j);
+			_misPiezas.push_back(p_aux);
+		}
+		else
+		{
+			Peon* p_aux = new Peon({ _posicion.x-1,i },j);
+			_misPiezas.push_back(p_aux);
+		} 
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		Torre* t_aux = new Torre({ _posicion.x,i*7 }, j);
+		_misPiezas.push_back(t_aux);
 	}
 }
 

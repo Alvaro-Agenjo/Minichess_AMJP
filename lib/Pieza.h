@@ -1,6 +1,11 @@
 #pragma once
 
 #include "Vector2D.h"
+/********************************************************************************************
+*		librerias para realizar test, serán eliminadas al incorporar interfaz gráfica		*
+********************************************************************************************/
+#include <iostream>
+
 
 
 enum Player															//enumeracion que indica si la pieza es blanca o negra (pertenece al jugador 1 o 2)
@@ -39,10 +44,10 @@ public:
 	****************************************************************/
 protected:
 
-	int _tpieza;													// variable creada únicamente para la visualizacion por consola durante el desarrollo, sera eliminada cuando se incorpore la interfaz gráfica
+	std::string _tpieza;													// variable creada únicamente para la visualizacion por consola durante el desarrollo, sera eliminada cuando se incorpore la interfaz gráfica
 
 public:
 
-	inline int getTipoPieza() { return _tpieza; };					//funcion creada únicamente para la visualizacion por consola durante el desarrollo, sera eliminada cuando se incorpore la interfaz gráfica
+	inline std::string getTipoPieza() { return _tpieza; };					//funcion creada únicamente para la visualizacion por consola durante el desarrollo, sera eliminada cuando se incorpore la interfaz gráfica
 };
 

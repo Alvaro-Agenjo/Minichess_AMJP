@@ -5,6 +5,7 @@
 
 // Buscar la manera de eliminar la necesidad de incluir cada tipo de pieza
 #include "Peon.h"
+#include "Torre.h"
 
 class Jugador
 {

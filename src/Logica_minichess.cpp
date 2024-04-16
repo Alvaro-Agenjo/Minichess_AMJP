@@ -8,10 +8,9 @@ constexpr int dimy = 8;
 
 int main()
 {
-	Tablero tablero(Vector2D{ dimx, dimy });
-	tablero.VerTablero();
-	Jugador jugdor1(Vector2D{ 0,0 }, J1);
-	tablero.Refresh(jugdor1,jugdor1);
+	Tablero tablero({ dimx, dimy });
+	Jugador jugador1({ 0,0 }, J1), jugador2({ dimx-1,dimy-1 }, J2);
+	tablero.Refresh(jugador1,jugador2);
 	tablero.VerTablero();
 	//jugdor1.Mover();
 }

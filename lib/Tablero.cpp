@@ -79,7 +79,7 @@ void Tablero::VerTablero()
 			}
 			else												//en caso de estar vacia imprime un 0
 			{
-				std::cout << 0;
+				std::cout << " 0";
 			}
 		}
 		std::cout << std::endl;

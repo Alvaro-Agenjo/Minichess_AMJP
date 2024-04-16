@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir).vc/tmp\$(Configuracion)\</IntDir>
+    <IntDir>$(SolutionDir)vc/tmp\$(Configuracion)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -138,6 +138,7 @@
     <ClInclude Include="lib\Peon.h" />
     <ClInclude Include="lib\Pieza.h" />
     <ClInclude Include="lib\Tablero.h" />
+    <ClInclude Include="lib\Torre.h" />
     <ClInclude Include="lib\Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
@@ -146,6 +147,7 @@
     <ClCompile Include="lib\Peon.cpp" />
     <ClCompile Include="lib\Pieza.cpp" />
     <ClCompile Include="lib\Tablero.cpp" />
+    <ClCompile Include="lib\Torre.cpp" />
     <ClCompile Include="lib\Vector2D.cpp" />
     <ClCompile Include="src\Logica_minichess.cpp" />
   </ItemGroup>
