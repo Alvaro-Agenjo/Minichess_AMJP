@@ -2,6 +2,6 @@
 
 void Casilla::clearCasilla()
 {
-	_ocupacion = nullptr;
+	_ocupacion = 0;
 	_atacada = 0;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector2D.h"
+#include "Tablero.h"
 /********************************************************************************************
 *		librerias para realizar test, serán eliminadas al incorporar interfaz gráfica		*
 ********************************************************************************************/
@@ -21,6 +22,8 @@ private:
 	Vector2D _posicion;												// coordenadas de la pieza
 	Player _jugador;												// identificador pieza blanca o negra
 
+protected:
+	static Tablero tablero;
 
 public:
 

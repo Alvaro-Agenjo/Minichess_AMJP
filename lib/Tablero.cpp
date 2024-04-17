@@ -35,7 +35,7 @@ Tablero::~Tablero()
 	}
 	delete[] _tablero;
 }
-
+/*
 void Tablero::Refresh(const Jugador& j1, const Jugador& j2)
 {
 	// limpia toda la informacion del tablero
@@ -60,7 +60,7 @@ void Tablero::Refresh(const Jugador& j1, const Jugador& j2)
 		_tablero[pos_pieza.y][pos_pieza.x].setOcupacion(n);
 	}
 }
-
+*/
 
 /********************************************
 * Funciones test, visualizacion en consola	*
@@ -72,10 +72,10 @@ void Tablero::VerTablero()
 	{
 		for (int x = 0; x < _dimension.x; x++)
 		{
-			Pieza* aux = _tablero[y][x].getOcupacion();			// obtiene el puntero a pieza almacenado en cada casilla
-			if (aux != nullptr)									// en caso de no ser nulo (casilla no vacia), imprime el tipo de pieza
+			int aux = _tablero[y][x].getOcupacion();			// obtiene el puntero a pieza almacenado en cada casilla
+			if (aux != 0)									// en caso de no ser nulo (casilla no vacia), imprime el tipo de pieza
 			{
-				std::cout << aux->getTipoPieza();
+				std::cout << aux;
 			}
 			else												//en caso de estar vacia imprime un 0
 			{

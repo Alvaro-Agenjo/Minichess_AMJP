@@ -2,7 +2,7 @@
 
 #include "Vector2D.h"
 #include "Casilla.h"
-#include "Jugador.h"
+
 
 class Tablero
 {
@@ -22,7 +22,7 @@ public:
 	//Setters
 
 	//Otros métodos
-	void Refresh(const Jugador &j1, const Jugador& j2);				//actualizacion del estado de las casillas provocadas por movimientos de piezas
+	//void Refresh(const Jugador &j1, const Jugador& j2);				//actualizacion del estado de las casillas provocadas por movimientos de piezas
 
 
 	/********************************************
