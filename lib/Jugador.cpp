@@ -86,10 +86,20 @@ void Jugador::Comer(Jugador* Jugador_enemigo) {
 	}
 
 	// ENCONTRAR LA PIEZA QUE COINCIDE CON LAS COORDS
-
-	switch (_tablero[_posicion.y][_posicion.x]._tpieza) {
+	
+	switch (_misPiezas[k]->_tpieza) {
 	case 1: //peon
-
+		break;
+	case 2://torre
+		break;
+	case 3://caballo
+		break;
+	case 4://alfil
+		break;
+	case 5://reina
+		break;
+	case 6://rey
+		break;
 	}
 
 }
