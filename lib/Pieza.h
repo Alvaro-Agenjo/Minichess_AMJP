@@ -21,11 +21,15 @@ private:
 	Vector2D _posicion;												// coordenadas de la pieza
 	Player _jugador;												// identificador pieza blanca o negra
 protected:
-	int _tpieza;
+	int _tpieza;                                                    // identificador del tipo de pieza
 public:
-
+	friend class Jugador;//para funciones de movimiento
 	//Constructor - Destructor 
-	Pieza(Vector2D pos, Player j);									//Constructor común a todas las piezas, inicializa posicion y pertenencia a jugador
+	Pieza(Vector2D pos, Player j) :     //Constructor común a todas las piezas, inicializa posicion y pertenencia a jugador
+		_posicion(pos),
+		_jugador(j)
+	{}
+	
 	
 	//Getter 
 	inline Vector2D getPosicion() const { return _posicion; };		//getter devuelve la posicion de la pieza fuera del ambito

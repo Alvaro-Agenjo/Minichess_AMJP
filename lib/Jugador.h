@@ -38,4 +38,5 @@ public:
 	void Mover();																	//Función para movimiento general,llamada a sub funciones.
 	int Seleccionar_pieza();														//elige la casilla de inicio, devuelve la posición de la pieza elegida en el vector de piezas.
 	void Mover_pieza(int posPieza);
+	void Comer(Jugador* Jugador_enemigo);
 };

@@ -1,4 +1,8 @@
 #include "Jugador.h"
+#include "Pieza.h"
+#include "Tablero.h"
+#include <iostream>
+
 
 /********************************************************************************************
 *		librerias para realizar test, serán eliminadas al incorporar interfaz gráfica		* 
@@ -52,6 +56,7 @@ void Jugador::Mover()
 int Jugador::Seleccionar_pieza()		// en esta funcion se movera el cursor que indica la casilla seleccionada por el jugador y se devolvera la posicion en el vector de piezas de la pieza seleccionada
 {
 	// para realizar los test, se introduciran las coordenadas del cursor J1 por teclado
+	std::cout << "Introduzca las coordenadas de la ficha que desea mover" << "\n";
 	std::cin >> _posicion.x >> _posicion.y;
 
 	for(int i= 0; i <= _misPiezas.size();i++)			//reccorre el vector de piezas del jugador buscando una pieza cuyas coordenadas coincidan con las seleccionadas
@@ -61,7 +66,31 @@ int Jugador::Seleccionar_pieza()		// en esta funcion se movera el cursor que ind
 			return i;		// en caso de que coincidan (encuentre una pieza en la casilla) devuelve la posicion que ocupa dicha pieza en el vector
 		}
 	}
+	std::cout << "No posees una pieza en esas coordenadas" << "\n";
 	return -1;		// en caso de no encontrarla devuelve -1 como codigo de error
 }
+void Jugador::Comer(Jugador* Jugador_enemigo) {
+	std::cout << "Introduzca las coordenadas de la ficha que desea mover" << "\n";
+	std::cin >> _posicion.x >> _posicion.y;
+	int k;
+	for (k = 0; k <= _misPiezas.size(); k++)			//reccorre el vector de piezas del jugador buscando una pieza cuyas coordenadas coincidan con las seleccionadas
+	{
+		if (_misPiezas[k]->getPosicion() == _posicion)
+		{
+			break;	// salgo del bucle con las coordenadas obtenidas
+		}
+		
+	}
+	if (k = _misPiezas.size()) {
+		std::cout << "No posees una pieza en esas coordenadas" << "\n";
+	}
 
+	// ENCONTRAR LA PIEZA QUE COINCIDE CON LAS COORDS
+
+	switch (_tablero[_posicion.y][_posicion.x]._tpieza) {
+	case 1: //peon
+
+	}
+
+}
 

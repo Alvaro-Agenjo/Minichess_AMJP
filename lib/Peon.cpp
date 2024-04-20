@@ -7,3 +7,6 @@ Peon::Peon(Vector2D pos, Player j) :
 	else _tpieza = -1;
 
 }
+void Peon::ver_opciones() {
+	
+}

@@ -14,4 +14,23 @@ int main()
 	
 	tablero.VerTablero();
 	//jugdor1.Mover();
+
+/*    Modelo para inputs:
+jugador1.Seleccionar_pieza();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
 }

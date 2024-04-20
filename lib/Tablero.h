@@ -12,7 +12,7 @@ private:
 	Casilla** _tablero;												// matriz de casillas que forman el tablero
 
 public:
-
+	friend class Jugador;
 	//Constructor - Destructor
 	Tablero(Vector2D dim);											//constructor que reserva e inicializa la matriz de casillas
 	~Tablero();														//destructor que elimina las casillas y los punteros usados para aceder a ellas
