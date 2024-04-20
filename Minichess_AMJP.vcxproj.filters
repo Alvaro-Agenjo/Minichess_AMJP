@@ -36,6 +36,9 @@
     <ClInclude Include="lib\Torre.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="lib\Interaccion.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\Casilla.cpp">
@@ -62,7 +65,10 @@
     <ClCompile Include="lib\Torre.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Display.cpp">
+    <ClCompile Include="lib\Display.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="lib\Interaccion.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

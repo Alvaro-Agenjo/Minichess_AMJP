@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Vector2D.h"
-#include "Tablero.h"
 /********************************************************************************************
 *		librerias para realizar test, serán eliminadas al incorporar interfaz gráfica		*
 ********************************************************************************************/
@@ -21,10 +20,8 @@ private:
 
 	Vector2D _posicion;												// coordenadas de la pieza
 	Player _jugador;												// identificador pieza blanca o negra
-
 protected:
-	static Tablero tablero;
-
+	int _tpieza;
 public:
 
 	//Constructor - Destructor 
@@ -32,7 +29,7 @@ public:
 	
 	//Getter 
 	inline Vector2D getPosicion() const { return _posicion; };		//getter devuelve la posicion de la pieza fuera del ambito
-	
+	virtual int getTipoPieza() = 0;
 	
 	//Setter
 
@@ -41,16 +38,6 @@ public:
 
 
 	//Otros métodos 
-
-	/****************************************************************
-	*			Funciones test, visualizacion en consola			*
-	****************************************************************/
-protected:
-
-	std::string _tpieza;													// variable creada únicamente para la visualizacion por consola durante el desarrollo, sera eliminada cuando se incorpore la interfaz gráfica
-
-public:
-
-	inline std::string getTipoPieza() { return _tpieza; };					//funcion creada únicamente para la visualizacion por consola durante el desarrollo, sera eliminada cuando se incorpore la interfaz gráfica
+	friend class Interaccion;
 };
 

@@ -24,7 +24,7 @@ public:
 	//Otros métodos
 	//void Refresh(const Jugador &j1, const Jugador& j2);				//actualizacion del estado de las casillas provocadas por movimientos de piezas
 
-
+	friend class Interaccion;
 	/********************************************
 	* Funciones test, visualizacion en consola	*
 	********************************************/

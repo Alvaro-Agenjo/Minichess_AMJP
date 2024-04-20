@@ -1,6 +1,9 @@
 #pragma once
 
 #include"Vector2D.h"
+#include"Tablero.h"
+#include "Interaccion.h"
+
 #include <vector>
 
 // Buscar la manera de eliminar la necesidad de incluir cada tipo de pieza
@@ -14,10 +17,14 @@ private:
 	std::vector<Pieza*> _misPiezas{};												// vector que contiene todas las piezas del jugador, estan en forma de puntero para poder usar métodos virtuales sobrecargados para cada pieza
 	Player _jugador;																// indica el numero de jugador (blancas o negras)
 
+	static Tablero* _tablero;
+
 public:
+	
+
 	//Constructor - Destructor
 	Jugador(Vector2D pos, Player j);												//Constructor que inicializa la posicion, el idicador de jugador y rellena el vector de piezas del jugador
-
+	static void crearTablero(Tablero* tab);
 	//Getter 
 	inline std::vector<Pieza*> getMisPiezas() const { return _misPiezas; };			//getter, devuelve el vector de piezas para uso en funciones ajenas a la clase jugador
 	

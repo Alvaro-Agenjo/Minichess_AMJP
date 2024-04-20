@@ -15,9 +15,9 @@ public:
 	//setter
 
 	//getter
-
+	inline int getTipoPieza() override { return _tpieza; }
 	//otros metodos
-
+	
 	//gráficos
 };
 

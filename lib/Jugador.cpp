@@ -19,11 +19,13 @@ Jugador::Jugador(Vector2D pos, Player j) :
 		{
 			Peon* p_aux = new Peon({ _posicion.x+1,i }, j);
 			_misPiezas.push_back(p_aux);
+			Interaccion::almacenarEnTablero(*p_aux, _tablero);
 		}
 		else
 		{
 			Peon* p_aux = new Peon({ _posicion.x-1,i },j);
 			_misPiezas.push_back(p_aux);
+			Interaccion::almacenarEnTablero(*p_aux, _tablero);
 		} 
 	}
 
@@ -31,7 +33,15 @@ Jugador::Jugador(Vector2D pos, Player j) :
 	{
 		Torre* t_aux = new Torre({ _posicion.x,i*7 }, j);
 		_misPiezas.push_back(t_aux);
+		Interaccion::almacenarEnTablero(*t_aux, _tablero);
 	}
+}
+
+Tablero* Jugador::_tablero = 0;
+
+void Jugador::crearTablero(Tablero* tab)
+{
+	 _tablero = tab; 
 }
 
 void Jugador::Mover()

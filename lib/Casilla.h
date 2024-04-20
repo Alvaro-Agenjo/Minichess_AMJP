@@ -1,7 +1,6 @@
 #pragma once
 
 #include"Vector2D.h"
-//#include "Pieza.h"
 
 class Casilla
 {
