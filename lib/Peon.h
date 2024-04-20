@@ -17,7 +17,7 @@ public:
 	//getter
 	inline int getTipoPieza() override { return _tpieza; }
 	//otros metodos
-	void ver_opciones();  // la idea sería crearlo como un virtual dado que todos
+	void ver_opciones(Pieza *a_mover);  // la idea sería crearlo como un virtual dado que todos
 					      //la necesitan y ayuda con la legibilidad
 	//gráficos
 };

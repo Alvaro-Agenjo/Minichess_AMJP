@@ -24,6 +24,7 @@ protected:
 	int _tpieza;                                                    // identificador del tipo de pieza
 public:
 	friend class Jugador;//para funciones de movimiento
+	friend class Alfil;//para acceder a los parámetros de la pieza
 	//Constructor - Destructor 
 	Pieza(Vector2D pos, Player j) :     //Constructor común a todas las piezas, inicializa posicion y pertenencia a jugador
 		_posicion(pos),

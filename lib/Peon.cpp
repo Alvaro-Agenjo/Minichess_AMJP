@@ -1,4 +1,5 @@
 #include "Peon.h"
+#include "Pieza.h"
 
 Peon::Peon(Vector2D pos, Player j) :
 	Pieza(pos, j)
@@ -7,6 +8,6 @@ Peon::Peon(Vector2D pos, Player j) :
 	else _tpieza = -1;
 
 }
-void Peon::ver_opciones() {
+void Peon::ver_opciones(Pieza* a_mover) {
 	
 }
