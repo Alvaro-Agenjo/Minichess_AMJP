@@ -133,6 +133,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Alfil.h" />
+    <ClInclude Include="Caballo.h" />
     <ClInclude Include="lib\Casilla.h" />
     <ClInclude Include="lib\Interaccion.h" />
     <ClInclude Include="lib\Jugador.h" />
@@ -141,6 +143,7 @@
     <ClInclude Include="lib\Tablero.h" />
     <ClInclude Include="lib\Torre.h" />
     <ClInclude Include="lib\Vector2D.h" />
+    <ClInclude Include="Reina.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\Casilla.cpp" />
