@@ -1,8 +1,8 @@
 #include "Vector2D.h"
 
-bool operator == (const Vector2D& lhs, const Vector2D& rhs)		//sobrecarga del operador ==
+bool Vector2D::operator==(const Vector2D& coord)		//sobrecarga del operador ==
 {
-	if (lhs.x == rhs.x && lhs.y == rhs.y)		//si tanto las coordenadas x como y coinciden los Vector2D son iguales
+	if (x == coord.x && y ==coord.y)		//si tanto las coordenadas x como y coinciden los Vector2D son iguales
 	{
 		return true;
 	}
@@ -10,4 +10,25 @@ bool operator == (const Vector2D& lhs, const Vector2D& rhs)		//sobrecarga del op
 	{
 		return false;
 	}
+}
+
+bool Vector2D::operator<(const Vector2D& coord)
+{
+	if (x < coord.x && y < coord.y)		//si tanto las coordenadas x como y coinciden los Vector2D son iguales
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool Vector2D::operator<=(const Vector2D& coord)
+{
+	if (x <= coord.x && y <= coord.y)
+	{
+		return true;
+	}
+	return false;
 }

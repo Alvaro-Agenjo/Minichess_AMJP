@@ -8,13 +8,14 @@ constexpr int dimy = 8;
 int main()
 {
 	Tablero tablero({ dimx, dimy });
-	Jugador::crearTablero(&tablero);
+	Pieza::crearTablero(&tablero);
 	Jugador jugador1({ 0,0 }, J1), jugador2({ dimx-1,dimy-1 }, J2);
 	
 	
 	tablero.VerTablero();
-	//jugdor1.Mover();
-
+	jugador1.Mover(); 
+	tablero.VerCasillas();
+	
 /*    Modelo para inputs:
 jugador1.Seleccionar_pieza();
 

@@ -35,32 +35,6 @@ Tablero::~Tablero()
 	}
 	delete[] _tablero;
 }
-/*
-void Tablero::Refresh(const Jugador& j1, const Jugador& j2)
-{
-	// limpia toda la informacion del tablero
-	for (int y = 0; y < _dimension.y; y++)
-	{
-		for (int x = 0; x < _dimension.x; x++)
-		{
-			_tablero[y][x].clearCasilla();
-		}
-	}
-
-	//vuelve a colocar las piezas del j1
-	for (auto n : j1.getMisPiezas())
-	{
-		Vector2D pos_pieza = n->getPosicion();
-		_tablero[pos_pieza.y][pos_pieza.x].setOcupacion(n);
-	}
-	//vuelve a colocar las piezas del j1
-	for (auto n : j2.getMisPiezas())
-	{
-		Vector2D pos_pieza = n->getPosicion();
-		_tablero[pos_pieza.y][pos_pieza.x].setOcupacion(n);
-	}
-}
-*/
 
 /********************************************
 * Funciones test, visualizacion en consola	*
@@ -73,9 +47,42 @@ void Tablero::VerTablero()
 		for (int x = 0; x < _dimension.x; x++)
 		{
 			int aux = _tablero[y][x].getOcupacion();			// obtiene el puntero a pieza almacenado en cada casilla
-			if (aux != 0)									// en caso de no ser nulo (casilla no vacia), imprime el tipo de pieza
+			if (aux < 0)									// en caso de no ser nulo (casilla no vacia), imprime el tipo de pieza
 			{
 				std::cout << aux;
+			}
+			else if (aux > 0)
+			{
+				std::cout << " " << aux;
+			}
+			else												//en caso de estar vacia imprime un 0
+			{
+				std::cout << " 0";
+			}
+		}
+		std::cout << std::endl;
+	}
+	std::cout << "*************************" << std::endl;
+}
+
+void Tablero::VerCasillas()
+{
+	for (int y = 0; y < _dimension.y; y++)
+	{
+		for (int x = 0; x < _dimension.x; x++)
+		{
+			Casilla aux = _tablero[y][x];			// obtiene el puntero a pieza almacenado en cada casilla
+			if (aux.getPuedeMover() && aux.getAtacada())									// en caso de no ser nulo (casilla no vacia), imprime el tipo de pieza
+			{
+				std::cout << " c";
+			}
+			else if (aux.getAtacada())
+			{
+				std::cout << " a";
+			}
+			else if (aux.getPuedeMover())
+			{
+				std::cout << " m";
 			}
 			else												//en caso de estar vacia imprime un 0
 			{
