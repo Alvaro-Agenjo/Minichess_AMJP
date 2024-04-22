@@ -75,20 +75,8 @@ int Jugador::Seleccionar_pieza()		// en esta funcion se movera el cursor que ind
 
 
 void Jugador::Comer(Jugador* Jugador_enemigo) {
-	std::cout << "Introduzca las coordenadas de la ficha que desea mover" << "\n";
-	std::cin >> _posicion.x >> _posicion.y;
-	int k;
-	for (k = 0; k <= _misPiezas.size(); k++)			//reccorre el vector de piezas del jugador buscando una pieza cuyas coordenadas coincidan con las seleccionadas
-	{
-		if (_misPiezas[k]->getPosicion() == _posicion)
-		{
-			break;	// salgo del bucle con las coordenadas obtenidas
-		}
-		
-	}
-	if (k = _misPiezas.size()) {
-		std::cout << "No posees una pieza en esas coordenadas" << "\n";
-	}
+	int k = Seleccionar_pieza();
+	
 
 	// ENCONTRAR LA PIEZA QUE COINCIDE CON LAS COORDS
 	//
