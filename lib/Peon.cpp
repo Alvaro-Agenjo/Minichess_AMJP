@@ -11,7 +11,8 @@ Peon::Peon(Vector2D pos, Player j) :
 }
 void Peon::reglasMovimiento()
 {
-	
+	validarCasilla(_posicion.y + 1);
+	validarCasilla(_posicion.y + 2);
 }
 void Peon::ver_opciones(Pieza* a_mover) {
 	

@@ -76,7 +76,7 @@ int Jugador::Seleccionar_pieza()		// en esta funcion se movera el cursor que ind
 
 void Jugador::Comer(Jugador* Jugador_enemigo) {
 	int k = Seleccionar_pieza();
-	
+	//_misPiezas[k]->validarCasilla(_misPiezas[k]->getPosicion);
 
 	// ENCONTRAR LA PIEZA QUE COINCIDE CON LAS COORDS
 	//
