@@ -65,7 +65,7 @@ int Jugador::Seleccionar_pieza()		// en esta funcion se movera el cursor que ind
 	{
 		if (_misPiezas[i]->getPosicion() == _posicion)
 		{
-			std::cout << "existe una pieza movible en esta posicion";
+			std::cout << "existe una pieza movible en esta posicion \n";
 			return i;		// en caso de que coincidan (encuentre una pieza en la casilla) devuelve la posicion que ocupa dicha pieza en el vector
 		}
 	}

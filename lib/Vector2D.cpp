@@ -1,34 +1,34 @@
 #include "Vector2D.h"
 
-bool Vector2D::operator==(const Vector2D& coord)		//sobrecarga del operador ==
+bool operator==(const Vector2D& lhs, const Vector2D& rhs)
 {
-	if (x == coord.x && y ==coord.y)		//si tanto las coordenadas x como y coinciden los Vector2D son iguales
-	{
-		return true;
-	}
-	else 
-	{
-		return false;
-	}
-}
-
-bool Vector2D::operator<(const Vector2D& coord)
-{
-	if (x < coord.x && y < coord.y)		//si tanto las coordenadas x como y coinciden los Vector2D son iguales
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool Vector2D::operator<=(const Vector2D& coord)
-{
-	if (x <= coord.x && y <= coord.y)
-	{
-		return true;
-	}
+	if (lhs.x == rhs.x && lhs.y == rhs.y) { return true; }
 	return false;
 }
+
+bool operator!=(const Vector2D& lhs, const Vector2D& rhs)
+{
+	return !operator==(lhs,rhs);
+}
+
+bool operator<(const Vector2D& lhs, const Vector2D& rhs)
+{
+	if (lhs.x < rhs.x && lhs.y < rhs.y) { return true; }
+	return false;
+}
+
+bool operator>(const Vector2D& lhs, const Vector2D& rhs)
+{
+	return operator<(rhs,lhs);
+}
+
+bool operator<=(const Vector2D& lhs, const Vector2D& rhs)
+{
+	return !operator>(lhs,rhs);
+}
+
+bool operator>=(const Vector2D& lhs, const Vector2D& rhs)
+{
+	return !operator<(lhs, rhs);
+}
+

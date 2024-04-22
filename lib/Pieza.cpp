@@ -21,10 +21,10 @@ void Pieza::almacenarPiezaMemoria()
 bool Pieza::validarCasilla(Vector2D coord)
 {
 	Casilla &c = _tab->getTablero()[coord.y][coord.x];		//enlace a direccion de casilla a comprobar
-	Vector2D nulo{ 0,0 };
+	Vector2D negativo{ -1,-1 };
 	Vector2D dim = _tab->getDimension();
 	static bool primerapieza = 1, segundapieza =1;			//detector de piezas clavadas, se puede mover hasta la primera pieza,a esta se la puede comer, y amenaza todo hasta encontrarse una segunda pieza
-	if (nulo <= coord  && coord < dim)		//es decir la posicion se encuentra dentro de los límites del tablero
+	if (negativo < coord  && coord < dim)		//es decir la posicion se encuentra dentro de los límites del tablero
 	{
 
 		if (c.getOcupacion() == 0)                       //comprueba si hay alguien en la casilla
