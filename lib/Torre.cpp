@@ -12,6 +12,7 @@ Torre::Torre(Vector2D pos, Player j) :
 
 void Torre::reglasMovimiento()
 {
+	/*
 	Vector2D vaux;
 	vaux.x = _posicion.y;
 	vaux.y = _posicion.x;
@@ -19,6 +20,7 @@ void Torre::reglasMovimiento()
 	validarCasilla(vaux);
 	vaux.y += 1;
 	validarCasilla(vaux);
+	*/
 	int n = 1;
 	bool rep = true;
 
