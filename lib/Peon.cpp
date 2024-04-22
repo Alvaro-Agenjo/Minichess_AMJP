@@ -1,4 +1,5 @@
 #include "Peon.h"
+#include "Vector2D.h"
 
 Peon::Peon(Vector2D pos, Player j) :
 	Pieza(pos, j)
@@ -11,8 +12,13 @@ Peon::Peon(Vector2D pos, Player j) :
 }
 void Peon::reglasMovimiento()
 {
-	validarCasilla(_posicion.y + 1);
-	validarCasilla(_posicion.y + 2);
+	Vector2D vaux;
+	vaux.x = _posicion.y;
+	vaux.y = _posicion.x;
+	vaux.y += 1;
+	validarCasilla(vaux);
+	vaux.y += 1;
+	validarCasilla(vaux);
 }
 void Peon::ver_opciones(Pieza* a_mover) {
 	
