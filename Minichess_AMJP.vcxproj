@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="lib\Alfil.h" />
     <ClInclude Include="lib\Casilla.h" />
     <ClInclude Include="lib\Interaccion.h" />
     <ClInclude Include="lib\Jugador.h" />

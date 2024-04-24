@@ -24,16 +24,16 @@ void Torre::reglasMovimiento()
 	int n = 1;
 	bool rep = true;
 
-	do 
+	do
 	{
 		rep = validarCasilla({ _posicion.x + n, _posicion.y });
 		n++;
 	} while (rep);
-	
+
 	n = 1;
 	do
 	{
-		rep = validarCasilla({ _posicion.x, _posicion.y +n });
+		rep = validarCasilla({ _posicion.x, _posicion.y + n });
 		n++;
 	} while (rep);
 
