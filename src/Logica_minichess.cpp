@@ -18,7 +18,8 @@ int main()
 	Tablero test({ 10,1 });
 	Pieza::crearTablero(&test);
 	Torre tor({ 0,0 }, J1);
-	Peon({ 3,0 }, J2);
+	Peon peo({ 4,0 }, J1);
+	Peon pe({ 3,0 }, J2);
 	Torre torr({ 5,0 }, J2);
 	test.VerTablero();
 	tor.reglasMovimiento();
