@@ -5,22 +5,13 @@ Torre::Torre(Vector2D pos, Player j) :
 	Pieza(pos, j)
 {
 	if (j == J1)	_tpieza = 02;		//modifica el indicador usado para imprimir por consola, será eliminado al implementar la interfaz gráfica
-	else _tpieza = -2;
+	else _tpieza = -2;            //se pone un cero en el 02 para que siempre sean dos bits
 
 	this->almacenarPiezaMemoria();
 }
 
 void Torre::reglasMovimiento()
 {
-	/*
-	Vector2D vaux;
-	vaux.x = _posicion.y;
-	vaux.y = _posicion.x;
-	vaux.y += 1;
-	validarCasilla(vaux);
-	vaux.y += 1;
-	validarCasilla(vaux);
-	*/
 	int n = 1;
 	bool rep = true;
 

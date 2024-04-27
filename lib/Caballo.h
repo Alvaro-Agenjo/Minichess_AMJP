@@ -1,7 +1,7 @@
 #pragma once
 
-
 #include "Pieza.h"
+
 class Caballo : public Pieza
 {
 private:
@@ -17,7 +17,7 @@ public:
 	//getter
 	inline int getTipoPieza() override { return _tpieza; }
 	//otros metodos
-
+	void reglasMovimiento() override;
 	//gráficos
 };
 

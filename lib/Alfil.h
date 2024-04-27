@@ -1,10 +1,25 @@
-//#pragma once
-//
-//#include "Pieza.h"
-//
-//#include <iostream>
-//
-//
+#pragma once
+
+#include "Pieza.h"
+class Alfil : public Pieza  //Alfil es heredero de Pieza
+{
+private:
+
+
+public:
+
+	//Constructor - Destructor
+	Alfil(Vector2D pos, Player j);			//Constructor de la pieza Alfil, accede al constructor de pieza 
+
+	//setter
+
+	//getter
+	inline int getTipoPieza() override { return _tpieza; }
+	//otros metodos
+	void reglasMovimiento() override;
+	//gráficos
+};
+
 //class Alfil : public Pieza
 //{
 //private:
