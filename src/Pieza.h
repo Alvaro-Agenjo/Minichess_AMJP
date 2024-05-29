@@ -1,43 +1,45 @@
 #pragma once
+#include "Casilla.h"
+#include <vector>
 
-#include "Vector2D.h"
-/********************************************************************************************
-*		librerias para realizar test, serán eliminadas al incorporar interfaz gráfica		*
-********************************************************************************************/
-#include <iostream>
+constexpr Vector2D NORTE = { 0,1 };
+constexpr Vector2D SUR = { 0,-1 };
+constexpr Vector2D ESTE = { 1,0 };
+constexpr Vector2D OESTE = { -1,0 };
+constexpr Vector2D NORESTE = { 1,1 };
+constexpr Vector2D NOROESTE = { -1,1 };
+constexpr Vector2D SUDESTE = { 1,-1 };
+constexpr Vector2D SUDOESTE = { -1,-1 };
 
+enum class Color {Blanco, Negro};
 
-
-enum Player															//enumeracion que indica si la pieza es blanca o negra (pertenece al jugador 1 o 2)
-{
-	J1 = 1,
-	J2
-};
 
 class Pieza
 {
-private:
-
-	Vector2D _posicion;												// coordenadas de la pieza
-	Player _jugador;												// identificador pieza blanca o negra
-protected:
-	int _tpieza;
 public:
+	//Constructor
+	Pieza(Casilla* cas, Color col);
 
-	//Constructor - Destructor 
-	Pieza(Vector2D pos, Player j);									//Constructor común a todas las piezas, inicializa posicion y pertenencia a jugador
+	//Getters
+
+	//Setters
+
+	//Otros
+	virtual void PosiblesMov(std::vector<Casilla> tab)=0;
+
 	
-	//Getter 
-	inline Vector2D getPosicion() const { return _posicion; };		//getter devuelve la posicion de la pieza fuera del ambito
-	virtual int getTipoPieza() = 0;
-	
-	//Setter
+protected:
+	//Atributos
+	const Color _color;
+	Casilla* _myCasilla;
+	std::vector<Casilla> _posiblesMov;
 
-
-	//Gráficos
-
-
-	//Otros métodos 
-	friend class Interaccion;
+	//Metodos
+	Casilla getCasilla( Casilla origen, Vector2D direccion, const std::vector<Casilla> tab);
+	int IndiceCasilla(const Casilla c, const std::vector<Casilla> tab);
+	bool validarCasilla(const Casilla destino);
+	 
 };
 
+bool operator == (const Dominio& d, const Color& c);
+bool operator != (const Dominio& d, const Color& c);

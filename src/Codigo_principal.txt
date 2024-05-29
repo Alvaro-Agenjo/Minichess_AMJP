@@ -1,1 +1,0 @@
-adjuntar en esta carpeta el cpp principal

@@ -1,36 +1,32 @@
 #pragma once
 
-#include"Vector2D.h"
+#include "Vector2D.h"
 
+enum class Dominio {Blanca, Negra, Vacio};
 class Casilla
 {
-private:
-	Vector2D _posicion{};																	//almacena coordenadas x,y de la posicion de la casilla
-	int _ocupacion;																		// puntero a la pieza que se halla sobre la casilla (nullprt si esta vacia)
-	bool _atacada;																			//indicador de casilla amenazada encontrar piezas clavadas o de movimiento inválido
-
 public:
-	//Constructor - Destructor
-	Casilla() { _posicion = { 0,0 }; _ocupacion = 0; _atacada = false; };				//Constructor por defecto
+	static int num;
+	//Constructor
+	Casilla(Vector2D coord = {0,0});
 
-	//Setter
-	inline void setPosicion(Vector2D coord) { _posicion = coord; }							//setter de coordenadas de casilla, utilizado para inicializar valor debido a que se crearon en conjunto
-	inline void setOcupacion(int ocupa) { _ocupacion = ocupa; }							//setter para moficiar la pieza que se halla en la casilla
+	//Getters
+	inline Dominio getOcupacion() const { return _ocupacion; }
+	inline bool getAmenaza()const { return _amenaza; }
+	inline bool getComer() const { return _comer; }
+	inline bool getMover() const { return _mover; }
+	inline Vector2D getPosicion() const {return _coord; }
+	//Setters
+	inline void setOcupacion(Dominio d) { _ocupacion= d; }
+	inline void setAmenaza(bool a) { _amenaza= a; }
+	inline void setComer(bool c) { _comer = c; }
+	inline void setMover(bool m) { _mover = m; }
+	inline void setPosicion(Vector2D newCoord) { _coord = newCoord; }
 	
-	//Getter
-	int getOcupacion() { return _ocupacion; };											//getter devuelde la pieza que está en la casilla
-	
-	// Otros métodos 
-	void clearCasilla();																	//restaura los valores predeterminados de la casilla (libre y sin ser atacada)
-	
-	//Métodos gráficos 
-	void dibujar();																			//sin implementar por ahora
-
-
-	/************************************************************************************
-	*								visualizacion tests									*
-	************************************************************************************/
-
-	void verPiezas();
-
+private:
+	Vector2D _coord;
+	Dominio _ocupacion;
+	bool _amenaza, _mover, _comer;
 };
+
+

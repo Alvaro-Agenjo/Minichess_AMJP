@@ -1,9 +1,40 @@
 #include "Torre.h"
 
+Torre::Torre(Casilla *coord, Color col) :
+	Pieza(coord, col)
+{}
 
-Torre::Torre(Vector2D pos, Player j) :
-	Pieza(pos, j)
+void Torre::PosiblesMov(std::vector<Casilla> tab)
 {
-	if (j == J1)	_tpieza = 02;		//modifica el indicador usado para imprimir por consola, será eliminado al implementar la interfaz gráfica
-	else _tpieza = -2;
+	//Torre movimiento hacia arriba
+	bool continuar = false;
+	Casilla aux = *_myCasilla;
+	do {
+		aux = getCasilla(aux, NORTE, tab);
+		continuar = validarCasilla(aux);
+	} while (continuar);
+
+	//Torre movimiento hacia derecha
+
+	aux = *_myCasilla;
+	do {
+		aux = getCasilla(aux, ESTE, tab);
+		continuar = validarCasilla(aux);
+	} while (continuar);
+
+	//Torre movimiento hacia abajo
+
+	aux = *_myCasilla; 
+	do {
+		aux = getCasilla(aux, SUR, tab);
+		continuar = validarCasilla(aux);
+	} while (continuar);
+
+	//Torre movimiento hacia izquierda
+
+	aux = *_myCasilla;
+	do {
+		aux = getCasilla(aux, OESTE, tab);
+		continuar = validarCasilla(aux);
+	} while (continuar);
 }
