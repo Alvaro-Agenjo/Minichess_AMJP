@@ -9,10 +9,19 @@ constexpr int columnas = 8;
 class Tablero
 {
 public:
+	//Constructor
 	Tablero();
 	~Tablero();
 
-//private:
+	//getters
+	inline std::vector<Casilla>& getTablero() { return _tablero; }
+	inline std::vector<Casilla> getTableroConst() const { return _tablero; }
+
+	//setters
+
+	//testers
+
+private:
 	std::vector <Casilla> _tablero;
 };
 

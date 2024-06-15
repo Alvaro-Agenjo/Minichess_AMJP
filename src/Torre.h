@@ -10,7 +10,10 @@ public:
 
 	void PosiblesMov(std::vector<Casilla> tab) override;
 
+	//tester
+	std::ostream& operator << (std::ostream& o) const override;
 private:
 
 };
 
+std::ostream& operator << (std::ostream& o, const Torre& t);

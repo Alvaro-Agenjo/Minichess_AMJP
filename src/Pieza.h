@@ -11,7 +11,7 @@ constexpr Vector2D NOROESTE = { -1,1 };
 constexpr Vector2D SUDESTE = { 1,-1 };
 constexpr Vector2D SUDOESTE = { -1,-1 };
 
-enum class Color {Blanco, Negro};
+enum class Color {Blanco=1, Negro=-1};
 
 
 class Pieza
@@ -21,12 +21,14 @@ public:
 	Pieza(Casilla* cas, Color col);
 
 	//Getters
-
+	inline Casilla* getCasilla() const { return _myCasilla; }
 	//Setters
 
 	//Otros
 	virtual void PosiblesMov(std::vector<Casilla> tab)=0;
 
+	//tester
+	virtual std::ostream& operator << (std::ostream& o) const  =0;
 	
 protected:
 	//Atributos

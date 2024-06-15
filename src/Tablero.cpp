@@ -9,6 +9,8 @@ Tablero::Tablero()
 			_tablero.push_back(*new Casilla({ x, y }));
 		}
 	}
+
+	std::cout << "Tablero creado" << std::endl;
 }
 
 Tablero::~Tablero()

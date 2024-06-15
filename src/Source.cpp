@@ -1,15 +1,12 @@
 #include <iostream>
-#include "Tablero.h"
-#include "Torre.h"
+#include "Ajedrez.h"
 
 using namespace std;
 
 int main()
 {
-	Tablero tab;
-	Torre t1(&tab._tablero[0], Color::Blanco);
-	Torre t2(&tab._tablero[16], Color::Negro);
-
-	t1.PosiblesMov(tab._tablero);
+	
+	Ajedrez game;
+	std::cout << game << std::endl;	
 	return 0;
 }

@@ -38,3 +38,13 @@ void Torre::PosiblesMov(std::vector<Casilla> tab)
 		continuar = validarCasilla(aux);
 	} while (continuar);
 }
+
+std::ostream& Torre::operator<< (std::ostream& o) const
+ {
+	if (_color == Color::Blanco)
+		o << "T ";
+	else
+		o << "t ";
+	return o;
+}
+

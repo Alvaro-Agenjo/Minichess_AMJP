@@ -1,8 +1,9 @@
 #pragma once
-
+#include <iostream>
 #include "Vector2D.h"
 
-enum class Dominio {Blanca, Negra, Vacio};
+enum class Dominio {Vacio, Blanca, Negra};
+
 class Casilla
 {
 public:
@@ -23,10 +24,15 @@ public:
 	inline void setMover(bool m) { _mover = m; }
 	inline void setPosicion(Vector2D newCoord) { _coord = newCoord; }
 	
+	//testers
+	std::ostream& print (std::ostream& o) const;
+
 private:
 	Vector2D _coord;
 	Dominio _ocupacion;
 	bool _amenaza, _mover, _comer;
 };
 
+//testers
+bool operator == (const Casilla& c1, const Casilla& c2);
 
