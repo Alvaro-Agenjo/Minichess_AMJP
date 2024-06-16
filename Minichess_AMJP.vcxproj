@@ -22,9 +22,7 @@
     <ClCompile Include="src\Ajedrez.cpp" />
     <ClCompile Include="src\Casilla.cpp" />
     <ClCompile Include="src\Jugador.cpp" />
-    <ClCompile Include="src\Peon.cpp" />
     <ClCompile Include="src\Pieza.cpp" />
-    <ClCompile Include="src\Ajedrez_graficos.cpp" />
     <ClCompile Include="src\Source.cpp" />
     <ClCompile Include="src\Tablero.cpp" />
     <ClCompile Include="src\Torre.cpp" />
@@ -34,7 +32,6 @@
     <ClInclude Include="src\Ajedrez.h" />
     <ClInclude Include="src\Casilla.h" />
     <ClInclude Include="src\Jugador.h" />
-    <ClInclude Include="src\Peon.h" />
     <ClInclude Include="src\Pieza.h" />
     <ClInclude Include="src\Tablero.h" />
     <ClInclude Include="src\Torre.h" />

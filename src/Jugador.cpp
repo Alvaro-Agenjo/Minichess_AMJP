@@ -17,7 +17,7 @@ std::ostream& Jugador::print(std::ostream& o, Casilla cas) const
 			return o;
 		}
 	}
-	
+	return o;
 }
 
 void Jugador::CrearPieza(Casilla* c, Color col, t_pieza p)
