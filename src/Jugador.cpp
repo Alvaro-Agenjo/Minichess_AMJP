@@ -47,12 +47,12 @@ void Jugador::CrearPieza(Casilla* c, Color col, t_pieza p)
 	}
 	case t_pieza::REINA:
 	{
-		//_misPiezas.push_back(new Reina(c, col));
+		_misPiezas.push_back(new Reina(c, col));
 		break;
 	}
 	case t_pieza::REY:
 	{
-		//_misPiezas.push_back(new Rey(c, col));
+		_misPiezas.push_back(new Rey(c, col));
 		break;
 	}
 	default:
