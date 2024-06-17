@@ -37,7 +37,7 @@ void Jugador::CrearPieza(Casilla* c, Color col, t_pieza p)
 	case t_pieza::CABALLO:
 	{
 
-		//_misPiezas.push_back(new Caballo(c, col));
+		_misPiezas.push_back(new Caballo(c, col));
 		break;
 	}
 	case t_pieza::ALFIL:
