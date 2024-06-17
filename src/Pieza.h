@@ -25,7 +25,8 @@ public:
 	//Setters
 
 	//Otros
-	virtual void PosiblesMov(std::vector<Casilla> tab)=0;
+	virtual void PosiblesMov(const std::vector<Casilla> &tab)=0;
+	virtual void ActualizarTablero(std::vector<Casilla> & tab);
 
 	//tester
 	virtual std::ostream& operator << (std::ostream& o) const  =0;
@@ -37,8 +38,8 @@ protected:
 	std::vector<Casilla> _posiblesMov;
 
 	//Metodos
-	Casilla getCasilla( Casilla origen, Vector2D direccion, const std::vector<Casilla> tab);
-	int IndiceCasilla(const Casilla c, const std::vector<Casilla> tab);
+	Casilla getCasilla( Casilla origen, Vector2D direccion, const std::vector<Casilla>& tab);
+	int IndiceCasilla(const Casilla c, const std::vector<Casilla>& tab);
 	bool validarCasilla(const Casilla destino);
 	 
 };

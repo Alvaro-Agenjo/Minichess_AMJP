@@ -4,7 +4,7 @@ Torre::Torre(Casilla *coord, Color col) :
 	Pieza(coord, col)
 {}
 
-void Torre::PosiblesMov(std::vector<Casilla> tab)
+void Torre::PosiblesMov(const std::vector<Casilla>& tab)
 {
 	//Torre movimiento hacia arriba
 	bool continuar = false;

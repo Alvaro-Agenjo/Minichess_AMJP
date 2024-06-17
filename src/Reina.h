@@ -6,7 +6,7 @@ public:
 	//Constructor
 	Reina(Casilla* coord, Color col);
 
-	void PosiblesMov(std::vector<Casilla> tab) override;
+	void PosiblesMov(const std::vector<Casilla>& tab) override;
 
 	//tester
 	std::ostream& operator << (std::ostream& o) const override;

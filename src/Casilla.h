@@ -7,7 +7,7 @@ enum class Dominio {Vacio, Blanca, Negra};
 class Casilla
 {
 public:
-	static int num;
+	
 	//Constructor
 	Casilla(Vector2D coord = {0,0});
 
@@ -24,13 +24,15 @@ public:
 	inline void setMover(bool m) { _mover = m; }
 	inline void setPosicion(Vector2D newCoord) { _coord = newCoord; }
 	
+	void ClearCasilla();
 	//testers
 	std::ostream& print (std::ostream& o) const;
 
 private:
 	Vector2D _coord;
 	Dominio _ocupacion;
-	bool _amenaza, _mover, _comer;
+	bool _amenaza;			// indica que el enemigo puede comer en esta casilla
+	bool _mover, _comer;	//indica que el propio juador puede comer o mover sus piezas
 };
 
 //testers

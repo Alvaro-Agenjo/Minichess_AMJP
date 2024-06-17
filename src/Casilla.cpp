@@ -11,6 +11,11 @@ Casilla::Casilla(Vector2D coord) :
 	_coord(coord)
 {}
 
+void Casilla::ClearCasilla()
+{
+
+}
+
 std::ostream& Casilla::print (std::ostream & o) const
 {
 	o << (int)_ocupacion << " ";

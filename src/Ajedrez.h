@@ -9,12 +9,9 @@
 enum GameState
 {
 	Creaccion,
-	Espera_blancas,
-	Espera_negras,
-	Mov_blancas,
-	Mov_negras,
-	Gana_blancas,
-	Gana_negras
+	B_Actualizar_Amenazas,
+	B_Espera,
+	B_Mov,
 };
 
 class Ajedrez
@@ -27,10 +24,12 @@ public:
 
 	//getters
 	inline GameState getEstado() const { return _estado; }
+	
+	//otros
+	void Stateflow();
 	//tester
-	//inline const Tablero& myTablero() const { return _tablero; }
-
 	std::ostream& printTablero (std::ostream& o = std::cout);
+
 private:
 	GameState _estado;
 	Tablero _tablero;

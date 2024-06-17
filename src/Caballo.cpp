@@ -4,7 +4,7 @@ Caballo::Caballo(Casilla* coord, Color col) :
 	Pieza(coord, col)
 {}
 
-void Caballo::PosiblesMov(std::vector<Casilla> tab)
+void Caballo::PosiblesMov(const std::vector<Casilla>& tab)
 {
 	Casilla aux = *_myCasilla;
 	//Caballo movimiento hacia arriba-izda

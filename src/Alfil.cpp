@@ -4,7 +4,7 @@ Alfil::Alfil(Casilla* coord, Color col) :
 	Pieza(coord, col)
 {}
 
-void Alfil::PosiblesMov(std::vector<Casilla> tab)
+void Alfil::PosiblesMov(const std::vector<Casilla>& tab)
 {
 	//Alfil movimiento hacia arriba-dcha
 	bool continuar = false;

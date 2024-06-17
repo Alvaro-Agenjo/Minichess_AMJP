@@ -4,7 +4,7 @@ Reina::Reina(Casilla* coord, Color col) :
 	Pieza(coord, col)
 {}
 
-void Reina::PosiblesMov(std::vector<Casilla> tab)
+void Reina::PosiblesMov(const std::vector<Casilla>& tab)
 {
 	//Reina movimiento hacia arriba
 	bool continuar = false;

@@ -7,7 +7,29 @@ Ajedrez::Ajedrez() :
 	_j2(_tablero.getTablero(), Color::Negro)
 {
 	std::cout << "Todo creado" << std::endl;
-	_estado = GameState::Espera_blancas;
+	_estado = GameState::B_Actualizar_Amenazas;
+}
+
+void Ajedrez::Stateflow()
+{
+	switch (_estado)
+	{
+	case B_Actualizar_Amenazas:
+	{
+		_j2.Actualizar_Amenazas(_tablero.getTablero());
+		_j1.PosiblesMov(_tablero.getTableroConst());
+
+		_estado = B_Espera;
+		break;
+	}
+	case B_Espera:
+	{
+		
+		break;
+	}
+	default:
+		break;
+	}
 }
 
 std::ostream& Ajedrez::printTablero(std::ostream& o)
@@ -47,34 +69,19 @@ std::ostream& operator << (std::ostream& o, const Ajedrez & aj)
 		o << "Creando la partida.";
 		break;
 	}
-	case GameState::Espera_blancas:
+	case GameState::B_Actualizar_Amenazas:
 	{
-		o << "Esperando el movimiento de las blancas.";
+		o << "Actualizando las amenazas del tablero.";
 		break;
 	}
-	case GameState::Espera_negras:
+	case GameState::B_Espera:
 	{
-		o << "Esperando el movimiento de las negras.";
+		o << "Esperando el movimiento de las blancas";
 		break;
 	}
-	case GameState::Gana_blancas:
+	case GameState::B_Mov:
 	{
-		o << "Blancas ganan";
-		break;
-	}
-	case GameState::Gana_negras:
-	{
-		o << "Negras ganan";
-		break;
-	}
-	case GameState::Mov_blancas:
-	{
-		o << "Blancas moviendose";
-		break;
-	}
-	case GameState::Mov_negras:
-	{
-		o << "Negras moviendose";
+		o << "Blancas moviendo";
 		break;
 	}
 	default:

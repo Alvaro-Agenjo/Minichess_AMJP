@@ -7,9 +7,22 @@ Pieza::Pieza(Casilla* cas, Color col) :
 	_myCasilla->setOcupacion(static_cast<Dominio>(col));
 }
 
+void Pieza::ActualizarTablero(std::vector<Casilla>& tab)
+{
+	Vector2D posicion{};
+	for (Casilla c : _posiblesMov)
+	{
+		posicion = c.getPosicion();
+		if (c.getMover())
+		{
+			tab[posicion.x + 8 * posicion.y].setAmenaza(true);
+		}
+	}
+}
 
 
-Casilla Pieza::getCasilla(Casilla origen, Vector2D direccion, const std::vector<Casilla> tab)
+
+Casilla Pieza::getCasilla(Casilla origen, Vector2D direccion, const std::vector<Casilla> &tab)
 {
 	int indice = IndiceCasilla(origen, tab);
 	if (indice != -1)
@@ -24,7 +37,7 @@ Casilla Pieza::getCasilla(Casilla origen, Vector2D direccion, const std::vector<
 	return *new Casilla({ -1,-1 });;
 }
 
-int Pieza::IndiceCasilla(const Casilla c, const std::vector<Casilla> tab)
+int Pieza::IndiceCasilla(const Casilla c, const std::vector<Casilla>& tab)
 {
 	for (int n = 0; n < tab.size(); n++)
 	{

@@ -7,6 +7,24 @@ Jugador::Jugador(std::vector<Casilla>& tab, Color c)
 	std::cout << "Jugador creado" << std::endl;
 }
 
+void Jugador::Actualizar_Amenazas( std::vector<Casilla> &tab)
+{
+	PosiblesMov(tab);
+
+	for (Pieza* p : _misPiezas)
+	{
+		p->ActualizarTablero(tab);
+	}
+}
+
+void Jugador::PosiblesMov(std::vector<Casilla> tab)
+{
+	for (Pieza* p : _misPiezas)
+	{
+		p->PosiblesMov(tab);
+	}
+}
+
 std::ostream& Jugador::print(std::ostream& o, Casilla cas) const
 {
 	for (const Pieza* p : _misPiezas)

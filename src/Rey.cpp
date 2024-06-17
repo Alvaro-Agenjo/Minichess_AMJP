@@ -4,7 +4,7 @@ Rey::Rey(Casilla* coord, Color col) :
 	Pieza(coord, col)
 {}
 
-void Rey::PosiblesMov(std::vector<Casilla> tab)
+void Rey::PosiblesMov(const std::vector<Casilla>& tab)
 {
 	Casilla aux = *_myCasilla;
 	//Rey movimiento hacia arriba

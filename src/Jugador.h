@@ -18,6 +18,9 @@ public:
 
 	//getters
 
+	//otros
+	void PosiblesMov( std::vector<Casilla> tab);
+	void Actualizar_Amenazas(std::vector<Casilla>& tab);
 	//tester
 	std::ostream& print(std::ostream& o, Casilla cas) const;
 
