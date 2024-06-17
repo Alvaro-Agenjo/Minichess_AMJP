@@ -2,7 +2,7 @@
 #include <iostream>
 #include "Vector2D.h"
 
-enum class Dominio {Vacio, Blanca, Negra};
+enum class Dominio {Vacio, Blanca, Negra=-1};
 
 class Casilla
 {

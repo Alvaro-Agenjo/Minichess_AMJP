@@ -6,10 +6,14 @@ using namespace std;
 int main()
 {
 	Ajedrez game;
-	game.printTablero() << endl;
 	cout << game << endl;
+	game.printTablero() << endl;
+	game.printAmenazas() << endl;
+	
+	
 	game.Stateflow();
 	cout << game << endl;
-	
+	game.printTablero() << endl;
+	game.printAmenazas() << endl;
 	return 0;
 }

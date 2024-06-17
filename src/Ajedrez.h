@@ -29,6 +29,7 @@ public:
 	void Stateflow();
 	//tester
 	std::ostream& printTablero (std::ostream& o = std::cout);
+	std::ostream& printAmenazas (std::ostream& o = std::cout);
 
 private:
 	GameState _estado;

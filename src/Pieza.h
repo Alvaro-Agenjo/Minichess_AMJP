@@ -39,7 +39,7 @@ protected:
 
 	//Metodos
 	Casilla getCasilla( Casilla origen, Vector2D direccion, const std::vector<Casilla>& tab);
-	int IndiceCasilla(const Casilla c, const std::vector<Casilla>& tab);
+	int IndiceCasilla(const Vector2D pos, const std::vector<Casilla>& tab);
 	bool validarCasilla(const Casilla destino);
 	 
 };
