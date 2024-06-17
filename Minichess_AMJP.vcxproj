@@ -24,6 +24,7 @@
     <ClCompile Include="src\Casilla.cpp" />
     <ClCompile Include="src\Jugador.cpp" />
     <ClCompile Include="src\Pieza.cpp" />
+    <ClCompile Include="src\Reina.cpp" />
     <ClCompile Include="src\Source.cpp" />
     <ClCompile Include="src\Tablero.cpp" />
     <ClCompile Include="src\Torre.cpp" />
@@ -35,6 +36,7 @@
     <ClInclude Include="src\Casilla.h" />
     <ClInclude Include="src\Jugador.h" />
     <ClInclude Include="src\Pieza.h" />
+    <ClInclude Include="src\Reina.h" />
     <ClInclude Include="src\Tablero.h" />
     <ClInclude Include="src\Torre.h" />
     <ClInclude Include="src\Vector2D.h" />
