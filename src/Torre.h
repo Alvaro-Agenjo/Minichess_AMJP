@@ -2,7 +2,7 @@
 
 #include "Pieza.h"
 
-class Torre :   public Pieza
+class Torre : public Pieza
 {
 public:
 	//Constructor
@@ -15,5 +15,3 @@ public:
 private:
 
 };
-
-std::ostream& operator << (std::ostream& o, const Torre& t);

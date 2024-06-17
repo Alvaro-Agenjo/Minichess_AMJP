@@ -42,7 +42,7 @@ void Jugador::CrearPieza(Casilla* c, Color col, t_pieza p)
 	}
 	case t_pieza::ALFIL:
 	{
-		//_misPiezas.push_back(new Alfil(c, col));
+		_misPiezas.push_back(new Alfil(c, col));
 		break;
 	}
 	case t_pieza::REINA:

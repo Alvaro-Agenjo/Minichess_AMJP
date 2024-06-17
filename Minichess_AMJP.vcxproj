@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Ajedrez.cpp" />
+    <ClCompile Include="src\Alfil.cpp" />
     <ClCompile Include="src\Casilla.cpp" />
     <ClCompile Include="src\Jugador.cpp" />
     <ClCompile Include="src\Pieza.cpp" />
@@ -30,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Ajedrez.h" />
+    <ClInclude Include="src\Alfil.h" />
     <ClInclude Include="src\Casilla.h" />
     <ClInclude Include="src\Jugador.h" />
     <ClInclude Include="src\Pieza.h" />

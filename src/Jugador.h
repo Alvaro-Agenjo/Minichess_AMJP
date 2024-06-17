@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Torre.h"
+#include "Alfil.h"
 
 enum class t_pieza {PEON, TORRE, CABALLO, ALFIL, REINA, REY};
 class Jugador
