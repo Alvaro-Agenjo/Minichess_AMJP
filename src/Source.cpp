@@ -6,7 +6,9 @@ using namespace std;
 int main()
 {
 	Ajedrez game;
-	std::cout << game << std::endl;	
+	game.printTablero() << endl;
+
+	cout << game << endl;	
 	
 	return 0;
 }

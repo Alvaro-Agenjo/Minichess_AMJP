@@ -26,15 +26,16 @@ public:
 	//setters
 
 	//getters
-
+	inline GameState getEstado() const { return _estado; }
 	//tester
 	//inline const Tablero& myTablero() const { return _tablero; }
 
-	friend std::ostream& operator << (std::ostream& o, const Ajedrez& aj);
+	std::ostream& printTablero (std::ostream& o = std::cout);
 private:
+	GameState _estado;
 	Tablero _tablero;
 	Jugador _j1, _j2;
 };
 
 //tester
-//std::ostream& operator << (std::ostream& o, const Ajedrez& aj);
+std::ostream& operator << (std::ostream& o, const Ajedrez& aj);
