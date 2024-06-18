@@ -148,8 +148,7 @@ std::ostream& Ajedrez::printAmenazas(std::ostream& o)
 	return o;
 }
 
-std::ostream& operator << (std::ostream& o, const Ajedrez& aj)
-std::ostream& operator << (std::ostream& o, const Ajedrez& aj)
+std::ostream& operator << (std::ostream& o, const Ajedrez & aj)
 {
 	o << "Estado de la partida: ";
 	switch (aj.getEstado())

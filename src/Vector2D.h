@@ -20,5 +20,6 @@ bool operator == (const Vector2D& lhs, const Vector2D& rhs);		//sobrecarga del o
 bool operator != (const Vector2D& lhs, const Vector2D& rhs);		//sobrecarga del operador == para condiciones (if, else if, else,...)
 
 
+
 std::ostream& operator << (std::ostream& o, const Vector2D lhs);
 std::istream& operator >> (std::istream& i, Vector2D &lhs);
