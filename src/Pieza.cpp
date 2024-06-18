@@ -69,7 +69,7 @@ int Pieza::IndiceCasilla(const Vector2D pos, const std::vector<Casilla>& tab)
 
 bool Pieza::validarCasilla(const Casilla destino)
 {
-	/* pendiente de modificación por jaque o pieza clavada (sin idea)*/
+	/* pendiente de modificaciï¿½n por jaque o pieza clavada (sin idea)*/
 	const Vector2D out_of_bounds = { -1,-1 };
 	Vector2D posicion = destino.getPosicion();
 	Dominio ocupacion = destino.getOcupacion();

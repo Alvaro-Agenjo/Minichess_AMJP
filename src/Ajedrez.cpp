@@ -131,6 +131,24 @@ std::ostream& Ajedrez::printAmenazas(std::ostream& o)
 	return o;
 }
 
+std::ostream& Ajedrez::printAmenazas(std::ostream& o)
+{
+	int n = 0;
+	for (const auto cas : _tablero.getTableroConst())
+	{
+		o << cas.getAmenaza() << " ";
+		//separacion cada 8 casillas
+		n++;
+		if (n == 8)
+		{
+			o << std::endl;
+			n = 0;
+		}
+	}
+	return o;
+}
+
+std::ostream& operator << (std::ostream& o, const Ajedrez& aj)
 std::ostream& operator << (std::ostream& o, const Ajedrez& aj)
 {
 	o << "Estado de la partida: ";
