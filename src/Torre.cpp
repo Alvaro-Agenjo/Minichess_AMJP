@@ -10,7 +10,7 @@ void Torre::PosiblesMov(const std::vector<Casilla>& tab)
 	bool continuar = false;
 	Casilla aux = *_myCasilla;
 	do {
-		aux = getCasilla(aux, NORTE, tab);
+		aux = getCasilla_copia(aux, NORTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
 
@@ -18,7 +18,7 @@ void Torre::PosiblesMov(const std::vector<Casilla>& tab)
 
 	aux = *_myCasilla;
 	do {
-		aux = getCasilla(aux, ESTE, tab);
+		aux = getCasilla_copia(aux, ESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
 
@@ -26,7 +26,7 @@ void Torre::PosiblesMov(const std::vector<Casilla>& tab)
 
 	aux = *_myCasilla; 
 	do {
-		aux = getCasilla(aux, SUR, tab);
+		aux = getCasilla_copia(aux, SUR, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
 
@@ -34,7 +34,7 @@ void Torre::PosiblesMov(const std::vector<Casilla>& tab)
 
 	aux = *_myCasilla;
 	do {
-		aux = getCasilla(aux, OESTE, tab);
+		aux = getCasilla_copia(aux, OESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
 }

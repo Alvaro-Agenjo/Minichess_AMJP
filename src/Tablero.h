@@ -16,7 +16,7 @@ public:
 	//getters
 	inline std::vector<Casilla>& getTablero() { return _tablero; }
 	inline std::vector<Casilla> getTableroConst() const { return _tablero; }
-
+	std::vector<Casilla*> getCasillasOcupadas();
 	//setters
 	void ClearAmenazas();
 	//testers

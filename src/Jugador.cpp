@@ -83,6 +83,17 @@ void Jugador::ActualizarMovimiento(Vector2D indices, std::vector<Casilla>& tab)
 {
 	_misPiezas[indices.x]->ActualizarPosicion(tab, indices.y);
 }
+void Jugador::AplicarGravedad(Casilla* cas, std::vector<Casilla> & tab)
+{
+	for (Pieza* p : _misPiezas)
+	{
+		if (cas == p->getCasilla())
+		{
+			p->Gravedad(tab);
+			break;
+		}
+	}
+}
 
 
 std::ostream& Jugador::print(std::ostream& o, Casilla cas) const

@@ -9,41 +9,41 @@ void Caballo::PosiblesMov(const std::vector<Casilla>& tab)
 	Casilla aux = *_myCasilla;
 	//Caballo movimiento hacia arriba-izda
 
-	aux = getCasilla(*_myCasilla, (2*NORTE+OESTE), tab);
+	aux = getCasilla_copia(*_myCasilla, (2*NORTE+OESTE), tab);
 	validarCasilla(aux);
 
 	//Caballo movimiento hacia arriba-dcha
 
-	aux = getCasilla(*_myCasilla, 2*NORTE+ESTE, tab);
+	aux = getCasilla_copia(*_myCasilla, 2*NORTE+ESTE, tab);
 	validarCasilla(aux);
 
 	//Caballo movimiento hacia dcha-arriba
 
-	aux = getCasilla(*_myCasilla, 2*ESTE+NORTE, tab);
+	aux = getCasilla_copia(*_myCasilla, 2*ESTE+NORTE, tab);
 	validarCasilla(aux);
 
 	//Caballo movimiento hacia dcha-abajo
 
-	aux = getCasilla(*_myCasilla, 2*ESTE+SUR, tab);
+	aux = getCasilla_copia(*_myCasilla, 2*ESTE+SUR, tab);
 	validarCasilla(aux);
 
 	//Caballo movimiento hacia abajo-dcha
 
-	aux = getCasilla(*_myCasilla, 2*SUR+ESTE, tab);
+	aux = getCasilla_copia(*_myCasilla, 2*SUR+ESTE, tab);
 	validarCasilla(aux);
 
 	//Caballo movimiento hacia abajo-izda
 
-	aux = getCasilla(*_myCasilla, 2*SUR+OESTE, tab);
+	aux = getCasilla_copia(*_myCasilla, 2*SUR+OESTE, tab);
 	validarCasilla(aux);
 
 	//Caballo movimiento hacia izda-abajo
 
-	aux = getCasilla(*_myCasilla, 2*OESTE+SUR, tab);
+	aux = getCasilla_copia(*_myCasilla, 2*OESTE+SUR, tab);
 	validarCasilla(aux);
 
 	//Caballo movimiento hacia izda-arriba
-	aux = getCasilla(*_myCasilla, 2*OESTE+NORTE, tab);
+	aux = getCasilla_copia(*_myCasilla, 2*OESTE+NORTE, tab);
 	validarCasilla(aux);
 
 }

@@ -40,6 +40,7 @@ void Ajedrez::Stateflow()
 	{
 		std::cout << *this << std::endl;
 		_j1.ActualizarMovimiento(_indices, _tablero.getTablero());
+		AplicarGravedad();
 
 		_estado = B_Comprobar_Jaques;
 		// graficos, mover pieza;
@@ -87,6 +88,19 @@ void Ajedrez::Stateflow()
 		break;
 	}
 }
+void Ajedrez::AplicarGravedad()
+{
+	std::vector<Casilla*> cas_oc =_tablero.getCasillasOcupadas();
+	for (Casilla *casilla : cas_oc)
+	{
+		if (casilla->getOcupacion() == Dominio::Blanca)
+			_j1.AplicarGravedad(casilla, _tablero.getTablero());
+		else
+			_j2.AplicarGravedad(casilla, _tablero.getTablero());
+	}
+}
+
+
 
 std::ostream& Ajedrez::printTablero(std::ostream& o)
 {
@@ -113,7 +127,6 @@ std::ostream& Ajedrez::printTablero(std::ostream& o)
 	}
 	return o;
 }
-
 std::ostream& Ajedrez::printAmenazas(std::ostream& o)
 {
 	int n = 0;
@@ -131,22 +144,9 @@ std::ostream& Ajedrez::printAmenazas(std::ostream& o)
 	return o;
 }
 
-std::ostream& Ajedrez::printAmenazas(std::ostream& o)
-{
-	int n = 0;
-	for (const auto cas : _tablero.getTableroConst())
-	{
-		o << cas.getAmenaza() << " ";
-		//separacion cada 8 casillas
-		n++;
-		if (n == 8)
-		{
-			o << std::endl;
-			n = 0;
-		}
-	}
-	return o;
-}
+
+
+
 
 std::ostream& operator << (std::ostream& o, const Ajedrez & aj)
 {
@@ -203,3 +203,4 @@ std::ostream& operator << (std::ostream& o, const Ajedrez & aj)
 	}
 	return o;
 }
+
