@@ -9,6 +9,11 @@ enum GameState
 	B_Actualizar_Amenazas,
 	B_Espera,
 	B_Mov,
+	B_Comprobar_Jaques,
+	N_Actualizar_Amenazas,
+	N_Espera,
+	N_Mov,
+	N_Comprobar_Jaques,
 };
 
 class Ajedrez
@@ -32,6 +37,9 @@ private:
 	GameState _estado;
 	Tablero _tablero;
 	Jugador _j1, _j2;
+
+	//?¿?¿
+	Vector2D _indices{};
 };
 
 //tester

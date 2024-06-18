@@ -13,7 +13,7 @@ Casilla::Casilla(Vector2D coord) :
 
 void Casilla::ClearCasilla()
 {
-
+	_amenaza = false;
 }
 
 std::ostream& Casilla::print (std::ostream & o) const

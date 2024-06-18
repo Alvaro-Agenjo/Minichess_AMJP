@@ -2,7 +2,7 @@
 
 Jugador::Jugador(std::vector<Casilla>& tab, Color c)
 {
-	if (c == Color::Negro) _pos = { 7,7 };
+	if (c == Color::Negro) _pos = { 7,0 };
 	CrearJugador(tab, _pos, c);
 	std::cout << "Jugador creado" << std::endl;
 }
@@ -11,10 +11,11 @@ void Jugador::PosiblesMov(std::vector<Casilla> tab)
 {
 	for (Pieza* p : _misPiezas)
 	{
+		p->Clear();
 		p->PosiblesMov(tab);
 	}
 }
-void Jugador::Actualizar_Amenazas(std::vector<Casilla>& tab)
+void Jugador::ActualizarAmenazas(std::vector<Casilla>& tab)
 {
 	PosiblesMov(tab);
 
@@ -30,7 +31,7 @@ Vector2D Jugador::Movimiento()
 	despues, selecionar destino. Una vez confirmado el destino --> siguiente fase*/
 	Vector2D pos;
 	const Vector2D go_back{ -1,-1 };
-	int indice_p = -1, indice_c =-1;
+	int indice_p = 0, indice_c =0;
 	
 	do
 	{
@@ -58,9 +59,9 @@ Vector2D Jugador::Movimiento()
 			if (pos != go_back)
 				indice_c = ValidarDestino_pieza(pos, indice_p);
 			
-			else indice_p = -1;
+			else indice_c = -1;
 
-		} while (indice_p == -1);
+		} while (indice_c == -1);
 	} while (pos == Vector2D{ -1,-1 });
 
 	return  { indice_p, indice_c };
@@ -76,6 +77,11 @@ int Jugador::ValidarPieza(Vector2D pos)
 int Jugador::ValidarDestino_pieza(Vector2D pos, int indice)
 {
 	return _misPiezas[indice]->ValidarDestino(pos);
+}
+
+void Jugador::ActualizarMovimiento(Vector2D indices, std::vector<Casilla>& tab)
+{
+	_misPiezas[indices.x]->ActualizarPosicion(tab, indices.y);
 }
 
 
@@ -134,26 +140,27 @@ void Jugador::CrearPieza(Casilla* c, Color col, t_pieza p)
 void Jugador::CrearJugador(std::vector<Casilla>& tab, Vector2D pos_ini, Color c)
 {
 	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::TORRE);
-	pos_ini += static_cast<int>(c);
+	pos_ini += 1;
 	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::CABALLO);
-	pos_ini += static_cast<int>(c);
+	pos_ini += 1;
 	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::ALFIL);
-	pos_ini += static_cast<int>(c);
-	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::REINA);
-	pos_ini += static_cast<int>(c);
+	pos_ini += 1;
 	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::REY);
-	pos_ini += static_cast<int>(c);
+	pos_ini += 1;
+	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::REINA);
+	pos_ini += 1;
 	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::ALFIL);
-	pos_ini += static_cast<int>(c);
+	pos_ini += 1;
 	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::CABALLO);
-	pos_ini += static_cast<int>(c);
+	pos_ini += 1;
 	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::TORRE);
-	pos_ini += static_cast<int>(c);
+	pos_ini += 1;
 
+	if (c == Color::Negro) { pos_ini = { 6,0 }; }
 	for (int n = 0; n < 8; n++)
 	{
 		CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::PEON);
-		pos_ini += static_cast<int>(c);
+		pos_ini += 1;
 	}
 }
 

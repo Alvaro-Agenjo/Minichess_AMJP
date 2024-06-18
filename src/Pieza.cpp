@@ -29,6 +29,17 @@ int Pieza::ValidarDestino(Vector2D pos)
 	return -1;
 }
 
+void Pieza::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c)
+{
+	Casilla destino = _posiblesMov[indice_c];
+
+	int indice_tablero = IndiceCasilla(destino.getPosicion(), tab);
+
+	_myCasilla->setOcupacion(Dominio::Vacio);
+	_myCasilla = &tab[indice_tablero];
+	_myCasilla->setOcupacion(static_cast<Dominio>(_color));
+}
+
 
 
 Casilla Pieza::getCasilla(Casilla origen, Vector2D direccion, const std::vector<Casilla>& tab)

@@ -6,17 +6,15 @@ using namespace std;
 int main()
 {
 	Ajedrez game;
-	cout << game << endl;
-	game.printTablero() << endl;
-	game.printAmenazas() << endl;
+	for (int n = 0; n < 15;n++)
+	{
+		game.Stateflow();
+		game.printTablero() << endl;
+		game.printAmenazas() << endl;
+	}
 	
 	
-	game.Stateflow();
-	cout << game << endl;
-	game.printTablero() << endl;
-	game.printAmenazas() << endl;
 	
-	game.Stateflow();
 
 	return 0;
 	

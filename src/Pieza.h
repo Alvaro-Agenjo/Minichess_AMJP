@@ -22,12 +22,18 @@ public:
 
 	//Getters
 	inline Casilla* getCasilla() const { return _myCasilla; }
-	//Setters
 
+	//Setters
+	inline void Clear() { _posiblesMov.clear(); }
+	
 	//Otros
 	virtual void PosiblesMov(const std::vector<Casilla> &tab)=0;
 	virtual void ActualizarTablero(std::vector<Casilla> & tab);
+	
 	virtual int ValidarDestino(Vector2D pos);
+	
+	void ActualizarPosicion(std::vector<Casilla>& tab, int indice_c);
+	
 	//tester
 	virtual std::ostream& operator << (std::ostream& o) const  =0;
 	

@@ -17,3 +17,11 @@ Tablero::~Tablero()
 {
 	_tablero.clear();
 }
+
+void Tablero::ClearAmenazas()
+{
+	for (auto &c : _tablero)
+	{
+		c.ClearCasilla();
+	}
+}

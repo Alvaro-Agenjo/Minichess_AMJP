@@ -18,7 +18,7 @@ public:
 	inline std::vector<Casilla> getTableroConst() const { return _tablero; }
 
 	//setters
-
+	void ClearAmenazas();
 	//testers
 
 private:
