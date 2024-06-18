@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Tablero.h"
-//#include "Torre.h"
-
-/* Test validez de clase jugdor*/
 #include "Jugador.h"
 
 enum GameState
@@ -29,6 +26,7 @@ public:
 	void Stateflow();
 	//tester
 	std::ostream& printTablero (std::ostream& o = std::cout);
+	std::ostream& printAmenazas (std::ostream& o = std::cout);
 
 private:
 	GameState _estado;

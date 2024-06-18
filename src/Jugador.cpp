@@ -7,7 +7,14 @@ Jugador::Jugador(std::vector<Casilla>& tab, Color c)
 	std::cout << "Jugador creado" << std::endl;
 }
 
-void Jugador::Actualizar_Amenazas( std::vector<Casilla> &tab)
+void Jugador::PosiblesMov(std::vector<Casilla> tab)
+{
+	for (Pieza* p : _misPiezas)
+	{
+		p->PosiblesMov(tab);
+	}
+}
+void Jugador::Actualizar_Amenazas(std::vector<Casilla>& tab)
 {
 	PosiblesMov(tab);
 
@@ -17,19 +24,66 @@ void Jugador::Actualizar_Amenazas( std::vector<Casilla> &tab)
 	}
 }
 
-void Jugador::PosiblesMov(std::vector<Casilla> tab)
+Vector2D Jugador::Movimiento()
 {
-	for (Pieza* p : _misPiezas)
+	/*Seleccion mediante ratón de la pieza a mover, una vez seleccionada "iluminar" casillas válidas
+	despues, selecionar destino. Una vez confirmado el destino --> siguiente fase*/
+	Vector2D pos;
+	const Vector2D go_back{ -1,-1 };
+	int indice_p = -1, indice_c =-1;
+	
+	do
 	{
-		p->PosiblesMov(tab);
-	}
+		do {
+			// desiluminar casillas aquí
+
+			if (indice_p == -1)
+			{
+				std::cout << "No puede mover la pieza seleccionada" << std::endl;
+			}
+			std::cout << "Indique coordenadas de la pieza a mover" << std::endl;
+			std::cin >> pos;
+			indice_p = ValidarPieza(pos);
+		} while (indice_p == -1);
+		do
+		{
+			//iluminar casillas validas aquí
+
+			if (indice_c == -1)
+			{
+				std::cout << "No puede mover la pieza seleccionadaa esa casilla" << std::endl;
+			}
+			std::cout << "Indique coordenadas del destino" << std::endl;
+			std::cin >> pos;
+			if (pos != go_back)
+				indice_c = ValidarDestino_pieza(pos, indice_p);
+			
+			else indice_p = -1;
+
+		} while (indice_p == -1);
+	} while (pos == Vector2D{ -1,-1 });
+
+	return  { indice_p, indice_c };
 }
+int Jugador::ValidarPieza(Vector2D pos)
+{
+	for (int n = 0; n < _misPiezas.size(); n++)
+	{
+		if (_misPiezas[n]->getCasilla()->getPosicion() == pos) return n;
+	}
+	return -1;
+}
+int Jugador::ValidarDestino_pieza(Vector2D pos, int indice)
+{
+	return _misPiezas[indice]->ValidarDestino(pos);
+}
+
 
 std::ostream& Jugador::print(std::ostream& o, Casilla cas) const
 {
 	for (const Pieza* p : _misPiezas)
 	{
- 		if (*p->getCasilla() == cas)
+		if (*p->getCasilla() == cas)
 		{
 			*p << o;
 			return o;
@@ -77,30 +131,29 @@ void Jugador::CrearPieza(Casilla* c, Color col, t_pieza p)
 		break;
 	}
 }
-
-void Jugador::CrearJugador(std::vector<Casilla> &tab, Vector2D pos_ini, Color c)
+void Jugador::CrearJugador(std::vector<Casilla>& tab, Vector2D pos_ini, Color c)
 {
-	CrearPieza(&tab[pos_ini.x + pos_ini.y*8], c, t_pieza::TORRE);
-	pos_ini+=static_cast<int>(c);
-	CrearPieza(&tab[pos_ini.x + pos_ini.y*8], c, t_pieza::CABALLO);
-	pos_ini+=static_cast<int>(c);
-	CrearPieza(&tab[pos_ini.x + pos_ini.y*8], c, t_pieza::ALFIL);
-	pos_ini+=static_cast<int>(c);
-	CrearPieza(&tab[pos_ini.x + pos_ini.y*8], c, t_pieza::REINA);
-	pos_ini+=static_cast<int>(c);
-	CrearPieza(&tab[pos_ini.x + pos_ini.y*8], c, t_pieza::REY);
-	pos_ini+=static_cast<int>(c);
-	CrearPieza(&tab[pos_ini.x + pos_ini.y*8], c, t_pieza::ALFIL);
-	pos_ini+=static_cast<int>(c);
-	CrearPieza(&tab[pos_ini.x + pos_ini.y*8], c, t_pieza::CABALLO);
-	pos_ini+=static_cast<int>(c);
-	CrearPieza(&tab[pos_ini.x + pos_ini.y*8], c, t_pieza::TORRE);
-	pos_ini+=static_cast<int>(c);
+	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::TORRE);
+	pos_ini += static_cast<int>(c);
+	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::CABALLO);
+	pos_ini += static_cast<int>(c);
+	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::ALFIL);
+	pos_ini += static_cast<int>(c);
+	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::REINA);
+	pos_ini += static_cast<int>(c);
+	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::REY);
+	pos_ini += static_cast<int>(c);
+	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::ALFIL);
+	pos_ini += static_cast<int>(c);
+	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::CABALLO);
+	pos_ini += static_cast<int>(c);
+	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::TORRE);
+	pos_ini += static_cast<int>(c);
 
 	for (int n = 0; n < 8; n++)
 	{
-		CrearPieza(&tab[pos_ini.x + pos_ini.y*8], c, t_pieza::PEON);
-		pos_ini+=static_cast<int>(c);
+		CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::PEON);
+		pos_ini += static_cast<int>(c);
 	}
 }
 

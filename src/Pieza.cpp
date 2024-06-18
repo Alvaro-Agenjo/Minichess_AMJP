@@ -20,28 +20,37 @@ void Pieza::ActualizarTablero(std::vector<Casilla>& tab)
 	}
 }
 
-
-
-Casilla Pieza::getCasilla(Casilla origen, Vector2D direccion, const std::vector<Casilla> &tab)
+int Pieza::ValidarDestino(Vector2D pos)
 {
-	int indice = IndiceCasilla(origen, tab);
-	if (indice != -1)
+	for (int n = 0; n < _posiblesMov.size(); n++)
 	{
-		indice += 8 * direccion.y + direccion.x;
-		if (indice >= 64)
-		{
-			return *new Casilla({ -1,-1 });
-		}
-		return tab.at(indice);
+		if (_posiblesMov[n].getPosicion() == pos) return n;
 	}
-	return *new Casilla({ -1,-1 });;
+	return -1;
 }
 
-int Pieza::IndiceCasilla(const Casilla c, const std::vector<Casilla>& tab)
+
+
+Casilla Pieza::getCasilla(Casilla origen, Vector2D direccion, const std::vector<Casilla>& tab)
+{
+	Vector2D posicion = origen.getPosicion();
+	if ((posicion + direccion).out_of_bounds()) return *new Casilla({ -1,-1 });
+
+	int indice = IndiceCasilla(posicion, tab);
+	if (indice == -1)  return *new Casilla({ -1,-1 });
+
+	else
+	{
+		indice += 8 * direccion.y + direccion.x;
+		return tab.at(indice);
+	}
+}
+
+int Pieza::IndiceCasilla(const Vector2D pos, const std::vector<Casilla>& tab)
 {
 	for (int n = 0; n < tab.size(); n++)
 	{
-		if (c.getPosicion() == tab[n].getPosicion())
+		if (pos == tab[n].getPosicion())
 			return n;
 	}
 	return -1;
@@ -49,21 +58,26 @@ int Pieza::IndiceCasilla(const Casilla c, const std::vector<Casilla>& tab)
 
 bool Pieza::validarCasilla(const Casilla destino)
 {
+	/* pendiente de modificación por jaque o pieza clavada (sin idea)*/
 	const Vector2D out_of_bounds = { -1,-1 };
+	Vector2D posicion = destino.getPosicion();
+	Dominio ocupacion = destino.getOcupacion();
 
-	if (destino.getPosicion() != out_of_bounds && destino.getOcupacion() != this->_color)
+	if (posicion == out_of_bounds) return false;
+	else if (ocupacion == this->_color) return false;
+	else
 	{
 		Casilla aux = destino;
-		if (destino.getOcupacion() == Dominio::Vacio) aux.setMover(true);
-		else {
-			aux.setComer(true);
+
+		if (ocupacion == Dominio::Vacio) aux.setMover(true);
+		else
+		{
 			aux.setMover(true);
+			aux.setComer(true);
 		}
 		_posiblesMov.push_back(aux);
 		return true;
 	}
-
-	return false;
 }
 
 bool operator==(const Dominio& d, const Color& c)

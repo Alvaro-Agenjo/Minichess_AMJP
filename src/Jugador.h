@@ -21,6 +21,12 @@ public:
 	//otros
 	void PosiblesMov( std::vector<Casilla> tab);
 	void Actualizar_Amenazas(std::vector<Casilla>& tab);
+
+	Vector2D Movimiento();
+	int ValidarPieza(Vector2D pos);
+	int ValidarDestino_pieza(Vector2D pos, int indice);
+	
+
 	//tester
 	std::ostream& print(std::ostream& o, Casilla cas) const;
 

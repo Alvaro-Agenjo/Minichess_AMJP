@@ -4,6 +4,8 @@ Alfil::Alfil(Casilla* coord, Color col) :
 	Pieza(coord, col)
 {}
 
+//Comentario
+
 void Alfil::PosiblesMov(const std::vector<Casilla>& tab)
 {
 	//Alfil movimiento hacia arriba-dcha

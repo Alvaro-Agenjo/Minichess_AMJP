@@ -27,24 +27,40 @@ bool operator!=(const Vector2D& lhs, const Vector2D& rhs)
 	return ! operator== (lhs,rhs);
 }
 
+
 std::ostream& operator<<(std::ostream& o, const Vector2D lhs)
 {
 	o << "[ " << lhs.x << ", " << lhs.y << " ]";
 	return o;
 }
 
+std::istream& operator>>(std::istream& i, Vector2D& lhs)
+{
+	i >> lhs.x >> lhs.y;
+	return i;
+}
+
+bool Vector2D::out_of_bounds()
+{
+	Vector2D lo_lim{ 0,0 }, hi_lim{ 7,7 };
+	if (this->x < lo_lim.x || this->y < lo_lim.y) return true;
+	else if (this->x > hi_lim.x || this->y > hi_lim.y) return true;
+
+	return false;
+}
+
 Vector2D& Vector2D::operator+=(int valor)
 {
-	this->x+= valor;
-	if (this->x > 7)
+	this->y+= valor;
+	if (this->y> 7)
 	{
-		this->x = 0;
-		this->y++;
+		this->y = 0;
+		this->x++;
 	}
-	else if (this->x < 0)
+	else if (this->y < 0)
 	{
-		this->x = 8;
-		this->y--;
+		this->y = 7;
+		this->x--;
 	}
 	return *this;
 }
