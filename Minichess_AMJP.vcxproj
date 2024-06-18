@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="jaque.cpp" />
     <ClCompile Include="src\Ajedrez.cpp" />
     <ClCompile Include="src\Alfil.cpp" />
     <ClCompile Include="src\Caballo.cpp" />
