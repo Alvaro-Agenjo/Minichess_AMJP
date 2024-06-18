@@ -1,4 +1,5 @@
 #include "Pieza.h"
+constexpr Vector2D out_of_bounds = { -1,-1 };
 
 Pieza::Pieza(Casilla* cas, Color col) :
 	_myCasilla(cas),
@@ -39,10 +40,31 @@ void Pieza::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c)
 	_myCasilla = &tab[indice_tablero];
 	_myCasilla->setOcupacion(static_cast<Dominio>(_color));
 }
+void Pieza::ActualizarPosicion(Casilla *c)
+{
+	_myCasilla->setOcupacion(Dominio::Vacio);
+	_myCasilla = c;
+	_myCasilla->setOcupacion(static_cast<Dominio>(_color));
+}
+void Pieza::Gravedad(std::vector<Casilla>& tab)
+{
+	Casilla *destino= new Casilla(), *aux;
+	aux = getCasilla_ref(*_myCasilla, SUR, tab);
+	do {
+		if (aux->getOcupacion() != Dominio::Vacio) { break; }
+		destino = aux; 
+		aux = getCasilla_ref(*aux, SUR, tab);
+
+	} while (!aux->getPosicion().out_of_bounds());
+	
+	if (destino->getPosicion() != out_of_bounds)
+	ActualizarPosicion(destino);
+
+}
 
 
 
-Casilla Pieza::getCasilla(Casilla origen, Vector2D direccion, const std::vector<Casilla>& tab)
+Casilla Pieza::getCasilla_copia(Casilla origen, Vector2D direccion, const std::vector<Casilla>& tab)
 {
 	Vector2D posicion = origen.getPosicion();
 	if ((posicion + direccion).out_of_bounds()) return *new Casilla({ -1,-1 });
@@ -56,7 +78,20 @@ Casilla Pieza::getCasilla(Casilla origen, Vector2D direccion, const std::vector<
 		return tab.at(indice);
 	}
 }
+Casilla* Pieza::getCasilla_ref(Casilla origen, Vector2D direccion, std::vector<Casilla>& tab)
+{
+	Vector2D posicion = origen.getPosicion();
+	if ((posicion + direccion).out_of_bounds()) return new Casilla({ -1,-1 });
 
+	int indice = IndiceCasilla(posicion, tab);
+	if (indice == -1)  return new Casilla({ -1,-1 });
+
+	else
+	{
+		indice += 8 * direccion.y + direccion.x;
+		return &tab.at(indice);
+	}
+}
 int Pieza::IndiceCasilla(const Vector2D pos, const std::vector<Casilla>& tab)
 {
 	for (int n = 0; n < tab.size(); n++)
@@ -66,11 +101,10 @@ int Pieza::IndiceCasilla(const Vector2D pos, const std::vector<Casilla>& tab)
 	}
 	return -1;
 }
-
 bool Pieza::validarCasilla(const Casilla destino)
 {
 	/* pendiente de modificaci�n por jaque o pieza clavada (sin idea)*/
-	const Vector2D out_of_bounds = { -1,-1 };
+	
 	Vector2D posicion = destino.getPosicion();
 	Dominio ocupacion = destino.getOcupacion();
 
@@ -95,7 +129,6 @@ bool operator==(const Dominio& d, const Color& c)
 {
 	return (d == Dominio::Blanca && c == Color::Blanco || d == Dominio::Negra && c == Color::Negro);
 }
-
 bool operator!=(const Dominio& d, const Color& c)
 {
 	return !operator== (d, c);

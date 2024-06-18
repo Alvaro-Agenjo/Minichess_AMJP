@@ -27,6 +27,7 @@ public:
 	int ValidarDestino_pieza(Vector2D pos, int indice);
 	
 	void ActualizarMovimiento(Vector2D indices, std::vector<Casilla> &tab);
+	void AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab);
 	//tester
 	std::ostream& print(std::ostream& o, Casilla cas) const;
 

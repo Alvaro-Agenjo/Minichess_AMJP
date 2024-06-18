@@ -12,7 +12,7 @@ void Alfil::PosiblesMov(const std::vector<Casilla>& tab)
 	bool continuar = false;
 	Casilla aux = *_myCasilla;
 	do {
-		aux = getCasilla(aux, NORESTE, tab);
+		aux = getCasilla_copia(aux, NORESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
 
@@ -20,7 +20,7 @@ void Alfil::PosiblesMov(const std::vector<Casilla>& tab)
 
 	aux = *_myCasilla;
 	do {
-		aux = getCasilla(aux, SUDESTE, tab);
+		aux = getCasilla_copia(aux, SUDESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
 
@@ -28,7 +28,7 @@ void Alfil::PosiblesMov(const std::vector<Casilla>& tab)
 
 	aux = *_myCasilla;
 	do {
-		aux = getCasilla(aux, SUDOESTE, tab);
+		aux = getCasilla_copia(aux, SUDOESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
 
@@ -36,7 +36,7 @@ void Alfil::PosiblesMov(const std::vector<Casilla>& tab)
 
 	aux = *_myCasilla;
 	do {
-		aux = getCasilla(aux, NOROESTE, tab);
+		aux = getCasilla_copia(aux, NOROESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
 }

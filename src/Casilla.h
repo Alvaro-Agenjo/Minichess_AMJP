@@ -9,7 +9,7 @@ class Casilla
 public:
 	
 	//Constructor
-	Casilla(Vector2D coord = {0,0});
+	Casilla(Vector2D coord = {-1,-1});
 
 	//Getters
 	inline Dominio getOcupacion() const { return _ocupacion; }

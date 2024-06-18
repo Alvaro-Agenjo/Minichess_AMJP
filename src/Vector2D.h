@@ -6,7 +6,7 @@ struct Vector2D
 	int x;
 	int y;
 
-	bool out_of_bounds();
+	bool out_of_bounds();	//false si dentro de tablero
 
 	Vector2D& operator +=(int valor);
 	Vector2D& operator +=(const Vector2D & rhs);
