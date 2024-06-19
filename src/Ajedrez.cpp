@@ -32,13 +32,14 @@ void Ajedrez::Stateflow()
 	case B_Espera:
 	{
 		std::cout << *this << std::endl;
-		_indices = _j1.Movimiento();
+		_indices = _j1.Movimiento(_tablero.getTableroConst());
 		_estado = B_Mov;
 		break;
 	}
 	case B_Mov:
 	{
 		std::cout << *this << std::endl;
+		_j2.BorrarPieza(_tablero.getTablero()[_indices.y]);
 		_j1.ActualizarMovimiento(_indices, _tablero.getTablero());
 		AplicarGravedad();
 
@@ -65,14 +66,16 @@ void Ajedrez::Stateflow()
 	case N_Espera:
 	{
 		std::cout << *this << std::endl;
-		_indices = _j2.Movimiento();
+		_indices = _j2.Movimiento(_tablero.getTableroConst());
 		_estado = N_Mov;
 		break;
 	}
 	case N_Mov:
 	{
 		std::cout << *this << std::endl;
+		_j1.BorrarPieza(_tablero.getTablero()[_indices.y]);
 		_j2.ActualizarMovimiento(_indices, _tablero.getTablero());
+		AplicarGravedad();
 
 		_estado = N_Comprobar_Jaques;
 		// graficos, mover pieza;
