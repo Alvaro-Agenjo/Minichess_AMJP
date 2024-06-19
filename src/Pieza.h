@@ -30,7 +30,7 @@ public:
 	virtual void PosiblesMov(const std::vector<Casilla>& tab) = 0;
 	virtual void ActualizarTablero(std::vector<Casilla>& tab);
 
-	virtual int ValidarDestino(Vector2D pos);
+	virtual int ValidarDestino(Vector2D pos, const std::vector<Casilla>& tab);
 
 	void ActualizarPosicion(std::vector<Casilla>& tab, int indice_c);
 	void ActualizarPosicion(Casilla* c);

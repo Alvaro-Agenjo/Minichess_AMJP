@@ -7,6 +7,20 @@ Jugador::Jugador(std::vector<Casilla>& tab, Color c)
 	std::cout << "Jugador creado" << std::endl;
 }
 
+void Jugador::BorrarPieza(Casilla& c)
+{
+	std::vector<Pieza*>::iterator it;
+	for (int n =0; n< _misPiezas.size();n++)
+	{
+		if (_misPiezas[n]->getCasilla() == &c)
+		{
+			it = _misPiezas.begin() +n;
+			_misPiezas.erase(it);
+			break;
+		}
+	}
+}
+
 void Jugador::PosiblesMov(std::vector<Casilla> tab)
 {
 	for (Pieza* p : _misPiezas)
@@ -25,7 +39,7 @@ void Jugador::ActualizarAmenazas(std::vector<Casilla>& tab)
 	}
 }
 
-Vector2D Jugador::Movimiento()
+Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab)
 {
 	/*Seleccion mediante ratón de la pieza a mover, una vez seleccionada "iluminar" casillas válidas
 	despues, selecionar destino. Una vez confirmado el destino --> siguiente fase*/
@@ -57,7 +71,7 @@ Vector2D Jugador::Movimiento()
 			std::cout << "Indique coordenadas del destino" << std::endl;
 			std::cin >> pos;
 			if (pos != go_back)
-				indice_c = ValidarDestino_pieza(pos, indice_p);
+				indice_c = ValidarDestino_pieza(pos, indice_p, tab);
 			
 			else indice_c = -1;
 
@@ -74,9 +88,9 @@ int Jugador::ValidarPieza(Vector2D pos)
 	}
 	return -1;
 }
-int Jugador::ValidarDestino_pieza(Vector2D pos, int indice)
+int Jugador::ValidarDestino_pieza(Vector2D pos, int indice, const std::vector<Casilla>& tab)
 {
-	return _misPiezas[indice]->ValidarDestino(pos);
+	return _misPiezas[indice]->ValidarDestino(pos, tab);
 }
 
 void Jugador::ActualizarMovimiento(Vector2D indices, std::vector<Casilla>& tab)

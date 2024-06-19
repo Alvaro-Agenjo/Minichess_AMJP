@@ -21,23 +21,19 @@ void Pieza::ActualizarTablero(std::vector<Casilla>& tab)
 	}
 }
 
-int Pieza::ValidarDestino(Vector2D pos)
+int Pieza::ValidarDestino(Vector2D pos, const std::vector<Casilla>& tab)
 {
 	for (int n = 0; n < _posiblesMov.size(); n++)
 	{
-		if (_posiblesMov[n].getPosicion() == pos) return n;
+		if (_posiblesMov[n].getPosicion() == pos) return IndiceCasilla(pos,tab);
 	}
 	return -1;
 }
 
 void Pieza::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c)
 {
-	Casilla destino = _posiblesMov[indice_c];
-
-	int indice_tablero = IndiceCasilla(destino.getPosicion(), tab);
-
 	_myCasilla->setOcupacion(Dominio::Vacio);
-	_myCasilla = &tab[indice_tablero];
+	_myCasilla = &tab[indice_c];
 	_myCasilla->setOcupacion(static_cast<Dominio>(_color));
 }
 void Pieza::ActualizarPosicion(Casilla *c)

@@ -15,16 +15,16 @@ public:
 	Jugador(std::vector<Casilla>& tab, Color c);
 
 	//setters
-
+	void BorrarPieza(Casilla & c);
 	//getters
 
 	//otros
 	void PosiblesMov( std::vector<Casilla> tab);
 	void ActualizarAmenazas(std::vector<Casilla>& tab);
 
-	Vector2D Movimiento();
+	Vector2D Movimiento(const std::vector<Casilla>& tab);
 	int ValidarPieza(Vector2D pos);
-	int ValidarDestino_pieza(Vector2D pos, int indice);
+	int ValidarDestino_pieza(Vector2D pos, int indice, const std::vector<Casilla>& tab);
 	
 	void ActualizarMovimiento(Vector2D indices, std::vector<Casilla> &tab);
 	void AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab);
