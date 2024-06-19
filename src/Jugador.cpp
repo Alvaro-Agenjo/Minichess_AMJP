@@ -44,7 +44,6 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab)
 	/*Seleccion mediante ratón de la pieza a mover, una vez seleccionada "iluminar" casillas válidas
 	despues, selecionar destino. Una vez confirmado el destino --> siguiente fase*/
 	Vector2D pos;
-	const Vector2D go_back{ -1,-1 };
 	int indice_p = 0, indice_c =0;
 	
 	do
@@ -72,11 +71,11 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab)
 			std::cin >> pos;
 			if (pos != go_back)
 				indice_c = ValidarDestino_pieza(pos, indice_p, tab);
-			
-			else indice_c = -1;
+			else
+				indice_c = 0;
 
 		} while (indice_c == -1);
-	} while (pos == Vector2D{ -1,-1 });
+	} while (pos == go_back);
 
 	return  { indice_p, indice_c };
 }
@@ -129,7 +128,7 @@ void Jugador::CrearPieza(Casilla* c, Color col, t_pieza p)
 	{
 	case t_pieza::PEON:
 	{
-		//_misPiezas.push_back(new Peon(c, col));
+		_misPiezas.push_back(new Peon(c, col));
 		break;
 	}
 	case t_pieza::TORRE:

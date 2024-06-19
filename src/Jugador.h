@@ -1,11 +1,13 @@
 #pragma once
 
+#include "Peon.h"
 #include "Torre.h"
 #include "Caballo.h"
 #include "Alfil.h"
 #include "Reina.h"
 #include "Rey.h"
 
+constexpr Vector2D go_back{ -1,-1 };
 
 enum class t_pieza {PEON, TORRE, CABALLO, ALFIL, REINA, REY};
 class Jugador

@@ -11,6 +11,8 @@ constexpr Vector2D NOROESTE = { -1,1 };
 constexpr Vector2D SUDESTE = { 1,-1 };
 constexpr Vector2D SUDOESTE = { -1,-1 };
 
+constexpr Vector2D out_of_bounds = { -1,-1 };
+
 enum class Color { Blanco = 1, Negro = -1 };
 
 

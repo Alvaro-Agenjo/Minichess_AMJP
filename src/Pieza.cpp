@@ -1,5 +1,5 @@
 #include "Pieza.h"
-constexpr Vector2D out_of_bounds = { -1,-1 };
+
 
 Pieza::Pieza(Casilla* cas, Color col) :
 	_myCasilla(cas),
