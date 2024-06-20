@@ -21,6 +21,7 @@ void Pieza::ActualizarTablero(std::vector<Casilla>& tab)
 	}
 }
 
+
 int Pieza::ValidarDestino(Vector2D pos, const std::vector<Casilla>& tab)
 {
 	for (int n = 0; n < _posiblesMov.size(); n++)
@@ -57,6 +58,8 @@ void Pieza::Gravedad(std::vector<Casilla>& tab)
 	ActualizarPosicion(destino);
 
 }
+
+
 
 
 

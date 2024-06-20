@@ -39,6 +39,14 @@ void Peon::ActualizarTablero(std::vector<Casilla>& tab)
 	}
 }
 
+bool Peon::ComprobarCoronacion(int coordx)
+{
+	if (_color == Color::Blanco && coordx ==7) return true;
+	else if (_color == Color::Negro && coordx == 0) return true;
+	return false;
+}
+
+
 std::ostream& Peon::operator<< (std::ostream& o) const
 {
 	if (_color == Color::Blanco)

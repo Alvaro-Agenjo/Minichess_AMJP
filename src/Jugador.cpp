@@ -10,11 +10,11 @@ Jugador::Jugador(std::vector<Casilla>& tab, Color c)
 void Jugador::BorrarPieza(Casilla& c)
 {
 	std::vector<Pieza*>::iterator it;
-	for (int n =0; n< _misPiezas.size();n++)
+	for (int n = 0; n < _misPiezas.size(); n++)
 	{
 		if (_misPiezas[n]->getCasilla() == &c)
 		{
-			it = _misPiezas.begin() +n;
+			it = _misPiezas.begin() + n;
 			_misPiezas.erase(it);
 			break;
 		}
@@ -44,8 +44,8 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab)
 	/*Seleccion mediante ratón de la pieza a mover, una vez seleccionada "iluminar" casillas válidas
 	despues, selecionar destino. Una vez confirmado el destino --> siguiente fase*/
 	Vector2D pos;
-	int indice_p = 0, indice_c =0;
-	
+	int indice_p = 0, indice_c = 0;
+	bool peon = false;
 	do
 	{
 		do {
@@ -76,7 +76,10 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab)
 
 		} while (indice_c == -1);
 	} while (pos == go_back);
-
+	
+	Coronar(indice_p, pos.x);
+	
+	
 	return  { indice_p, indice_c };
 }
 int Jugador::ValidarPieza(Vector2D pos)
@@ -96,7 +99,7 @@ void Jugador::ActualizarMovimiento(Vector2D indices, std::vector<Casilla>& tab)
 {
 	_misPiezas[indices.x]->ActualizarPosicion(tab, indices.y);
 }
-void Jugador::AplicarGravedad(Casilla* cas, std::vector<Casilla> & tab)
+void Jugador::AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab)
 {
 	for (Pieza* p : _misPiezas)
 	{
@@ -107,6 +110,17 @@ void Jugador::AplicarGravedad(Casilla* cas, std::vector<Casilla> & tab)
 		}
 	}
 }
+
+void Jugador::Coronar(int indice, int coordx)
+{
+	if (_misPiezas[indice]->ComprobarCoronacion(coordx))
+	{
+		Reina reina = *new Reina(_misPiezas[indice]->getCasilla(), _misPiezas[indice]->getColor());
+		_misPiezas.push_back(&reina);
+		_misPiezas.erase(_misPiezas.begin() + indice);
+	}
+}
+
 
 
 std::ostream& Jugador::print(std::ostream& o, Casilla cas) const

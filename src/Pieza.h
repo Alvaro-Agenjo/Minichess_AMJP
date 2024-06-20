@@ -24,7 +24,7 @@ public:
 
 	//Getters
 	inline Casilla* getCasilla() const { return _myCasilla; }
-
+	inline Color getColor() const { return _color; }
 	//Setters
 	inline void Clear() { _posiblesMov.clear(); }
 
@@ -32,11 +32,14 @@ public:
 	virtual void PosiblesMov(const std::vector<Casilla>& tab) = 0;
 	virtual void ActualizarTablero(std::vector<Casilla>& tab);
 
-	virtual int ValidarDestino(Vector2D pos, const std::vector<Casilla>& tab);
+	inline virtual bool ComprobarCoronacion(int coorx) { return false; }
+	int ValidarDestino(Vector2D pos, const std::vector<Casilla>& tab);
 
 	void ActualizarPosicion(std::vector<Casilla>& tab, int indice_c);
 	void ActualizarPosicion(Casilla* c);
 	void Gravedad(std::vector<Casilla>& tab);
+
+	
 
 	//tester
 	virtual std::ostream& operator << (std::ostream& o) const = 0;
