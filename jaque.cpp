@@ -14,16 +14,17 @@ bool jaquemate(Tablero t, Dominio coloramenazado, Dominio coloramenazando)
 
 int jaque(Tablero t, Dominio colordefensor, Dominio coloratacante)
 {
-
+	Casilla cas; //placeholder de la información de cada casilla que se observe en cada iteración del bucle for
+	Dominio dom;	 //placeholder de la información del color ocupando la casilla
+	bool jaque = false;
 	std::vector<Casilla> tab;
 	tab = t.getTablero();
+	//obtenemos tamaño vector como entero sin signo
+	unsigned int tamvector = tab.size();
 
-	for (std::vector<Casilla>::iterator it = tab.begin(); it != tab.end(); ++it) //recorremos todas las posiciones
+	for (unsigned int i = 0; i < tamvector; i++) //recorremos todas las casillas
 	{
-		Dominio dom;
-		Casilla cas;
-		bool jaque = false;
-		cas = *it;
+		cas = tab[i];
 		dom = cas.getOcupacion();
 		if (dom == colordefensor)//si es del color que sufre el jaque, comprobamos si es el rey
 		{
@@ -45,4 +46,5 @@ int jaque(Tablero t, Dominio colordefensor, Dominio coloratacante)
 				return 1;//no hay jaque
 		}
 	}
+
 }
