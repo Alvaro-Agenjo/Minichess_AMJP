@@ -1,11 +1,13 @@
 #pragma once
 
+#include "Peon.h"
 #include "Torre.h"
 #include "Caballo.h"
 #include "Alfil.h"
 #include "Reina.h"
 #include "Rey.h"
 
+constexpr Vector2D go_back{ -1,-1 };
 
 enum class t_pieza {PEON, TORRE, CABALLO, ALFIL, REINA, REY};
 class Jugador
@@ -28,6 +30,8 @@ public:
 	
 	void ActualizarMovimiento(Vector2D indices, std::vector<Casilla> &tab);
 	void AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab);
+
+	void Coronar(int indice, int coordx);
 	//tester
 	std::ostream& print(std::ostream& o, Casilla cas) const;
 

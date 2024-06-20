@@ -1,0 +1,5 @@
+Coronar (Peon)
+
+1. Solo lo puede llevar a cabo un Peon
+2. El movimiento del peon debe ser a la ultima collumna de casillas
+3. El peon debe convertirse en Reina.

@@ -1,5 +1,5 @@
 #include "Pieza.h"
-constexpr Vector2D out_of_bounds = { -1,-1 };
+
 
 Pieza::Pieza(Casilla* cas, Color col) :
 	_myCasilla(cas),
@@ -20,6 +20,7 @@ void Pieza::ActualizarTablero(std::vector<Casilla>& tab)
 		}
 	}
 }
+
 
 int Pieza::ValidarDestino(Vector2D pos, const std::vector<Casilla>& tab)
 {
@@ -57,6 +58,8 @@ void Pieza::Gravedad(std::vector<Casilla>& tab)
 	ActualizarPosicion(destino);
 
 }
+
+
 
 
 
