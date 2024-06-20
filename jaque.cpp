@@ -1,44 +1,48 @@
 #include <Ajedrez.h>
 //placeholder temporal para código de funcion jaque, que se ejecutará al inicio de cada turno
-//quizas se convierta en metodo de ajedrez.h
-//variables temporales para simular input
+//quizas se convierta en metodo de ajedrez.ht
 
-bool turnoblanco;
-bool turnonegro;
-bool amenazado;
-bool checkmate;
-int anchotablero;
-int altotablero;
-bool coloramenazado;
-bool coloramenazando;
+Ajedrez aj;
 Tablero tablero;
-int jaque(Ajedrez a)
+
+bool jaquemate(Tablero t, Dominio coloramenazado, Dominio coloramenazando)
 {
-	if (turnoblanco == true)
+	std::vector<Casilla> copia; 
+	copia = t.getTablero(); //copiamos el tablero para comprobar jaque mate
+	return false;
+};
+
+int jaque(Tablero t, Dominio colordefensor, Dominio coloratacante)
+{
+
+	std::vector<Casilla> tab;
+	tab = t.getTablero();
+
+	for (std::vector<Casilla>::iterator it = tab.begin(); it != tab.end(); ++it) //recorremos todas las posiciones
 	{
-		for (int i = 0;i++;i <anchotablero)
+		Dominio dom;
+		Casilla cas;
+		bool jaque = false;
+		cas = *it;
+		dom = cas.getOcupacion();
+		if (dom == colordefensor)//si es del color que sufre el jaque, comprobamos si es el rey
 		{
-			/*
-			if ((checktipo(i, j) == rey) && (checkcolor(i,j) == coloramenazado))//metodos de juego/ajedrez?
+			//if (cas.esrey == true)
+			//{
+			//jaque=cas.getAmenaza();
+			//}
+			if (jaque == true)
 			{
-				amenazado = checkamenaza(rey.i, rey.j, negro); //ponemos las coordenadas y el color que amenaza
-				if (amenazado == true)
-				{
-					checkmate = jaquemate(tablero, coloramenazado,coloramenazando); //inputs: tablero para clonarlo, color amenazado, color amenazando
-					if (jaquemate == true)
-						return 2;
-					if (jaquemate == false)
-						return 3;
-				}
-				
-				
+				bool checkmate;
+				checkmate = jaquemate(t, colordefensor, coloratacante);
+				if (checkmate == true)
+					return 2; //hay jaque mate
+				else
+					return 3;//hay jaque
+
 			}
-		*/
+			else
+				return 1;//no hay jaque
 		}
 	}
-	return 1; //no amenazado
 }
-bool jaquemate(Tablero t, int coloramenazado, int coloramenazando)
-{
-	return 0;
-};
