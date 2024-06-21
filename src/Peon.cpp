@@ -1,15 +1,17 @@
 #include "Peon.h"
 
 Peon::Peon(Casilla* coord, Color col) :
-	Pieza(coord, col)
+	Pieza(coord, col, t_pieza::PEON),
+	_primermov(true)
 {}
+
 
 void Peon::PosiblesMov(const std::vector<Casilla>& tab)
 {
 	//Peon movimiento hacia arriba
 	bool continuar = false;
 	Casilla aux = *_myCasilla;
-	
+
 	aux = getCasilla_copia(aux, Vector2D{ (int)_color, 0 }, tab);
 	validarCasilla(aux, false);
 
@@ -18,9 +20,9 @@ void Peon::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, Vector2D{ (int)_color, 0 }, tab);
 		validarCasilla(aux, false);
 	}
-	aux = getCasilla_copia(*_myCasilla, Vector2D{(int)_color, -1}, tab);
+	aux = getCasilla_copia(*_myCasilla, Vector2D{ (int)_color, -1 }, tab);
 	validarCasilla(aux, true);
-	
+
 	aux = getCasilla_copia(*_myCasilla, Vector2D{ (int)_color, 1 }, tab);
 	validarCasilla(aux, true);
 
@@ -50,7 +52,7 @@ bool Peon::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c)
 }
 bool Peon::ComprobarCoronacion(int coordx)
 {
-	if (_color == Color::Blanco && coordx ==7) return true;
+	if (_color == Color::Blanco && coordx == 7) return true;
 	else if (_color == Color::Negro && coordx == 0) return true;
 	return false;
 }
@@ -80,7 +82,7 @@ void Peon::validarCasilla(Casilla destino, bool com)
 		aux.setMover(true);
 		aux.setComer(true);
 	}
-	_posiblesMov.push_back(aux);	
+	_posiblesMov.push_back(aux);
 
 }
 

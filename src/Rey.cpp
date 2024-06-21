@@ -1,8 +1,10 @@
 #include "Rey.h"
 
 Rey::Rey(Casilla* coord, Color col) :
-	Pieza(coord, col)
+	Pieza(coord, col, t_pieza::REY)
 {}
+
+
 
 void Rey::PosiblesMov(const std::vector<Casilla>& tab)
 {

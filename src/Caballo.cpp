@@ -1,8 +1,9 @@
 #include "Caballo.h"
 
 Caballo::Caballo(Casilla* coord, Color col) :
-	Pieza(coord, col)
+	Pieza(coord, col, t_pieza::CABALLO)
 {}
+
 
 void Caballo::PosiblesMov(const std::vector<Casilla>& tab)
 {

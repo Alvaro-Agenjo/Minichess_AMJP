@@ -9,6 +9,7 @@ public:
 	//Constructor
 	Alfil(Casilla* coord, Color col);
 
+
 	void PosiblesMov(const std::vector<Casilla>& tab) override;
 
 	//tester

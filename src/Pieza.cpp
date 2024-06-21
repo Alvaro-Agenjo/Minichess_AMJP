@@ -1,12 +1,16 @@
 #include "Pieza.h"
 
 
-Pieza::Pieza(Casilla* cas, Color col) :
+Pieza::Pieza(Casilla* cas, Color col, t_pieza tp) :
 	_myCasilla(cas),
-	_color(col)
+	_color(col),
+	_t_pieza(tp)
 {
 	_myCasilla->setOcupacion(static_cast<Dominio>(col));
 }
+
+
+
 
 void Pieza::ActualizarTablero(std::vector<Casilla>& tab)
 {

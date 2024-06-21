@@ -10,6 +10,7 @@ Ajedrez::Ajedrez() :
 	_estado = GameState::B_Actualizar_Amenazas;
 }
 
+
 void Ajedrez::Stateflow()
 {
 	switch (_estado)

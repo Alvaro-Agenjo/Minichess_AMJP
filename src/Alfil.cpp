@@ -1,8 +1,10 @@
 #include "Alfil.h"
 
 Alfil::Alfil(Casilla* coord, Color col) :
-	Pieza(coord, col)
+	Pieza(coord, col, t_pieza::ALFIL)
 {}
+
+
 
 //Comentario
 

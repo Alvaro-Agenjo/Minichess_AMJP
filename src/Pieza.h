@@ -15,19 +15,22 @@ constexpr Vector2D out_of_bounds = { -1,-1 };
 
 enum class Color { Blanco = 1, Negro = -1 };
 
+enum class t_pieza { PEON, TORRE, CABALLO, ALFIL, REINA, REY };
 
 class Pieza
 {
 public:
 	//Constructor
-	Pieza(Casilla* cas, Color col);
-
+	Pieza(Casilla* cas, Color col, t_pieza tp);
+	
+	
 	//Getters
 	inline Casilla* getCasilla() const { return _myCasilla; }
 	inline Color getColor() const { return _color; }
+	inline t_pieza getT_Pieza() const { return _t_pieza; }
 	//Setters
 	inline void Clear() { _posiblesMov.clear(); }
-
+	inline void setCasilla(Casilla * c) { _myCasilla = c; }
 	//Otros
 	virtual void PosiblesMov(const std::vector<Casilla>& tab) = 0;
 	virtual void ActualizarTablero(std::vector<Casilla>& tab);
@@ -46,10 +49,11 @@ public:
 
 protected:
 	//Atributos
-	const Color _color;
+	Color _color;
 	Casilla* _myCasilla;
 	std::vector<Casilla> _posiblesMov;
 
+	t_pieza _t_pieza;
 	//Metodos
 	Casilla getCasilla_copia(Casilla origen, Vector2D direccion, const std::vector<Casilla>& tab);
 	Casilla* getCasilla_ref(Casilla origen, Vector2D direccion, std::vector<Casilla>& tab);

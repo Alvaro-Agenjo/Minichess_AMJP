@@ -6,7 +6,47 @@ Jugador::Jugador(std::vector<Casilla>& tab, Color c)
 	CrearJugador(tab, _pos, c);
 	std::cout << "Jugador creado" << std::endl;
 }
+Jugador::Jugador(const Jugador& player, std::vector<Casilla>& tab)
+{
+	*this = player;
+	this->CambiarTablero(tab);
+}
+Jugador& Jugador::operator=(const Jugador& player)
+{
+	if (this != &player)
+	{
+		_misPiezas.clear();
 
+		for (int n = 0; n < player._misPiezas.size(); n++)
+		{
+			CrearPieza(player._misPiezas[n]->getCasilla(), player._misPiezas[n]->getColor(), player._misPiezas[n]->getT_Pieza());
+		}
+
+		_pos = player._pos;
+	}
+	return *this;
+}
+Jugador::~Jugador()
+{
+	_misPiezas.clear();
+	delete &_pos;
+}
+
+void Jugador::CambiarTablero( std::vector<Casilla>& tab)
+{
+	for (Pieza* p : _misPiezas)
+	{
+		for (int n = 0; n < tab.size(); n++)
+		{
+			if (tab[n].getPosicion() == p->getCasilla()->getPosicion())
+			{
+				p->setCasilla(&tab[n]);
+				p->ActualizarPosicion(p->getCasilla());
+				break;
+			}
+		}
+	}
+}
 void Jugador::BorrarPieza(Casilla& c)
 {
 	std::vector<Pieza*>::iterator it;
@@ -45,7 +85,6 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab)
 	despues, selecionar destino. Una vez confirmado el destino --> siguiente fase*/
 	Vector2D pos;
 	int indice_p = 0, indice_c = 0;
-	bool peon = false;
 	do
 	{
 		do {

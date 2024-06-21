@@ -1,8 +1,9 @@
 #include "Torre.h"
 
 Torre::Torre(Casilla *coord, Color col) :
-	Pieza(coord, col)
+	Pieza(coord, col, t_pieza::TORRE)
 {}
+
 
 void Torre::PosiblesMov(const std::vector<Casilla>& tab)
 {

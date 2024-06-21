@@ -9,15 +9,19 @@
 
 constexpr Vector2D go_back{ -1,-1 };
 
-enum class t_pieza {PEON, TORRE, CABALLO, ALFIL, REINA, REY};
 class Jugador
 {
 public:
 	//Constructor
 	Jugador(std::vector<Casilla>& tab, Color c);
+	Jugador(const Jugador& player, std::vector<Casilla> & tab);
+	Jugador& operator = (const Jugador& player);
+	~Jugador();
 
 	//setters
 	void BorrarPieza(Casilla & c);
+	void CambiarTablero( std::vector<Casilla>& tab);
+
 	//getters
 
 	//otros

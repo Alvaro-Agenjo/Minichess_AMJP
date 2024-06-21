@@ -1,8 +1,9 @@
 #include "Reina.h"
 
 Reina::Reina(Casilla* coord, Color col) :
-	Pieza(coord, col)
+	Pieza(coord, col, t_pieza::REINA)
 {}
+
 
 void Reina::PosiblesMov(const std::vector<Casilla>& tab)
 {

@@ -5,6 +5,21 @@ using namespace std;
 
 int main()
 {
+	// Test dupicacion de tablero y jugadores
+/*
+	Tablero t, t2{ t };
+	Jugador p(t.getTablero(), Color::Blanco);
+	
+	Jugador p2(p, t2.getTablero());
+	
+
+	t.ClearAmenazas();
+	p.PosiblesMov(t.getTableroConst());
+	p.ActualizarMovimiento(p.Movimiento(t.getTableroConst()) , t.getTablero());
+*/
+
+	// Test ajedrez
+	
 	Ajedrez game;
 	bool continuar;
 	
@@ -32,8 +47,6 @@ int main()
 		cout << endl << endl << endl;
 	} while (continuar);
 	
-	
-
 	return 0;
 	
 }

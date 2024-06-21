@@ -11,6 +11,8 @@ class Tablero
 public:
 	//Constructor
 	Tablero();
+	Tablero(const Tablero& tab);
+	Tablero& operator = (const Tablero& tab);
 	~Tablero();
 
 	//getters

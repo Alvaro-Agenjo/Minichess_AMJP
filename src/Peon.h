@@ -7,7 +7,8 @@ class Peon : public Pieza
 public:
 	//Constructor
 	Peon(Casilla* coord, Color col);
-
+	
+	
 	//getters
 	
 	//seters
@@ -21,7 +22,7 @@ public:
 	//tester
 	std::ostream& operator << (std::ostream& o) const override;
 private:
-	bool _primermov= true;
+	bool _primermov;
 
 	void validarCasilla(Casilla c, bool com);
 };

@@ -5,6 +5,7 @@ class Rey :public Pieza
 public:
 	//Constructor
 	Rey(Casilla* coord, Color col);
+	
 
 	void PosiblesMov(const std::vector<Casilla>& tab) override;
 
