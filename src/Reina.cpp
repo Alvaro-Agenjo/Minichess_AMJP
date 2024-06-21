@@ -14,6 +14,7 @@ void Reina::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, NORTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	Pieza::ResetP1();
 
 	//Reina movimiento hacia arriba-dcha
 
@@ -22,6 +23,7 @@ void Reina::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, NORESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	Pieza::ResetP1();
 
 	//Reina movimiento hacia dcha
 
@@ -30,6 +32,7 @@ void Reina::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, ESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	Pieza::ResetP1();
 
 	//Reina movimiento hacia abajo-dcha
 
@@ -38,6 +41,7 @@ void Reina::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, SUDESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	Pieza::ResetP1();
 
 	//Reina movimiento hacia abajo
 	aux = *_myCasilla;
@@ -45,6 +49,7 @@ void Reina::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, SUR, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	Pieza::ResetP1();
 
 	//Reina movimiento hacia abajo-izda
 
@@ -53,6 +58,7 @@ void Reina::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, SUDOESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	Pieza::ResetP1();
 
 	//Reina movimiento hacia izda
 
@@ -61,7 +67,7 @@ void Reina::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, OESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
-
+	Pieza::ResetP1();
 
 	//Reina movimiento hacia arriba-izda
 	
@@ -70,6 +76,7 @@ void Reina::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, NOROESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	Pieza::ResetP1();
 }
 
 std::ostream& Reina::operator<< (std::ostream& o) const

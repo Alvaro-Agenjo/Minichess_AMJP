@@ -35,7 +35,7 @@ public:
 	inline virtual bool ComprobarCoronacion(int coorx) { return false; }
 	int ValidarDestino(Vector2D pos, const std::vector<Casilla>& tab);
 
-	void ActualizarPosicion(std::vector<Casilla>& tab, int indice_c);
+	virtual bool ActualizarPosicion(std::vector<Casilla>& tab, int indice_c);
 	void ActualizarPosicion(Casilla* c);
 	void Gravedad(std::vector<Casilla>& tab);
 
@@ -56,6 +56,8 @@ protected:
 	int IndiceCasilla(const Vector2D pos, const std::vector<Casilla>& tab);
 	bool validarCasilla(const Casilla destino);
 
+	static bool p1;  //flag indica si ha encontrado una pieza enemiga a la que puede atacar
+	inline static void ResetP1() { p1 = false; }
 };
 
 bool operator == (const Dominio& d, const Color& c);

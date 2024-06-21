@@ -63,6 +63,7 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab)
 		{
 			//iluminar casillas validas aquí
 
+
 			if (indice_c == -1)
 			{
 				std::cout << "No puede mover la pieza seleccionadaa esa casilla" << std::endl;
@@ -75,10 +76,7 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab)
 				indice_c = 0;
 
 		} while (indice_c == -1);
-	} while (pos == go_back);
-	
-	Coronar(indice_p, pos.x);
-	
+	} while (pos == go_back);	
 	
 	return  { indice_p, indice_c };
 }
@@ -97,7 +95,11 @@ int Jugador::ValidarDestino_pieza(Vector2D pos, int indice, const std::vector<Ca
 
 void Jugador::ActualizarMovimiento(Vector2D indices, std::vector<Casilla>& tab)
 {
-	_misPiezas[indices.x]->ActualizarPosicion(tab, indices.y);
+	if (_misPiezas[indices.x]->ActualizarPosicion(tab, indices.y))
+	{
+		_misPiezas.push_back(new Reina(&tab[indices.y], static_cast<Color> (tab[indices.y].getOcupacion())));
+		_misPiezas.erase(_misPiezas.begin() + indices.x);
+	}
 }
 void Jugador::AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab)
 {
@@ -111,15 +113,7 @@ void Jugador::AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab)
 	}
 }
 
-void Jugador::Coronar(int indice, int coordx)
-{
-	if (_misPiezas[indice]->ComprobarCoronacion(coordx))
-	{
-		Reina reina = *new Reina(_misPiezas[indice]->getCasilla(), _misPiezas[indice]->getColor());
-		_misPiezas.push_back(&reina);
-		_misPiezas.erase(_misPiezas.begin() + indice);
-	}
-}
+
 
 
 

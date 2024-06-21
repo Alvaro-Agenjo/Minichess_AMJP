@@ -31,11 +31,12 @@ int Pieza::ValidarDestino(Vector2D pos, const std::vector<Casilla>& tab)
 	return -1;
 }
 
-void Pieza::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c)
+bool Pieza::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c)
 {
 	_myCasilla->setOcupacion(Dominio::Vacio);
 	_myCasilla = &tab[indice_c];
 	_myCasilla->setOcupacion(static_cast<Dominio>(_color));
+	return false;
 }
 void Pieza::ActualizarPosicion(Casilla *c)
 {
@@ -61,7 +62,7 @@ void Pieza::Gravedad(std::vector<Casilla>& tab)
 
 
 
-
+bool Pieza::p1 = false;
 
 Casilla Pieza::getCasilla_copia(Casilla origen, Vector2D direccion, const std::vector<Casilla>& tab)
 {
@@ -109,20 +110,22 @@ bool Pieza::validarCasilla(const Casilla destino)
 
 	if (posicion == out_of_bounds) return false;
 	else if (ocupacion == this->_color) return false;
+	else if (p1) return false;
+
+	Casilla aux = destino;
+	
+	if (ocupacion == Dominio::Vacio) aux.setMover(true);
 	else
 	{
-		Casilla aux = destino;
-
-		if (ocupacion == Dominio::Vacio) aux.setMover(true);
-		else
-		{
-			aux.setMover(true);
-			aux.setComer(true);
-		}
-		_posiblesMov.push_back(aux);
-		return true;
+		aux.setMover(true);
+		aux.setComer(true);
+		p1 = true;
 	}
+	_posiblesMov.push_back(aux);
+	return true;
+	
 }
+
 
 bool operator==(const Dominio& d, const Color& c)
 {

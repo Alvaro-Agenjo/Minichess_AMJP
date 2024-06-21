@@ -15,7 +15,7 @@ void Alfil::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, NORESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
-
+	Pieza::ResetP1();
 	//Alfil movimiento hacia abajo-derecha
 
 	aux = *_myCasilla;
@@ -23,6 +23,7 @@ void Alfil::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, SUDESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	Pieza::ResetP1();
 
 	//Alfil movimiento hacia abajo-izda
 
@@ -31,6 +32,7 @@ void Alfil::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, SUDOESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	Pieza::ResetP1();
 
 	//Alfil movimiento hacia arriba-izquierda
 
@@ -39,6 +41,7 @@ void Alfil::PosiblesMov(const std::vector<Casilla>& tab)
 		aux = getCasilla_copia(aux, NOROESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	Pieza::ResetP1();
 }
 
 std::ostream& Alfil::operator<< (std::ostream& o) const

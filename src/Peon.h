@@ -16,6 +16,7 @@ public:
 	void PosiblesMov(const std::vector<Casilla>& tab) override;
 	void ActualizarTablero(std::vector<Casilla>& tab) override;
 
+	bool ActualizarPosicion(std::vector<Casilla>& tab, int indice_c) override;
 	bool ComprobarCoronacion(int coorx) override;
 	//tester
 	std::ostream& operator << (std::ostream& o) const override;

@@ -6,16 +6,31 @@ using namespace std;
 int main()
 {
 	Ajedrez game;
-	for (int n = 0; n < 15; n++)
+	bool continuar;
+	
+	do
 	{
+		//Rellenar amenazas
 		game.Stateflow();
 		game.printTablero() << endl;
 		game.printAmenazas() << endl;
-	}
 
+		//Seleccionar movimiento
+		game.Stateflow();
+		
+		//Visualizacion movimiento
+		game.Stateflow();
+		game.printTablero() << endl;
+		
 
-	Peon p1{new Casilla, Color::Negro};
-	
+		//Jaque?
+		game.Stateflow();
+
+		cout << "Desea continuar?" << endl;
+		cout << "[0] No\t[1] Si" << endl;
+		cin >> continuar;
+		cout << endl << endl << endl;
+	} while (continuar);
 	
 	
 

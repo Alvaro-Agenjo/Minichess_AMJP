@@ -39,6 +39,15 @@ void Peon::ActualizarTablero(std::vector<Casilla>& tab)
 	}
 }
 
+bool Peon::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c)
+{
+	_primermov = false;
+	_myCasilla->setOcupacion(Dominio::Vacio);
+	_myCasilla = &tab[indice_c];
+	_myCasilla->setOcupacion(static_cast<Dominio>(_color));
+
+	return ComprobarCoronacion(tab[indice_c].getPosicion().x);
+}
 bool Peon::ComprobarCoronacion(int coordx)
 {
 	if (_color == Color::Blanco && coordx ==7) return true;
@@ -59,11 +68,11 @@ std::ostream& Peon::operator<< (std::ostream& o) const
 void Peon::validarCasilla(Casilla destino, bool com)
 {
 	Casilla aux = destino;
-	if (destino.getPosicion() == out_of_bounds)
-		return;
+	Dominio ocupacion = destino.getOcupacion();
 
-	else if (destino.getOcupacion() == this->_color)
-		return;
+	if (destino.getPosicion() == out_of_bounds)	return;
+	else if (ocupacion == this->_color) return;
+	else if (!com && ocupacion != Dominio::Vacio) return;
 
 	if (!com) aux.setMover(true);
 	else

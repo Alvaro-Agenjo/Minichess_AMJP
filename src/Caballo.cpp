@@ -11,41 +11,47 @@ void Caballo::PosiblesMov(const std::vector<Casilla>& tab)
 
 	aux = getCasilla_copia(*_myCasilla, (2*NORTE+OESTE), tab);
 	validarCasilla(aux);
+	Pieza::ResetP1();
 
 	//Caballo movimiento hacia arriba-dcha
 
 	aux = getCasilla_copia(*_myCasilla, 2*NORTE+ESTE, tab);
 	validarCasilla(aux);
+	Pieza::ResetP1();
 
 	//Caballo movimiento hacia dcha-arriba
 
 	aux = getCasilla_copia(*_myCasilla, 2*ESTE+NORTE, tab);
 	validarCasilla(aux);
-
+	Pieza::ResetP1();
 	//Caballo movimiento hacia dcha-abajo
 
 	aux = getCasilla_copia(*_myCasilla, 2*ESTE+SUR, tab);
 	validarCasilla(aux);
+	Pieza::ResetP1();
 
 	//Caballo movimiento hacia abajo-dcha
 
 	aux = getCasilla_copia(*_myCasilla, 2*SUR+ESTE, tab);
 	validarCasilla(aux);
+	Pieza::ResetP1();
 
 	//Caballo movimiento hacia abajo-izda
 
 	aux = getCasilla_copia(*_myCasilla, 2*SUR+OESTE, tab);
 	validarCasilla(aux);
+	Pieza::ResetP1();
 
 	//Caballo movimiento hacia izda-abajo
 
 	aux = getCasilla_copia(*_myCasilla, 2*OESTE+SUR, tab);
 	validarCasilla(aux);
+	Pieza::ResetP1();
 
 	//Caballo movimiento hacia izda-arriba
 	aux = getCasilla_copia(*_myCasilla, 2*OESTE+NORTE, tab);
 	validarCasilla(aux);
-
+	Pieza::ResetP1();
 }
 
 std::ostream& Caballo::operator<< (std::ostream& o) const
