@@ -8,7 +8,7 @@ public:
 	
 
 	void PosiblesMov(const std::vector<Casilla>& tab) override;
-
+	void ActualizarPosicion(Casilla* c) override;
 	//tester
 	std::ostream& operator << (std::ostream& o) const override;
 private:

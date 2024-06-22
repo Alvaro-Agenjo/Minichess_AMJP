@@ -13,12 +13,14 @@ public:
 
 	//Getters
 	inline Dominio getOcupacion() const { return _ocupacion; }
+	inline bool getOcupante() const { return _contieneRey; }
 	inline bool getAmenaza()const { return _amenaza; }
 	inline bool getComer() const { return _comer; }
 	inline bool getMover() const { return _mover; }
 	inline Vector2D getPosicion() const {return _coord; }
 	//Setters
 	inline void setOcupacion(Dominio d) { _ocupacion= d; }
+	inline void setOcupante(bool Y) { _contieneRey = Y; }
 	inline void setAmenaza(bool a) { _amenaza= a; }
 	inline void setComer(bool c) { _comer = c; }
 	inline void setMover(bool m) { _mover = m; }
@@ -31,6 +33,7 @@ public:
 private:
 	Vector2D _coord;
 	Dominio _ocupacion;
+	bool _contieneRey;
 	bool _amenaza;			// indica que el enemigo puede comer en esta casilla
 	bool _mover, _comer;	//indica que el propio juador puede comer o mover sus piezas
 };

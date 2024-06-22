@@ -58,6 +58,12 @@ void Rey::PosiblesMov(const std::vector<Casilla>& tab)
 
 }
 
+void Rey::ActualizarPosicion(Casilla* c)
+{
+	c->setOcupante(true);
+	Pieza::ActualizarPosicion(c);
+}
+
 std::ostream& Rey::operator<< (std::ostream& o) const
 {
 	if (_color == Color::Blanco)

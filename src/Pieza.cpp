@@ -64,6 +64,18 @@ void Pieza::Gravedad(std::vector<Casilla>& tab)
 
 }
 
+bool Pieza::ComprobarJaque() const
+{
+	for (const Casilla c : _posiblesMov)
+	{
+		if (c.getOcupante()) // si tiene rey
+		{
+
+		}
+	}
+	return false;
+}
+
 
 
 bool Pieza::p1 = false;

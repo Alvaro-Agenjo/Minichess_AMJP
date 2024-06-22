@@ -14,8 +14,8 @@ constexpr Vector2D SUDOESTE = { -1,-1 };
 constexpr Vector2D out_of_bounds = { -1,-1 };
 
 enum class Color { Blanco = 1, Negro = -1 };
-
 enum class t_pieza { PEON, TORRE, CABALLO, ALFIL, REINA, REY };
+
 
 class Pieza
 {
@@ -39,10 +39,10 @@ public:
 	int ValidarDestino(Vector2D pos, const std::vector<Casilla>& tab);
 
 	virtual bool ActualizarPosicion(std::vector<Casilla>& tab, int indice_c);
-	void ActualizarPosicion(Casilla* c);
+	virtual void ActualizarPosicion(Casilla* c);
 	void Gravedad(std::vector<Casilla>& tab);
 
-	
+	virtual bool ComprobarJaque() const;
 
 	//tester
 	virtual std::ostream& operator << (std::ostream& o) const = 0;
