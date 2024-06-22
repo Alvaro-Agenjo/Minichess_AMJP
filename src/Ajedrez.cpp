@@ -51,6 +51,7 @@ void Ajedrez::Stateflow()
 	case B_Comprobar_Jaques:
 	{
 		std::cout << *this << std::endl;
+		_j1.ComprobarJaque(); //Comprueba si alguna de las piezas blancas esta dando jaque al rey negro
 		_estado = N_Actualizar_Amenazas;
 		break;
 	}

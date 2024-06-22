@@ -152,6 +152,15 @@ void Jugador::AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab)
 	}
 }
 
+bool Jugador::ComprobarJaque()
+{
+	for (const Pieza* p : _misPiezas)
+	{
+		p->ComprobarJaque();
+	}
+	return false;
+}
+
 
 
 
