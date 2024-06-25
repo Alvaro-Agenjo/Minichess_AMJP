@@ -29,7 +29,6 @@ Jugador& Jugador::operator=(const Jugador& player)
 Jugador::~Jugador()
 {
 	_misPiezas.clear();
-	delete &_pos;
 }
 
 void Jugador::CambiarTablero( std::vector<Casilla>& tab)
