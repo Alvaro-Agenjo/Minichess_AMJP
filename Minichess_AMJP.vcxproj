@@ -21,9 +21,11 @@
   <ItemGroup>
     <ClCompile Include="jaque.cpp" />
     <ClCompile Include="src\Ajedrez.cpp" />
+    <ClCompile Include="src\Ajedrez_graficos.cpp" />
     <ClCompile Include="src\Alfil.cpp" />
     <ClCompile Include="src\Caballo.cpp" />
     <ClCompile Include="src\Casilla.cpp" />
+    <ClCompile Include="src\Gestor.cpp" />
     <ClCompile Include="src\Jugador.cpp" />
     <ClCompile Include="src\Peon.cpp" />
     <ClCompile Include="src\Pieza.cpp" />
@@ -39,6 +41,7 @@
     <ClInclude Include="src\Alfil.h" />
     <ClInclude Include="src\Caballo.h" />
     <ClInclude Include="src\Casilla.h" />
+    <ClInclude Include="src\Gestor.h" />
     <ClInclude Include="src\Jugador.h" />
     <ClInclude Include="src\Peon.h" />
     <ClInclude Include="src\Pieza.h" />

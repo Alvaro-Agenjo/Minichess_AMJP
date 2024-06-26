@@ -21,7 +21,7 @@ class Ajedrez
 public: 
 	//Constructor
 	Ajedrez();
-	
+
 	//setters
 
 	//getters
