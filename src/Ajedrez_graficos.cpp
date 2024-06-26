@@ -64,7 +64,7 @@ void OnTimer(int value)
 {
 //poner aqui el código de animacion
 	
-	gestor_juego.mueve();
+	gestor_juego.mueve(0.025);
 	//no borrar estas lineas
 	glutTimerFunc(25,OnTimer,0);
 	glutPostRedisplay();
