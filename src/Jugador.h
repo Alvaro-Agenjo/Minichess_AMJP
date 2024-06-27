@@ -23,7 +23,7 @@ public:
 	void CambiarTablero( std::vector<Casilla>& tab);
 
 	//getters
-
+	inline std::vector<Pieza*> getPiezas() { return _misPiezas; }
 	//otros
 	void PosiblesMov( std::vector<Casilla> tab);
 	void ActualizarAmenazas(std::vector<Casilla>& tab);
