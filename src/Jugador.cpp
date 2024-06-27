@@ -46,6 +46,11 @@ void Jugador::CambiarTablero( std::vector<Casilla>& tab)
 		}
 	}
 }
+void Jugador::modificarPosicion(Vector2D dir)
+{
+	Vector2D aux = _pos + dir;
+	if (!aux.out_of_bounds()) _pos = aux;
+}
 void Jugador::BorrarPieza(Casilla& c)
 {
 	std::vector<Pieza*>::iterator it;
@@ -163,6 +168,27 @@ bool Jugador::ComprobarJaque()
 
 
 
+
+void Jugador::mover()
+{
+	for (auto p : _misPiezas )
+	{
+		p->mover(0.025);
+	}
+}
+
+void Jugador::dibujar(int tipo)
+{
+	if (tipo)
+	{
+		_cursor.setPos(_pos.x, _pos.y);
+		_cursor.draw();
+	}
+	for (auto p : _misPiezas)
+	{
+		p->dibujar();
+	}
+}
 
 std::ostream& Jugador::print(std::ostream& o, Casilla cas) const
 {

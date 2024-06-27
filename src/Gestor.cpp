@@ -10,7 +10,8 @@ Gestor::Gestor()
 
 void Gestor::teclaEspecial(unsigned char key)
 {
-
+	if (_estado = JUEGO)
+		_game.tecla_especial(key);
 }
 static int counter;
 void Gestor::telcla(unsigned char key)
@@ -55,7 +56,7 @@ void Gestor::telcla(unsigned char key)
 
 	else if (_estado == JUEGO)
 	{
-		//mundo.tecla(key); 
+		_game.tecla(key); 
 	}
 }
 void Gestor::mueve(double t)
@@ -103,6 +104,10 @@ void Gestor::mueve(double t)
 			caida++;
 			counter = 0;
 		}
+	}
+	else if (_estado == JUEGO)
+	{
+		_game.mover();
 	}
 }
 
@@ -186,8 +191,8 @@ void Gestor::dibuja()
 
 		printxy("Pulse BACKSPACE para regresar a la pantalla de inicio", -2, caida - 32);
 	}
-	//else if (_estado == JUEGO)
-		//_game.dibuja();
+	else if (_estado == JUEGO)
+		_game.dibujar();
 }
 
 void Gestor::AnimacionGravedad(int destino)

@@ -2,6 +2,7 @@
 
 #include "Tablero.h"
 #include "Jugador.h"
+#include "freeglut.h"
 
 enum GameState
 {
@@ -30,6 +31,12 @@ public:
 	//otros
 	void Stateflow();
 	void AplicarGravedad();
+
+	// Graficos
+	void tecla_especial(unsigned char key);
+	void tecla(unsigned char key);
+	void dibujar();
+	void mover();
 	//tester
 	std::ostream& printTablero (std::ostream& o = std::cout);
 	std::ostream& printAmenazas (std::ostream& o = std::cout);

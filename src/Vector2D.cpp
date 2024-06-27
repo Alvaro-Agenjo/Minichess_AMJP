@@ -23,22 +23,39 @@ Vector2D& Vector2D::operator+=(int valor)
 		this->x--;
 	}
 	return *this;
-}
+}	 //avanzar casilla a casilla
 Vector2D& Vector2D::operator+=(const Vector2D& rhs)
 {
 	this->x += rhs.x;
 	this->y += rhs.y;
 	return *this;
 }
+Vector2D& Vector2D::operator-=(const Vector2D& rhs)
+{
+	this->x -= rhs.x;
+	this->y -= rhs.y;
+	return *this;
+}
+
 
 Vector2D operator+(Vector2D lhs, const Vector2D& rhs)
 {
 	lhs += rhs;
 	return lhs;
 }
+Vector2D operator-(Vector2D lhs, const Vector2D& rhs)
+{
+	lhs -= rhs;
+	return lhs;
+}
+
 Vector2D operator*(int valor, Vector2D lhs)
 {
 	return { lhs.x * valor, lhs.y * valor };
+}
+Vector2D operator/(int valor, Vector2D lhs)
+{
+	return { lhs.x / valor, lhs.y / valor };
 }
 
 bool operator == (const Vector2D& lhs, const Vector2D& rhs)		//sobrecarga del operador ==

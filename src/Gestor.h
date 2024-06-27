@@ -2,7 +2,7 @@
 
 #include "Ajedrez.h"
 #include "ETSIDI.h"
-#include "freeglut.h"
+
 
 class Gestor
 {

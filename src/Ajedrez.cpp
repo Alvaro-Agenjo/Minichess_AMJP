@@ -16,10 +16,10 @@ void Ajedrez::Stateflow()
 	switch (_estado)
 	{
 	case Creaccion:
-		{
+	{
 		std::cout << *this << std::endl;
 		break;
-		}
+	}
 	case B_Actualizar_Amenazas:
 	{
 		std::cout << *this << std::endl;
@@ -95,8 +95,8 @@ void Ajedrez::Stateflow()
 }
 void Ajedrez::AplicarGravedad()
 {
-	std::vector<Casilla*> cas_oc =_tablero.getCasillasOcupadas();
-	for (Casilla *casilla : cas_oc)
+	std::vector<Casilla*> cas_oc = _tablero.getCasillasOcupadas();
+	for (Casilla* casilla : cas_oc)
 	{
 		if (casilla->getOcupacion() == Dominio::Blanca)
 			_j1.AplicarGravedad(casilla, _tablero.getTablero());
@@ -105,6 +105,101 @@ void Ajedrez::AplicarGravedad()
 	}
 }
 
+void Ajedrez::tecla_especial(unsigned char key)
+{
+	switch (key)
+	{
+	case GLUT_KEY_LEFT:
+	{
+		if (_estado == B_Espera)
+		{
+			_j1.modificarPosicion(ESTE);
+		}
+		else if (_estado == N_Espera)
+		{
+			_j2.modificarPosicion(ESTE);
+		}
+		break;
+	}
+
+	case GLUT_KEY_RIGHT:
+	{
+		if (_estado == B_Espera)
+		{
+			_j1.modificarPosicion(OESTE);
+		}
+		else if (_estado == N_Espera)
+		{
+			_j2.modificarPosicion(OESTE);
+		}
+		break;
+	}
+	case GLUT_KEY_UP:
+	{
+		if (_estado == B_Espera)
+		{
+			_j1.modificarPosicion(NORTE);
+		}
+		else if (_estado == N_Espera)
+		{
+			_j2.modificarPosicion(NORTE);
+		}
+		break;
+	}
+	case GLUT_KEY_DOWN:
+	{
+		if (_estado == B_Espera)
+		{
+			_j1.modificarPosicion(SUR);
+		}
+		else if (_estado == N_Espera)
+		{
+			_j2.modificarPosicion(SUR);
+		}
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void Ajedrez::tecla(unsigned char key)
+{
+	switch (key)
+	{
+	case 8: //backspace
+	{
+
+		break;
+	}
+	case 13:	//enter confirmar
+	{
+
+		break;
+	}
+	default:
+		break;
+	}
+}
+
+void Ajedrez::mover()
+{
+	_j1.mover();
+	_j2.mover();
+}
+void Ajedrez::dibujar()
+{
+	if (_estado == B_Espera)
+	_j1.dibujar(1);
+	else if (_estado == N_Espera)
+	_j2.dibujar(1);
+	else
+	{
+		_j1.dibujar();
+		_j2.dibujar();
+	}
+	//_tablero.dibujar();
+}
 
 
 std::ostream& Ajedrez::printTablero(std::ostream& o)
@@ -153,7 +248,7 @@ std::ostream& Ajedrez::printAmenazas(std::ostream& o)
 
 
 
-std::ostream& operator << (std::ostream& o, const Ajedrez & aj)
+std::ostream& operator << (std::ostream& o, const Ajedrez& aj)
 {
 	o << "Estado de la partida: ";
 	switch (aj.getEstado())

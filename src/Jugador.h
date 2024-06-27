@@ -21,9 +21,11 @@ public:
 	//setters
 	void BorrarPieza(Casilla & c);
 	void CambiarTablero( std::vector<Casilla>& tab);
+	void modificarPosicion(Vector2D dir);
 
 	//getters
-
+	inline Vector2D getPosicion() const { return _pos; }
+	
 	//otros
 	void PosiblesMov( std::vector<Casilla> tab);
 	void ActualizarAmenazas(std::vector<Casilla>& tab);
@@ -36,6 +38,10 @@ public:
 	void AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab);
 
 	bool ComprobarJaque();
+	
+	//Gráficos
+	void mover();
+	void dibujar(int tipo = 0);
 	//tester
 	std::ostream& print(std::ostream& o, Casilla cas) const;
 
@@ -47,5 +53,9 @@ private:
 	void CrearPieza(Casilla* c, Color col, t_pieza p);
 	void CrearJugador(std::vector<Casilla> &tab, Vector2D pos_ini, Color c);
 
+	//--------------------------------------->>>>> rellenar
+	//graficos
+	ETSIDI::Sprite _cursor;
+	//--------------------------------------->>>>> fin
 };
 
