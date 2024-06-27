@@ -2,46 +2,67 @@
 //placeholder temporal para código de funcion jaque, que se ejecutará al inicio de cada turno
 //quizas se convierta en metodo de ajedrez.ht
 
-Ajedrez aj;
-Tablero tablero;
-//Jugador jdef;
 
 
-bool jaquemate(Tablero t, Dominio coloramenazado, Dominio coloramenazando, Jugador jam)
+
+bool jaquemate(Tablero t, Dominio coloramenazado, Dominio coloramenazando, Jugador jam, Jugador jat)
 {
 	Dominio color;
-	Tablero copia_jaquemate=t;
-	std::vector<Casilla> copy; 
-	std::vector<Pieza> piezasdef;
-	std::vector<Pieza> piezasat;
+	Tablero copia_jaquemate = t;
+	std::vector<Casilla> copy;
+	std::vector<Pieza*> piezasdef;
+	std::vector<Pieza*> piezasat;
 	std::vector<Casilla> movimientospieza;
-	Jugador jamenazado_copia = jam;//copiamos jugador defensor
-	copy = copia_jaquemate.getTablero();//copiamos el tablero para comprobar jaque mate
-	//piezasdef = jdef.getPiezas; getter de vector piezas del jugador
 
-	unsigned int vecsize = piezasdef.size();
-	for (unsigned int i = 0; i < vecsize; i++) //recorremos todas las piezas del jugador
+	Jugador jamenazado_copia(jam, copia_jaquemate.getTablero());//copiamos jugador defensor
+	Jugador jatacante_copia(jat, copia_jaquemate.getTablero()); //copiamos jugador atacante
+	//copiamos el tablero para comprobar jaque mate
+	piezasdef = jamenazado_copia.getPiezas(); //getter de vector piezas del jugador defensor
+	piezasat = jatacante_copia.getPiezas();//" " " " " " atacante
+
+	size_t vecsize = piezasdef.size();
+	for (size_t i = 0; i < vecsize; i++) //recorremos todas las piezas del jugador
 	{
-		color = copy[i].getOcupacion();
+		color = copia_jaquemate.getTablero()[i].getOcupacion();
 		if (color == coloramenazado)
 		{
-			//movimientospieza=test.getposmov(); getter de vector posibles movimientos de la pieza
-			unsigned int cantmov = movimientospieza.size();
-			for (int j = 0; j < cantmov; j++)//con este bucle recorreremos los posibles movimientos de la pieza
+			movimientospieza = piezasdef[i]->get_PosMov(); //getter de vector posibles movimientos de la pieza
+			size_t cantmov = movimientospieza.size();
+			for (size_t j = 0; j < cantmov; j++)//con este bucle recorreremos los posibles movimientos de la pieza
 			{
+				Vector2D posmovelegido;
+				posmovelegido = movimientospieza[j].getPosicion();
 				//al principio de cada posible mov, hay que copiar el tablero real en uno fantasma
-				Dominio dom;
 			//... aquí tengo que hacer el movimiento elegido del vector
-			// 
-			// 
-			// 
-			//	cuando el movimiento esté hecho en el tablero fantasma, actualizamos amenazas y recorremos este para ver si el rey sigue amenazado
-				//movimiento iteración
-				bool jaque=true;
-				
-				int tamvector = copy.size();
+				Dominio dom;
+				jamenazado_copia.ActualizarMovimiento(posmovelegido, copia_jaquemate.getTablero()); //como la posicion ya es adecuada al ser un pos mov, movemos la pieza ahi
+				//AHORA BUSCAMOS SI HABIA UNA PIEZA DEL OTRO COLOR EN LA CASILLA
+				piezasat = jatacante_copia.getPiezas();
+				Casilla casat;
+				Casilla casat2;
+				const Casilla* dircasat = &casat;
+				Vector2D posat;
+				for (size_t k = 0; k < piezasat.size(); k++)
+				{
+					dircasat = piezasat[k]->getCasilla();
+					casat2 = casat;
+					posat = casat2.getPosicion();
+					if ((posat.x == posmovelegido.x) && (posat.y == posmovelegido.y))
+						jatacante_copia.BorrarPieza(casat);//borramos la pieza que haya del atacante en esa posicion si la hay
+				}
 
-				for (unsigned int i = 0; i < tamvector; i++) //recorremos todas las casillas
+				// 
+				//	cuando el movimiento esté hecho en el jugador fantasma, lo utilizamos para actualizamar amenazas tablero copia y recorremos este para ver si el rey sigue amenazado
+				copia_jaquemate.ClearAmenazas();
+				jatacante_copia.ActualizarAmenazas(copia_jaquemate.getTablero()); //quitamos las amenazas previas y ponemos las actuales con el posible cambio por piezas comidas o bloqueos
+
+
+				//movimiento iteración
+				bool jaque = true;
+
+				size_t tamvector = copy.size();
+
+				for (size_t i = 0; i < tamvector; i++) //recorremos todas las casillas
 				{
 					Vector2D pos_am{};
 					//dom=cas.getOcupacion()
@@ -51,8 +72,8 @@ bool jaquemate(Tablero t, Dominio coloramenazado, Dominio coloramenazando, Jugad
 						pos_am = copy[i].getPosicion();
 						std::vector<Pieza> piezasjam;
 						//piezasjam= jdef_copia.getpiezas(); //getter de dirección vector de piezas del jugador copiado
-						unsigned int cantpiezas = piezasjam.size();
-						for (unsigned int k = 0; i < cantpiezas; k++)
+						size_t cantpiezas = piezasjam.size();
+						for (size_t k = 0; i < cantpiezas; k++)
 						{//avanzamos
 							Casilla* cas_pieza_copia = piezasjam[k].getCasilla();
 							Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
@@ -79,7 +100,7 @@ bool jaquemate(Tablero t, Dominio coloramenazado, Dominio coloramenazando, Jugad
 				}
 				*/
 				}
-				
+
 			}
 
 		}
@@ -88,49 +109,49 @@ bool jaquemate(Tablero t, Dominio coloramenazado, Dominio coloramenazando, Jugad
 	return false;
 };
 
-int jaque(Tablero t, Dominio colordefensor, Dominio coloratacante, Jugador jde)
+int jaque(Tablero t, Dominio colordefensor, Dominio coloratacante, Jugador jde, Jugador jat)
 {
 	//Casilla cas; ya que creo poder usar tab[i] lo dejo comentado a menos que lo acabe necesitando 
-				Dominio dom;
-				Tablero copia = t;
-				Jugador jdef_copia = jde;//copiamos jugador defensor
-				bool jaque = false;
-				bool checkmate = false;
-				std::vector<Casilla> tab;
-				tab = copia.getTablero();
-				std::vector<Pieza> piezasjd;
-				unsigned int cantpiezas = piezasjd.size();
-				//obtenemos tamaño vector como entero sin signo
-				unsigned int tamvector = tab.size();
+	Dominio dom;
+	Tablero copia = t;
+	Jugador jdef_copia = jde;//copiamos jugador defensor
+	Jugador jat_copia = jat;//"" "" atacante
+	bool jaque = false;
+	bool checkmate = false;
+	std::vector<Casilla> tab;
+	tab = copia.getTablero();
+	std::vector<Pieza> piezasjd;
+	size_t cantpiezas = piezasjd.size();
+	size_t tamvector = tab.size();
 
-				for (unsigned int i = 0; i < tamvector; i++) //recorremos todas las casillas
-				{
-					Vector2D pos{};
-					//dom=cas.getOcupacion()
-					dom = tab[i].getOcupacion();
-					if (dom == colordefensor)//si es del color que sufre el jaque, comprobamos si es el rey
-					{
-						pos = tab[i].getPosicion();
-						//piezasjd= jdef_copia.getpiezas(); //getter de dirección vector de piezas del jugador copiado
-						for (unsigned int k = 0; k < cantpiezas; k++)
-						{//avanzamos
-							Casilla* cas_pieza_copia = piezasjd[k].getCasilla();
-							Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
-							if ((pos.x == pos_cas_copia.x) && (pos.y == pos_cas_copia.y)) //cuando encontra la pieza que coincide con esas coordenadas
-								if (piezasjd[k].getT_Pieza() == t_pieza::REY)//comprueba si se trata del rey
-									jaque = tab[k].getAmenaza();//si es rey, comprueba si esta amenazado, siendo true si lo está
-						}
-						if (jaque == true) //si se cumple, hará llamada a jaquemate
-						{
-							checkmate = jaquemate(t, colordefensor, coloratacante,jde);
-							if (checkmate == true)
-								return 2; //hay jaque mate
-							else
-								return 3;//hay jaque
+	for (size_t i = 0; i < tamvector; i++) //recorremos todas las casillas
+	{
+		Vector2D pos{};
+		//dom=cas.getOcupacion()
+		dom = tab[i].getOcupacion();
+		if (dom == colordefensor)//si es del color que sufre el jaque, comprobamos si es el rey
+		{
+			pos = tab[i].getPosicion();
+			//piezasjd= jdef_copia.getpiezas(); //getter de dirección vector de piezas del jugador copiado
+			for (unsigned int k = 0; k < cantpiezas; k++)
+			{//avanzamos
+				Casilla* cas_pieza_copia = piezasjd[k].getCasilla();
+				Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
+				if ((pos.x == pos_cas_copia.x) && (pos.y == pos_cas_copia.y)) //cuando encontra la pieza que coincide con esas coordenadas
+					if (piezasjd[k].getT_Pieza() == t_pieza::REY)//comprueba si se trata del rey
+						jaque = tab[k].getAmenaza();//si es rey, comprueba si esta amenazado, siendo true si lo está
+			}
+			if (jaque == true) //si se cumple, hará llamada a jaquemate
+			{
+				checkmate = jaquemate(t, colordefensor, coloratacante, jde, jat);
+				if (checkmate == true)
+					return 2; //hay jaque mate
+				else
+					return 3;//hay jaque
 
-						}
-						else
-							return 1;//no hay jaque
-					}
-				}
-			};
+			}
+			else
+				return 1;//no hay jaque
+		}
+	}
+};
