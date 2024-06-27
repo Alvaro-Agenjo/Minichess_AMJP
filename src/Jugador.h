@@ -16,8 +16,15 @@ public:
 
 	//setters
 	void BorrarPieza(Casilla & c);
+<<<<<<< Updated upstream
 	//getters
 
+=======
+	void CambiarTablero( std::vector<Casilla>& tab);
+
+	//getters const std::vector<std::unique_ptr<SomeOtherClass>>&
+	inline std::vector<Pieza*> getPiezas() { return _misPiezas; }
+>>>>>>> Stashed changes
 	//otros
 	void PosiblesMov( std::vector<Casilla> tab);
 	void ActualizarAmenazas(std::vector<Casilla>& tab);
