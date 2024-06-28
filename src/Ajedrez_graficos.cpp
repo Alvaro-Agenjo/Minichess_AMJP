@@ -68,8 +68,8 @@ void onSpecialKeyboardDown(int key, int x, int y)
 void OnTimer(int value)
 {
 //poner aqui el código de animacion
-	gestor_juego.Update();
 	gestor_juego.mueve(0.025);
+	gestor_juego.Update();
 	//no borrar estas lineas
 	glutTimerFunc(25,OnTimer,0);
 	glutPostRedisplay();

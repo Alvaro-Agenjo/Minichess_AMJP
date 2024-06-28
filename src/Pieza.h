@@ -31,7 +31,7 @@ public:
 	inline Casilla* getCasilla() const { return _myCasilla; }
 	inline Color getColor() const { return _color; }
 	inline t_pieza getT_Pieza() const { return _t_pieza; }
-
+	inline bool getEn_Mov() const { return en_mov; }
 	//Setters
 	inline void Clear() { _posiblesMov.clear(); }
 	inline void setCasilla(Casilla* c) { _myCasilla = c; }
@@ -81,6 +81,8 @@ protected:
 	ETSIDI::Vector2D _velocidad{};
 	ETSIDI::Vector2D _aceleracion{};
 	ETSIDI::Sprite _pieza = { "imagenes/logo peon.png",5 };
+
+	bool en_mov = 0;
 };
 
 bool operator == (const Dominio& d, const Color& c);

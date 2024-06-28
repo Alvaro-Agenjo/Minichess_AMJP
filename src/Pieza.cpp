@@ -96,7 +96,7 @@ void Pieza::calcularMovimiento(Vector2D inicio, Vector2D destino, bool caida)
 	{
 
 		ETSIDI::Vector2D v = static_cast<ETSIDI::Vector2D>(destino - inicio);
-		_velocidad = v.unit();
+		_velocidad = v;// v.unit()*2;
 		_aceleracion = { 0,0 };
 	}
 	else
@@ -108,14 +108,18 @@ void Pieza::calcularMovimiento(Vector2D inicio, Vector2D destino, bool caida)
 bool Pieza::distancia()
 {
 	ETSIDI::Vector2D aux = _posicion - static_cast<ETSIDI::Vector2D>(correccion_tam * (_myCasilla->getPosicion()- offset_izda));
-	if (aux.module() < 0.005)
+	if (aux.module() < 0.2)
 	{
 		_posicion = static_cast<ETSIDI::Vector2D> (correccion_tam * (_myCasilla->getPosicion()- offset_izda));
-		_velocidad = {};
-		_aceleracion = {};
-		return false;
+		_velocidad = {0,0};
+		_aceleracion = {0,0};
+		en_mov = false;
 	}
-	return true;
+	else
+	{
+		en_mov = true;
+	}
+	return en_mov;
 
 }
 

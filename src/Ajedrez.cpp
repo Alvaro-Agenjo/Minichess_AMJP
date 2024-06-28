@@ -40,11 +40,18 @@ void Ajedrez::Stateflow()
 	case B_Mov:
 	{
 		std::cout << *this << std::endl;
-		_j2.BorrarPieza(_tablero.getTablero()[_indices.y]);
-		_j1.ActualizarMovimiento(_indices, _tablero.getTablero());
-		AplicarGravedad();
-
-		_estado = B_Comprobar_Jaques;
+		static bool caida;
+		if (!HayMovimiento() && caida)
+		{
+			_estado = B_Comprobar_Jaques;
+			caida = false;
+		}
+		else if (!HayMovimiento())
+		{
+			AplicarGravedad();
+			caida = true;
+		}
+		
 		// graficos, mover pieza;
 		break;
 	}
@@ -67,19 +74,25 @@ void Ajedrez::Stateflow()
 	}
 	case N_Espera:
 	{
-		std::cout << *this << std::endl;
-		_indices = _j2.Movimiento(_tablero.getTableroConst());
-		_estado = N_Mov;
+		//std::cout << *this << std::endl;
+		//_indices = _j2.Movimiento(_tablero.getTableroConst());
+		//_estado = N_Mov;
 		break;
 	}
 	case N_Mov:
 	{
 		std::cout << *this << std::endl;
-		_j1.BorrarPieza(_tablero.getTablero()[_indices.y]);
-		_j2.ActualizarMovimiento(_indices, _tablero.getTablero());
-		AplicarGravedad();
-
-		_estado = N_Comprobar_Jaques;
+		static bool caida;
+		if (!HayMovimiento() && caida)
+		{
+			_estado = N_Comprobar_Jaques;
+			caida = false;
+		}
+		else if (!HayMovimiento())
+		{
+			AplicarGravedad();
+			caida = true;
+		}
 		// graficos, mover pieza;
 		break;
 	}
@@ -104,6 +117,7 @@ void Ajedrez::AplicarGravedad()
 			_j2.AplicarGravedad(casilla, _tablero.getTablero());
 	}
 }
+
 
 void Ajedrez::tecla_especial(unsigned char key)
 {
@@ -158,6 +172,12 @@ void Ajedrez::tecla_especial(unsigned char key)
 		}
 		break;
 	}
+	case GLUT_KEY_HOME:
+	{
+		exit(0);
+		break;
+	}
+	
 	default:
 		break;
 	}
@@ -165,20 +185,41 @@ void Ajedrez::tecla_especial(unsigned char key)
 
 void Ajedrez::tecla(unsigned char key)
 {
-	static bool pieza_selec;
-	
+	static int pieza_selec;
+
 	switch (key)
 	{
 	case 8: //backspace
 	{
-		exit(0);
+		if (pieza_selec > 0)
+			pieza_selec--;
 		break;
 	}
 	case 13:	//enter confirmar
 	{
 		if (_estado == B_Espera)
 		{
+			Vector2D indices = _j1.Movimiento(_tablero.getTableroConst(), pieza_selec);
+			if (pieza_selec == 2)
+			{
+				pieza_selec = 0;
+				_j2.BorrarPieza(_tablero.getTablero()[indices.y]);
+				_j1.ActualizarMovimiento(indices, _tablero.getTablero());
+				_estado = B_Mov;
 
+			}
+		}
+		else if (_estado == N_Espera)
+		{
+			Vector2D indices = _j2.Movimiento(_tablero.getTableroConst(), pieza_selec);
+			if (pieza_selec == 2)
+			{
+
+				_j1.BorrarPieza(_tablero.getTablero()[indices.y]);
+				_j2.ActualizarMovimiento(indices, _tablero.getTablero());
+				_estado = N_Mov;
+				pieza_selec = 0;
+			}
 		}
 		break;
 	}
@@ -258,6 +299,12 @@ std::ostream& Ajedrez::printAmenazas(std::ostream& o)
 		}
 	}
 	return o;
+}
+
+bool Ajedrez::HayMovimiento()
+{
+	if (_j1.HayMovimiento() || _j2.HayMovimiento()) return true;
+	return false;
 }
 
 

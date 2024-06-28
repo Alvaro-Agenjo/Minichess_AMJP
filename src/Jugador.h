@@ -33,13 +33,14 @@ public:
 	void PosiblesMov( std::vector<Casilla> tab);
 	void ActualizarAmenazas(std::vector<Casilla>& tab);
 
-	Vector2D Movimiento(const std::vector<Casilla>& tab);
+	Vector2D Movimiento(const std::vector<Casilla>& tab,int &fase);
 	int ValidarPieza(Vector2D pos);
 	int ValidarDestino_pieza(Vector2D pos, int indice, const std::vector<Casilla>& tab);
 	
 	void ActualizarMovimiento(Vector2D indices, std::vector<Casilla> &tab);
 	void AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab);
 
+	bool HayMovimiento();
 	bool ComprobarJaque();
 	
 	//Gráficos

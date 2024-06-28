@@ -37,6 +37,8 @@ public:
 	void tecla(unsigned char key);
 	void dibujar();
 	void mover();
+	
+	
 	//tester
 	std::ostream& printTablero (std::ostream& o = std::cout);
 	std::ostream& printAmenazas (std::ostream& o = std::cout);
@@ -46,8 +48,10 @@ private:
 	Tablero _tablero;
 	Jugador _j1, _j2;
 
+	//gráficos
+	bool HayMovimiento();
+
 	//?¿?¿
-	Vector2D _indices{};
 };
 
 //tester
