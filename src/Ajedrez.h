@@ -2,7 +2,7 @@
 
 #include "Tablero.h"
 #include "Jugador.h"
-#include "freeglut.h"
+
 
 enum GameState
 {

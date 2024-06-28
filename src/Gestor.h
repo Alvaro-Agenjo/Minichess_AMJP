@@ -14,7 +14,7 @@ public:
 	void telcla(unsigned char key);
 	void mueve(double t);
 	void dibuja();
-
+	void Update();
 	
 
 protected:

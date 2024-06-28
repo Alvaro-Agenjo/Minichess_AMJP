@@ -14,6 +14,9 @@ constexpr Vector2D SUDOESTE = { -1,-1 };
 
 constexpr Vector2D out_of_bounds = { -1,-1 };
 
+constexpr float correccion_tam = 2;
+constexpr Vector2D offset_izda = { 3,0 };
+
 enum class Color { Blanco = 1, Negro = -1 };
 enum class t_pieza { PEON, TORRE, CABALLO, ALFIL, REINA, REY };
 
@@ -73,6 +76,7 @@ protected:
 
 
 	//graficos
+	
 	ETSIDI::Vector2D _posicion{};
 	ETSIDI::Vector2D _velocidad{};
 	ETSIDI::Vector2D _aceleracion{};

@@ -9,7 +9,7 @@ Pieza::Pieza(Casilla* cas, Color col, t_pieza tp) :
 	_myCasilla->setOcupacion(static_cast<Dominio>(col));
 
 	//graficos
-	_posicion = (ETSIDI::Vector2D)_myCasilla->getPosicion();
+	_posicion = (ETSIDI::Vector2D)(_myCasilla->getPosicion() - offset_izda) * correccion_tam;
 	_pieza.setSize(2, 2);
 	_pieza.setCenter(1, 1);
 }
@@ -107,10 +107,10 @@ void Pieza::calcularMovimiento(Vector2D inicio, Vector2D destino, bool caida)
 }
 bool Pieza::distancia()
 {
-	ETSIDI::Vector2D aux = _posicion - static_cast<ETSIDI::Vector2D>(_myCasilla->getPosicion());
+	ETSIDI::Vector2D aux = _posicion - static_cast<ETSIDI::Vector2D>(correccion_tam * (_myCasilla->getPosicion()- offset_izda));
 	if (aux.module() < 0.005)
 	{
-		_posicion = static_cast<ETSIDI::Vector2D> (_myCasilla->getPosicion());
+		_posicion = static_cast<ETSIDI::Vector2D> (correccion_tam * (_myCasilla->getPosicion()- offset_izda));
 		_velocidad = {};
 		_aceleracion = {};
 		return false;
@@ -121,10 +121,8 @@ bool Pieza::distancia()
 
 void Pieza::dibujar()
 {
-	glPushMatrix();
-	glTranslated(_posicion.x, _posicion.y, 1);
+	_pieza.setPos(_posicion.x, _posicion.y);
 	_pieza.draw();
-	glPopMatrix();
 }
 
 

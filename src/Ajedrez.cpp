@@ -32,9 +32,9 @@ void Ajedrez::Stateflow()
 	}
 	case B_Espera:
 	{
-		std::cout << *this << std::endl;
-		_indices = _j1.Movimiento(_tablero.getTableroConst());
-		_estado = B_Mov;
+		//std::cout << *this << std::endl;
+		//_indices = _j1.Movimiento(_tablero.getTableroConst());
+		//_estado = B_Mov;
 		break;
 	}
 	case B_Mov:
@@ -113,11 +113,11 @@ void Ajedrez::tecla_especial(unsigned char key)
 	{
 		if (_estado == B_Espera)
 		{
-			_j1.modificarPosicion(ESTE);
+			_j1.modificarPosicion(OESTE);
 		}
 		else if (_estado == N_Espera)
 		{
-			_j2.modificarPosicion(ESTE);
+			_j2.modificarPosicion(OESTE);
 		}
 		break;
 	}
@@ -126,11 +126,11 @@ void Ajedrez::tecla_especial(unsigned char key)
 	{
 		if (_estado == B_Espera)
 		{
-			_j1.modificarPosicion(OESTE);
+			_j1.modificarPosicion(ESTE);
 		}
 		else if (_estado == N_Espera)
 		{
-			_j2.modificarPosicion(OESTE);
+			_j2.modificarPosicion(ESTE);
 		}
 		break;
 	}
@@ -165,16 +165,21 @@ void Ajedrez::tecla_especial(unsigned char key)
 
 void Ajedrez::tecla(unsigned char key)
 {
+	static bool pieza_selec;
+	
 	switch (key)
 	{
 	case 8: //backspace
 	{
-
+		exit(0);
 		break;
 	}
 	case 13:	//enter confirmar
 	{
+		if (_estado == B_Espera)
+		{
 
+		}
 		break;
 	}
 	default:
@@ -189,14 +194,25 @@ void Ajedrez::mover()
 }
 void Ajedrez::dibujar()
 {
+	//CODIGO PARA PINTAR UNA PANTALLA NEGRA CON LETRAS 
+	gluLookAt(0, 7.5, 30, // posicion del ojo 
+		0.0, 7.5, 0.0, // hacia que punto mira (0,7.5,0) 
+		0.0, 1.0, 0.0); // definimos hacia arriba (eje Y) 	
+
 	if (_estado == B_Espera)
-	_j1.dibujar(1);
+	{
+		_j1.dibujar(Color::Blanco, 1);
+		_j2.dibujar(Color::Negro);
+	}
 	else if (_estado == N_Espera)
-	_j2.dibujar(1);
+	{
+		_j1.dibujar(Color::Blanco);
+		_j2.dibujar(Color::Negro, 1);
+	}
 	else
 	{
-		_j1.dibujar();
-		_j2.dibujar();
+		_j1.dibujar(Color::Blanco);
+		_j2.dibujar(Color::Negro);
 	}
 	//_tablero.dibujar();
 }

@@ -9,6 +9,14 @@ bool Vector2D::out_of_bounds()
 	return false;
 }
 
+Vector2D::operator ETSIDI::Vector2D()
+{
+	ETSIDI::Vector2D aux;
+	aux.x = this->x;
+	aux.y = this->y;
+	return aux;
+}
+
 Vector2D& Vector2D::operator+=(int valor)
 {
 	this->y+= valor;
@@ -38,6 +46,7 @@ Vector2D& Vector2D::operator-=(const Vector2D& rhs)
 }
 
 
+
 Vector2D operator+(Vector2D lhs, const Vector2D& rhs)
 {
 	lhs += rhs;
@@ -56,6 +65,11 @@ Vector2D operator*(int valor, Vector2D lhs)
 Vector2D operator/(int valor, Vector2D lhs)
 {
 	return { lhs.x / valor, lhs.y / valor };
+}
+
+Vector2D operator*(Vector2D lhs, int valor)
+{
+	return { lhs.x * valor, lhs.y * valor };
 }
 
 bool operator == (const Vector2D& lhs, const Vector2D& rhs)		//sobrecarga del operador ==

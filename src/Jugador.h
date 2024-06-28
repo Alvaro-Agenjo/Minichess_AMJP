@@ -7,6 +7,9 @@
 #include "Reina.h"
 #include "Rey.h"
 
+#include "freeglut.h"
+
+
 constexpr Vector2D go_back{ -1,-1 };
 
 class Jugador
@@ -41,7 +44,7 @@ public:
 	
 	//Gráficos
 	void mover();
-	void dibujar(int tipo = 0);
+	void dibujar(Color c ,int tipo = 0);
 	//tester
 	std::ostream& print(std::ostream& o, Casilla cas) const;
 
@@ -55,7 +58,10 @@ private:
 
 	//--------------------------------------->>>>> rellenar
 	//graficos
-	ETSIDI::Sprite _cursor;
+	float lado = 1.5;
+	float espesor = 0.2;
+	void dibujarCursor(Color c);
+	//ETSIDI::Sprite _cursor;
 	//--------------------------------------->>>>> fin
 };
 

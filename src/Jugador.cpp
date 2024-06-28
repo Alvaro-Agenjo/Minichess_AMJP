@@ -31,7 +31,7 @@ Jugador::~Jugador()
 	_misPiezas.clear();
 }
 
-void Jugador::CambiarTablero( std::vector<Casilla>& tab)
+void Jugador::CambiarTablero(std::vector<Casilla>& tab)
 {
 	for (Pieza* p : _misPiezas)
 	{
@@ -89,6 +89,10 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab)
 	despues, selecionar destino. Una vez confirmado el destino --> siguiente fase*/
 	Vector2D pos;
 	int indice_p = 0, indice_c = 0;
+
+
+
+
 	do
 	{
 		do {
@@ -119,8 +123,8 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab)
 				indice_c = 0;
 
 		} while (indice_c == -1);
-	} while (pos == go_back);	
-	
+	} while (pos == go_back);
+
 	return  { indice_p, indice_c };
 }
 int Jugador::ValidarPieza(Vector2D pos)
@@ -171,24 +175,24 @@ bool Jugador::ComprobarJaque()
 
 void Jugador::mover()
 {
-	for (auto p : _misPiezas )
+	for (auto p : _misPiezas)
 	{
 		p->mover(0.025);
 	}
 }
-
-void Jugador::dibujar(int tipo)
+void Jugador::dibujar(Color c, int tipo)
 {
-	if (tipo)
-	{
-		_cursor.setPos(_pos.x, _pos.y);
-		_cursor.draw();
-	}
+
 	for (auto p : _misPiezas)
 	{
 		p->dibujar();
 	}
+	if (tipo)
+	{
+		dibujarCursor(c);
+	}
 }
+
 
 std::ostream& Jugador::print(std::ostream& o, Casilla cas) const
 {
@@ -269,3 +273,51 @@ void Jugador::CrearJugador(std::vector<Casilla>& tab, Vector2D pos_ini, Color c)
 	}
 }
 
+void Jugador::dibujarCursor(Color c)
+{
+	ETSIDI::Vector2D graf_pos = (ETSIDI::Vector2D)(_pos - offset_izda) * correccion_tam;
+	glDisable(GL_LIGHTING);
+
+	glColor3ub(0, 0, 0);
+	if (c == Color::Blanco)  glColor3ub(255, 255, 255);
+	glBegin(GL_QUADS);
+
+	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - (lado / 2.0) + espesor, graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - (lado / 2.0) + espesor, graf_pos.y - (lado / 2.0), 0);
+	
+
+	glVertex3f(graf_pos.x + (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + (lado / 2.0) - espesor, graf_pos.y - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + (lado / 2.0) - espesor, graf_pos.y + (lado / 2.0), 0);
+
+	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y - espesor + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y - espesor + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+
+	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y + espesor - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y + espesor - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+
+	glEnd();
+	glEnable(GL_LIGHTING);
+
+	/*
+	//cuadrado interior (transparente)
+	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y + espesor - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y - espesor + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y - espesor + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y + espesor - (lado / 2.0), 0);
+	//cuadrado exterior	
+	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+
+	*/
+	
+}

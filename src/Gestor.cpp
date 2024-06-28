@@ -10,7 +10,7 @@ Gestor::Gestor()
 
 void Gestor::teclaEspecial(unsigned char key)
 {
-	if (_estado = JUEGO)
+	if (_estado == JUEGO)
 		_game.tecla_especial(key);
 }
 static int counter;
@@ -110,8 +110,6 @@ void Gestor::mueve(double t)
 		_game.mover();
 	}
 }
-
-
 void Gestor::dibuja()
 {
 	if (_estado == INICIO)
@@ -194,6 +192,14 @@ void Gestor::dibuja()
 	else if (_estado == JUEGO)
 		_game.dibujar();
 }
+void Gestor::Update()
+{
+	if (_estado == JUEGO)
+	{
+		_game.Stateflow();
+	}
+}
+
 
 void Gestor::AnimacionGravedad(int destino)
 {
