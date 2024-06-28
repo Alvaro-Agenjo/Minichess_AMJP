@@ -212,7 +212,7 @@ void Jugador::dibujar(Color c, int tipo)
 	}
 	if (tipo)
 	{
-		dibujarCursor(c);
+		dibujarCursor(c, primero);
 	}
 }
 
@@ -296,13 +296,20 @@ void Jugador::CrearJugador(std::vector<Casilla>& tab, Vector2D pos_ini, Color c)
 	}
 }
 
-void Jugador::dibujarCursor(Color c)
+void Jugador::dibujarCursor(Color c, bool primero)
 {
 	ETSIDI::Vector2D graf_pos = (ETSIDI::Vector2D)(_pos - offset_izda) * correccion_tam;
 	glDisable(GL_LIGHTING);
-
-	glColor3ub(50, 50, 50);
-	if (c == Color::Blanco)  glColor3ub(255, 255, 255);
+	if (primero)
+	{
+		glColor3ub(146, 153, 6); 
+		if (c == Color::Blanco)  glColor3ub(109, 110, 102);
+	}
+	else
+	{
+		glColor3ub(186, 193, 46);
+		if (c == Color::Blanco)  glColor3ub(149, 150, 142);
+	}
 	glBegin(GL_QUADS);
 
 	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y - (lado / 2.0), 0);

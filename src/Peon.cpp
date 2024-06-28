@@ -76,9 +76,10 @@ void Peon::validarCasilla(Casilla destino, bool com)
 	if (destino.getPosicion() == out_of_bounds)	return;
 	else if (ocupacion == this->_color) return;
 	else if (!com && ocupacion != Dominio::Vacio) return;
-
+	else if (com && ocupacion == Dominio::Vacio) return;
 	if (!com) aux.setMover(true);
-	else
+
+	else 
 	{
 		aux.setMover(true);
 		aux.setComer(true);

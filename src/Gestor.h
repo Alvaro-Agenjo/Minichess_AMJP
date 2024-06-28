@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Ajedrez.h"
-#include "ETSIDI.h"
+
 
 
 class Gestor

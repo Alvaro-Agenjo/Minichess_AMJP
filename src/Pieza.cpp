@@ -10,8 +10,12 @@ Pieza::Pieza(Casilla* cas, Color col, t_pieza tp) :
 
 	//graficos
 	_posicion = (ETSIDI::Vector2D)(_myCasilla->getPosicion() - offset_izda) * correccion_tam;
-	_pieza.setSize(2, 2);
-	_pieza.setCenter(1, 1);
+	_pieza.setSize(1.5, 1.5);
+	_pieza.setCenter(1.5/2.0,1.5/2.0 );
+	if (col == Color::Blanco)
+	{
+		_pieza.flip(1, 0);
+	}
 }
 
 void Pieza::ActualizarTablero(std::vector<Casilla>& tab)
@@ -38,7 +42,7 @@ int Pieza::ValidarDestino(Vector2D pos, const std::vector<Casilla>& tab)
 
 bool Pieza::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c)
 {
-	calcularMovimiento(_myCasilla->getPosicion(), tab[indice_c].getPosicion(), 0);
+ 	calcularMovimiento(_myCasilla->getPosicion(), tab[indice_c].getPosicion(), 0);
 	_myCasilla->setOcupacion(Dominio::Vacio);
 	_myCasilla = &tab[indice_c];
 	_myCasilla->setOcupacion(static_cast<Dominio>(_color));

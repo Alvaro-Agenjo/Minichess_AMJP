@@ -191,6 +191,8 @@ void Ajedrez::tecla(unsigned char key)
 	{
 	case 8: //backspace
 	{
+		_j1.GRAPH_setPripero(true);
+		_j2.GRAPH_setPripero(true);
 		if (pieza_selec > 0)
 			pieza_selec--;
 		break;
@@ -199,6 +201,7 @@ void Ajedrez::tecla(unsigned char key)
 	{
 		if (_estado == B_Espera)
 		{
+			_j1.GRAPH_setPripero(false);
 			Vector2D indices = _j1.Movimiento(_tablero.getTableroConst(), pieza_selec);
 			if (pieza_selec == 2)
 			{
@@ -206,11 +209,12 @@ void Ajedrez::tecla(unsigned char key)
 				_j2.BorrarPieza(_tablero.getTablero()[indices.y]);
 				_j1.ActualizarMovimiento(indices, _tablero.getTablero());
 				_estado = B_Mov;
-
+				_j1.GRAPH_setPripero(true);
 			}
 		}
 		else if (_estado == N_Espera)
 		{
+			_j2.GRAPH_setPripero(false);
 			Vector2D indices = _j2.Movimiento(_tablero.getTableroConst(), pieza_selec);
 			if (pieza_selec == 2)
 			{
@@ -219,6 +223,7 @@ void Ajedrez::tecla(unsigned char key)
 				_j2.ActualizarMovimiento(indices, _tablero.getTablero());
 				_estado = N_Mov;
 				pieza_selec = 0;
+				_j2.GRAPH_setPripero(true);
 			}
 		}
 		break;
@@ -255,7 +260,22 @@ void Ajedrez::dibujar()
 		_j1.dibujar(Color::Blanco);
 		_j2.dibujar(Color::Negro);
 	}
-	//_tablero.dibujar();
+	_tablero.dibujar();
+
+	//dibuja la mesa
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/Mesa.png").id);
+	glDisable(GL_LIGHTING);
+	glBegin(GL_POLYGON);
+	glColor3f(1, 1, 1);
+	glTexCoord2d(0, 1); glVertex3d(15, 20, 0);
+	glTexCoord2d(1, 1); glVertex3d(-15, 20, 0);
+	glTexCoord2d(1, 0); glVertex3d(-15, -5, 0);
+	glTexCoord2d(0, 0); glVertex3d(15, -5, 0);
+	glEnd();
+	glEnable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+
 }
 
 
