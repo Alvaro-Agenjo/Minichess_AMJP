@@ -31,7 +31,7 @@ Jugador::~Jugador()
 	_misPiezas.clear();
 }
 
-void Jugador::CambiarTablero( std::vector<Casilla>& tab)
+void Jugador::CambiarTablero(std::vector<Casilla>& tab)
 {
 	for (Pieza* p : _misPiezas)
 	{
@@ -45,6 +45,11 @@ void Jugador::CambiarTablero( std::vector<Casilla>& tab)
 			}
 		}
 	}
+}
+void Jugador::modificarPosicion(Vector2D dir)
+{
+	Vector2D aux = _pos + dir;
+	if (!aux.out_of_bounds()) _pos = aux;
 }
 void Jugador::BorrarPieza(Casilla& c)
 {
@@ -78,12 +83,28 @@ void Jugador::ActualizarAmenazas(std::vector<Casilla>& tab)
 	}
 }
 
-Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab)
+Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab, int& fase)
 {
 	/*Seleccion mediante ratón de la pieza a mover, una vez seleccionada "iluminar" casillas válidas
 	despues, selecionar destino. Una vez confirmado el destino --> siguiente fase*/
-	Vector2D pos;
-	int indice_p = 0, indice_c = 0;
+	static int indice_p, indice_c;
+
+	if (fase == 1)
+	{
+		indice_c = ValidarDestino_pieza(_pos, indice_p, tab);
+		if (indice_c != -1)
+		{
+			fase = 2;
+			return { indice_p, indice_c };
+		}
+	}
+	else
+	{
+		indice_p = ValidarPieza(_pos);
+		if (indice_p != -1) fase = 1;
+	}
+
+	/*
 	do
 	{
 		do {
@@ -114,9 +135,10 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab)
 				indice_c = 0;
 
 		} while (indice_c == -1);
-	} while (pos == go_back);	
-	
+	} while (pos == go_back);
+
 	return  { indice_p, indice_c };
+	*/
 }
 int Jugador::ValidarPieza(Vector2D pos)
 {
@@ -151,6 +173,16 @@ void Jugador::AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab)
 	}
 }
 
+bool Jugador::HayMovimiento()
+{
+	for (auto p : _misPiezas)
+	{
+		if (p->getEn_Mov())
+			return true;
+	}
+	return false;
+}
+
 bool Jugador::ComprobarJaque()
 {
 	for (const Pieza* p : _misPiezas)
@@ -162,6 +194,27 @@ bool Jugador::ComprobarJaque()
 
 
 
+
+
+void Jugador::mover()
+{
+	for (auto p : _misPiezas)
+	{
+		p->mover(0.025);
+	}
+}
+void Jugador::dibujar(Color c, int tipo)
+{
+
+	for (auto p : _misPiezas)
+	{
+		p->dibujar();
+	}
+	if (tipo)
+	{
+		dibujarCursor(c);
+	}
+}
 
 
 std::ostream& Jugador::print(std::ostream& o, Casilla cas) const
@@ -243,3 +296,51 @@ void Jugador::CrearJugador(std::vector<Casilla>& tab, Vector2D pos_ini, Color c)
 	}
 }
 
+void Jugador::dibujarCursor(Color c)
+{
+	ETSIDI::Vector2D graf_pos = (ETSIDI::Vector2D)(_pos - offset_izda) * correccion_tam;
+	glDisable(GL_LIGHTING);
+
+	glColor3ub(50, 50, 50);
+	if (c == Color::Blanco)  glColor3ub(255, 255, 255);
+	glBegin(GL_QUADS);
+
+	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - (lado / 2.0) + espesor, graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - (lado / 2.0) + espesor, graf_pos.y - (lado / 2.0), 0);
+
+
+	glVertex3f(graf_pos.x + (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + (lado / 2.0) - espesor, graf_pos.y - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + (lado / 2.0) - espesor, graf_pos.y + (lado / 2.0), 0);
+
+	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y - espesor + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y - espesor + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+
+	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y + espesor - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y + espesor - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+
+	glEnd();
+	glEnable(GL_LIGHTING);
+
+	/*
+	//cuadrado interior (transparente)
+	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y + espesor - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y - espesor + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y - espesor + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y + espesor - (lado / 2.0), 0);
+	//cuadrado exterior
+	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+
+	*/
+
+}

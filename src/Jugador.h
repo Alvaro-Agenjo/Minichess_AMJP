@@ -7,6 +7,9 @@
 #include "Reina.h"
 #include "Rey.h"
 
+#include "freeglut.h"
+
+
 constexpr Vector2D go_back{ -1,-1 };
 
 class Jugador
@@ -21,21 +24,28 @@ public:
 	//setters
 	void BorrarPieza(Casilla & c);
 	void CambiarTablero( std::vector<Casilla>& tab);
+	void modificarPosicion(Vector2D dir);
 
 	//getters
+	inline Vector2D getPosicion() const { return _pos; }
 	inline std::vector<Pieza*> getPiezas() { return _misPiezas; }
 	//otros
 	void PosiblesMov( std::vector<Casilla> tab);
 	void ActualizarAmenazas(std::vector<Casilla>& tab);
 
-	Vector2D Movimiento(const std::vector<Casilla>& tab);
+	Vector2D Movimiento(const std::vector<Casilla>& tab,int &fase);
 	int ValidarPieza(Vector2D pos);
 	int ValidarDestino_pieza(Vector2D pos, int indice, const std::vector<Casilla>& tab);
 	
 	void ActualizarMovimiento(Vector2D indices, std::vector<Casilla> &tab);
 	void AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab);
 
+	bool HayMovimiento();
 	bool ComprobarJaque();
+	
+	//Gr�ficos
+	void mover();
+	void dibujar(Color c ,int tipo = 0);
 	//tester
 	std::ostream& print(std::ostream& o, Casilla cas) const;
 
@@ -47,5 +57,12 @@ private:
 	void CrearPieza(Casilla* c, Color col, t_pieza p);
 	void CrearJugador(std::vector<Casilla> &tab, Vector2D pos_ini, Color c);
 
+	//--------------------------------------->>>>> rellenar
+	//graficos
+	float lado = 1.5;
+	float espesor = 0.2;
+	void dibujarCursor(Color c);
+	//ETSIDI::Sprite _cursor;
+	//--------------------------------------->>>>> fin
 };
 

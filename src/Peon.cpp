@@ -44,6 +44,7 @@ void Peon::ActualizarTablero(std::vector<Casilla>& tab)
 bool Peon::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c)
 {
 	_primermov = false;
+	calcularMovimiento(_myCasilla->getPosicion(), tab[indice_c].getPosicion(), 0);
 	_myCasilla->setOcupacion(Dominio::Vacio);
 	_myCasilla = &tab[indice_c];
 	_myCasilla->setOcupacion(static_cast<Dominio>(_color));

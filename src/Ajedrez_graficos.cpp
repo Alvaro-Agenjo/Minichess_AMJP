@@ -4,6 +4,7 @@
 void OnDraw(void); //esta funcion sera llamada para dibujar
 void OnTimer(int value); //esta funcion sera llamada cuando transcurra una temporizacion
 void OnKeyboardDown(unsigned char key, int x, int y); //cuando se pulse una tecla	
+void onSpecialKeyboardDown(int key, int x, int y);
 
 Gestor gestor_juego;
 
@@ -28,6 +29,7 @@ int main(int argc,char* argv[])
 	glutDisplayFunc(OnDraw);
 	glutTimerFunc(25,OnTimer,0);//le decimos que dentro de 25ms llame 1 vez a la funcion OnTimer()
 	glutKeyboardFunc(OnKeyboardDown);
+	glutSpecialFunc(onSpecialKeyboardDown);
 
 	//POSIBLE INICIALIZACION
 	
@@ -56,15 +58,18 @@ void OnKeyboardDown(unsigned char key, int x_t, int y_t)
 {
 	//poner aqui el código de teclado
 	gestor_juego.telcla(key);
-	gestor_juego.teclaEspecial(key);
 	glutPostRedisplay();
+}
+void onSpecialKeyboardDown(int key, int x, int y)
+{
+	gestor_juego.teclaEspecial(key);
 }
 
 void OnTimer(int value)
 {
 //poner aqui el código de animacion
-	
 	gestor_juego.mueve(0.025);
+	gestor_juego.Update();
 	//no borrar estas lineas
 	glutTimerFunc(25,OnTimer,0);
 	glutPostRedisplay();

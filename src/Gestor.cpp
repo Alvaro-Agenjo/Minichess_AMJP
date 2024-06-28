@@ -10,7 +10,15 @@ Gestor::Gestor()
 
 void Gestor::teclaEspecial(unsigned char key)
 {
-
+	if (_estado == JUEGO)
+	{
+		if (key == GLUT_KEY_HOME)
+		{
+			_estado = INICIO;
+			return;
+		}
+		_game.tecla_especial(key);
+	}
 }
 static int counter;
 void Gestor::telcla(unsigned char key)
@@ -55,7 +63,7 @@ void Gestor::telcla(unsigned char key)
 
 	else if (_estado == JUEGO)
 	{
-		//mundo.tecla(key); 
+		_game.tecla(key); 
 	}
 }
 void Gestor::mueve(double t)
@@ -98,15 +106,17 @@ void Gestor::mueve(double t)
 	else if (_estado == INSTRUCCIONES)
 	{
 		counter++;
-		if (counter > 60 && caida < 30) //80
+		if (counter > 60 && caida < 33) 
 		{
 			caida++;
 			counter = 0;
 		}
 	}
+	else if (_estado == JUEGO)
+	{
+		_game.mover();
+	}
 }
-
-
 void Gestor::dibuja()
 {
 	if (_estado == INICIO)
@@ -170,6 +180,7 @@ void Gestor::dibuja()
 		ETSIDI::setTextColor(1, 1, 1);
 		ETSIDI::setFont("fuentes/Bitwise.ttf", 12);
 		printxy("Bienvenido a Minichess ", -10, caida);
+
 		printxy("En esta variante se enfrentara a una partida de ajedrez con una dificultad", -8, caida - 1);
 		printxy("extra, La Gravedad. Si, ha oido bien. Tanto las piezas de su oponente como las suyas", -10, caida - 2);
 		printxy("estan sometidas a una fuerza que las hara descender si no tienen algo debajo donde ", -10, caida - 3);
@@ -179,16 +190,27 @@ void Gestor::dibuja()
 		printxy("clasico. En su turno podra selecionar la pieza que desee mover utilizando las flechas", -10, caida - 9);
 		printxy("del teclado, esto movera una casilla iluminada que refleja la pieza que va a seleccionar.", -10, caida - 10);
 		printxy("Al pulsar enter seleccionara la pieza.", -10, caida - 11);
+
 		printxy("Una vez seleccionada, se iluminaran los posibles destinos; verde -> mover,", -8, caida - 15);
 		printxy("rojo->capturar. Utilice las flechas para seleccionar el destino y enter para confirmarlo.", -10, caida - 16);
 		printxy("Si desea mover otra pieza, pulse backspace y podra volver a seleccionar una.", -10, caida - 17);
 
+		printxy("Si durante una partida desea volver al menu de inicio, pulse la tecla INICIO ", -8, caida - 20);
 
-		printxy("Pulse BACKSPACE para regresar a la pantalla de inicio", -2, caida - 32);
+
+		printxy("Pulse BACKSPACE para regresar a la pantalla de inicio", -2, caida - 35);
 	}
-	//else if (_estado == JUEGO)
-		//_game.dibuja();
+	else if (_estado == JUEGO)
+		_game.dibujar();
 }
+void Gestor::Update()
+{
+	if (_estado == JUEGO)
+	{
+		_game.Stateflow();
+	}
+}
+
 
 void Gestor::AnimacionGravedad(int destino)
 {

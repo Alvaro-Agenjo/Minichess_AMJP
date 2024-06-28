@@ -2,7 +2,7 @@
 
 #include "Ajedrez.h"
 #include "ETSIDI.h"
-#include "freeglut.h"
+
 
 class Gestor
 {
@@ -14,7 +14,7 @@ public:
 	void telcla(unsigned char key);
 	void mueve(double t);
 	void dibuja();
-
+	void Update();
 	
 
 protected:
