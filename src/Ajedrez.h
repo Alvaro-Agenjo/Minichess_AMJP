@@ -31,7 +31,8 @@ public:
 	//otros
 	void Stateflow();
 	void AplicarGravedad();
-
+	bool jaquemate();
+	int jaque();
 	// Graficos
 	void tecla_especial(unsigned char key);
 	void tecla(unsigned char key);
