@@ -156,6 +156,11 @@ bool Ajedrez::jaquemate()
 					posmovelegido = movimientospieza[j].getPosicion();
 					//al principio de cada posible mov, hay que copiar el tablero real en uno fantasma
 				//... aquí tengo que hacer el movimiento elegido del vector
+					jamenazado_copia = _j1;
+					jatacante_copia = _j2;
+					copia_jaquemate.ClearAmenazas();
+					jamenazado_copia.ActualizarAmenazas(copia_jaquemate.getTablero());
+					jatacante_copia.ActualizarAmenazas(copia_jaquemate.getTablero());
 					Dominio dom;
 					jamenazado_copia.ActualizarMovimiento(posmovelegido, copia_jaquemate.getTablero()); //como la posicion ya es adecuada al ser un pos mov, movemos la pieza ahi
 					//AHORA BUSCAMOS SI HABIA UNA PIEZA DEL OTRO COLOR EN LA CASILLA
@@ -238,6 +243,11 @@ bool Ajedrez::jaquemate()
 				posmovelegido = movimientospieza[j].getPosicion();
 				//al principio de cada posible mov, hay que copiar el tablero real en uno fantasma
 			//... aquí tengo que hacer el movimiento elegido del vector
+				jamenazado_copia = _j1;
+				jatacante_copia = _j2;
+				copia_jaquemate.ClearAmenazas();
+				jamenazado_copia.ActualizarAmenazas(copia_jaquemate.getTablero());
+				jatacante_copia.ActualizarAmenazas(copia_jaquemate.getTablero());
 				Dominio dom;
 				jamenazado_copia.ActualizarMovimiento(posmovelegido, copia_jaquemate.getTablero()); //como la posicion ya es adecuada al ser un pos mov, movemos la pieza ahi
 				//AHORA BUSCAMOS SI HABIA UNA PIEZA DEL OTRO COLOR EN LA CASILLA
