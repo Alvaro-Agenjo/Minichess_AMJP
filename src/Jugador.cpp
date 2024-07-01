@@ -95,13 +95,20 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab, int& fase)
 		if (indice_c != -1)
 		{
 			fase = 2;
+			_misPiezas[indice_p]->setSelected(false);
 			return { indice_p, indice_c };
 		}
+		return { indice_p,-1 };
 	}
 	else
 	{
 		indice_p = ValidarPieza(_pos);
-		if (indice_p != -1) fase = 1;
+		if (indice_p != -1)
+		{
+			fase = 1;
+			_misPiezas[indice_p]->setSelected(true);
+			return { indice_p, -1 };
+		}
 	}
 
 	/*
@@ -183,18 +190,6 @@ bool Jugador::HayMovimiento()
 	return false;
 }
 
-bool Jugador::ComprobarJaque()
-{
-	for (const Pieza* p : _misPiezas)
-	{
-		p->ComprobarJaque();
-	}
-	return false;
-}
-
-
-
-
 
 void Jugador::mover()
 {
@@ -212,8 +207,14 @@ void Jugador::dibujar(Color c, int tipo)
 	}
 	if (tipo)
 	{
-		dibujarCursor(c);
+		dibujarCursor(c, primero);
 	}
+}
+
+void Jugador::deselect(int indice_p)
+{
+	if (indice_p <= _misPiezas.size())
+		_misPiezas[indice_p]->setSelected(false);
 }
 
 
@@ -296,13 +297,20 @@ void Jugador::CrearJugador(std::vector<Casilla>& tab, Vector2D pos_ini, Color c)
 	}
 }
 
-void Jugador::dibujarCursor(Color c)
+void Jugador::dibujarCursor(Color c, bool primero)
 {
 	ETSIDI::Vector2D graf_pos = (ETSIDI::Vector2D)(_pos - offset_izda) * correccion_tam;
 	glDisable(GL_LIGHTING);
-
-	glColor3ub(50, 50, 50);
-	if (c == Color::Blanco)  glColor3ub(255, 255, 255);
+	if (primero)
+	{
+		glColor3ub(200, 145, 25);
+		if (c == Color::Negro)  glColor3ub(109, 110, 102);
+	}
+	else
+	{
+		glColor3ub(186, 193, 46);
+		if (c == Color::Negro)  glColor3ub(149, 150, 142);
+	}
 	glBegin(GL_QUADS);
 
 	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y - (lado / 2.0), 0);

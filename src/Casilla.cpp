@@ -1,10 +1,9 @@
 #include "Casilla.h"
 
-#include <iostream>
 using namespace std;
 
 Casilla::Casilla(Vector2D coord) :
-	_ocupacion(	Dominio::Vacio),
+	_ocupacion(Dominio::Vacio),
 	_amenaza(false),
 	_comer(false),
 	_mover(false),
@@ -16,7 +15,26 @@ void Casilla::ClearCasilla()
 	_amenaza = false;
 }
 
-std::ostream& Casilla::print (std::ostream & o) const
+void Casilla::HighlightCasilla()
+{
+	ETSIDI::Vector2D graf_pos = (ETSIDI::Vector2D)(_coord - offset_izda) * correccion_tam;
+	glDisable(GL_LIGHTING);
+	if (_comer) glColor3ub(32, 153, 248);
+	else if (_mover)  glColor3ub(58, 248, 32);
+
+	glBegin(GL_QUADS);
+
+	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
+	glVertex3f(graf_pos.x + (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
+
+	glEnd();
+	glEnable(GL_LIGHTING);
+
+}
+
+std::ostream& Casilla::print(std::ostream& o) const
 {
 	o << (int)_ocupacion << " ";
 	return o;
