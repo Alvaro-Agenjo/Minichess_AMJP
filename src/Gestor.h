@@ -26,8 +26,8 @@ private:
 	void AnimacionGravedad(int destino);
 
 
-	ETSIDI::Sprite logopeon{ "imagenes/logo peon.png", 5 };
-	ETSIDI::Vector2D _pos_peon{ 0,6 }, _vel_peon{}, _accel_peon{};
+	ETSIDI::Sprite cursor{ "imagenes/logo peon.png", 5 };
+	ETSIDI::Vector2D _pos_cursor{ 0,6 }, _vel_cursor{}, _accel_cursor{};
 	int caida = 0;
 };
 

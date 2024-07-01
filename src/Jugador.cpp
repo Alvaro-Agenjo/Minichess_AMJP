@@ -109,7 +109,6 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab, int& fase)
 			_misPiezas[indice_p]->setSelected(true);
 			return { indice_p, -1 };
 		}
-		// fase = 0;
 		return { -1,-1 };
 	}
 

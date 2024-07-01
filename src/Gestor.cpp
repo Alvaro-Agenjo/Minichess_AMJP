@@ -70,11 +70,11 @@ void Gestor::mueve(double t)
 {
 	if (_estado == INICIO)
 	{
-		_pos_peon = _pos_peon + _vel_peon * t + _accel_peon * 0.5 * t * t;
-		_vel_peon = _vel_peon + _accel_peon * t;
+		_pos_cursor = _pos_cursor + _vel_cursor * t + _accel_cursor * 0.5 * t * t;
+		_vel_cursor = _vel_cursor + _accel_cursor * t;
 		
 		//inicio caida de texto al sobrepasar EMPEZAR [E]
-		if (_pos_peon.y < 5)
+		if (_pos_cursor.y < 5)
 		{
 			counter++;
 		}
@@ -86,18 +86,18 @@ void Gestor::mueve(double t)
 		
 		
 		//comprobacion texto instrucciones alcanzado
-		if (_pos_peon.y < -2 && _pos_peon.x < -5)
+		if (_pos_cursor.y < -2 && _pos_cursor.x < -5)
 		{
 			_estado = INSTRUCCIONES;
 			AnimacionGravedad(0);
 		}
 		//comprobacion texto salida alcanzado
-		else if (_pos_peon.y < -2 && _pos_peon.x > 5)
+		else if (_pos_cursor.y < -2 && _pos_cursor.x > 5)
 		{
 			exit(0);
 		}
 		//comprobacion texto empezar alcanzado
-		else if (_pos_peon.y < -2 && _pos_peon.x>-1)
+		else if (_pos_cursor.y < -2 && _pos_cursor.x>-1)
 		{
 			_estado = JUEGO;
 			AnimacionGravedad(0);
@@ -128,10 +128,10 @@ void Gestor::dibuja()
 			0.0, 1.0, 0.0); // definimos hacia arriba (eje Y) 	
 
 		//Adorno
-		logopeon.setCenter(2, 0);
-		logopeon.setSize(4, 6);
-		logopeon.setPos(_pos_peon.x, _pos_peon.y);
-		logopeon.draw();
+		cursor.setCenter(2, 0);
+		cursor.setSize(4, 6);
+		cursor.setPos(_pos_cursor.x, _pos_cursor.y);
+		cursor.draw();
 
 
 		//color de fondo
@@ -162,10 +162,10 @@ void Gestor::dibuja()
 			0.0, 1.0, 0.0); // definimos hacia arriba (eje Y) 	
 
 		//Adorno
-		logopeon.setSize(8, 12);
-		logopeon.setCenter(4, 6);
-		logopeon.setPos(0, 7);
-		logopeon.draw();
+		cursor.setSize(8, 12);
+		cursor.setCenter(4, 6);
+		cursor.setPos(0, 7);
+		cursor.draw();
 
 		//color de fondo
 		glBegin(GL_POLYGON);
@@ -219,27 +219,27 @@ void Gestor::AnimacionGravedad(int destino)
 	{
 	case 1:
 	{
-		_vel_peon = { 0, 8 };
-		_accel_peon = { 0, -9.8 };
+		_vel_cursor = { 0, 8 };
+		_accel_cursor = { 0, -9.8 };
 		break;
 	}
 	case 2: {
-		_vel_peon = { cos(60) * 8, -sin(60) * 8 };
-		_accel_peon = { 0, -9.8 };
+		_vel_cursor = { cos(60) * 8, -sin(60) * 8 };
+		_accel_cursor = { 0, -9.8 };
 		break;
 	}
 	case 3:
 	{
-		_vel_peon = { -cos(60) * 8, -sin(60) * 8 };
-		_accel_peon = { 0, -9.8 };
+		_vel_cursor = { -cos(60) * 8, -sin(60) * 8 };
+		_accel_cursor = { 0, -9.8 };
 		break;
 	}
 	default:
 	{
 		caida = 0;
-		_pos_peon = { 0,6 };
-		_vel_peon = { 0,0 };
-		_accel_peon = { 0, 0 };
+		_pos_cursor = { 0,6 };
+		_vel_cursor = { 0,0 };
+		_accel_cursor = { 0, 0 };
 		break;
 	}
 	}
