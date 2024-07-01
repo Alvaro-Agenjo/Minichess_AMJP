@@ -475,7 +475,7 @@ int Ajedrez::jaque()
 			jdefcompB = _j1;
 			piezasjd = jdefcompB.getPiezas();
 			std::vector<Casilla> posmovcompB= piezasjd[l]->get_PosMov();
-			for (size_t m = 0; m < posmovcompB.size(); m++)
+			for (size_t m = posmovcompB.size(); m > 0; m--)
 			{//avanzamos por todos los posibles movimientos de las piezas
 				//asignamos la posicion de estas a "a"
 				Vector2D a {posmovcompB[m].getPosicion().x, posmovcompB[m].getPosicion().y};
@@ -492,7 +492,7 @@ int Ajedrez::jaque()
 					if (dom == Dominio::Blanca)
 					{
 						posB = tabB[i].getPosicion();
-						for (unsigned int k = cantpiezas; k >0 ; k--)
+						for (unsigned int k = 0; k <cantpiezas ; k++)
 						{
 							Casilla* cas_pieza_copia = piezasjd[k]->getCasilla();
 							Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
@@ -532,11 +532,11 @@ int Ajedrez::jaque()
 		{
 			jdefcompN = _j1;
 			piezasjd = jdefcompN.getPiezas();
-			std::vector<Casilla> posmovcompB = piezasjd[l]->get_PosMov();
-			for (size_t m = 0; m < posmovcompB.size(); m++)
+			std::vector<Casilla> posmovcompN = piezasjd[l]->get_PosMov();
+			for (size_t m = posmovcompN.size(); m > 0; m--)
 			{//avanzamos por todos los posibles movimientos de las piezas
 				//asignamos la posicion de estas a "a"
-				Vector2D a{ posmovcompB[m].getPosicion().x, posmovcompB[m].getPosicion().y };
+				Vector2D a{ posmovcompN[m].getPosicion().x, posmovcompN[m].getPosicion().y };
 				Casilla* c = &tabB[indices.y];
 				piezasjd[l]->ActualizarPosicion(c); //actualizamos la posicion de la pieza
 				jdefcompN.CambiarTablero(tabB);
@@ -550,7 +550,7 @@ int Ajedrez::jaque()
 					if (dom == Dominio::Blanca)
 					{
 						posB = tabB[i].getPosicion();
-						for (unsigned int k = cantpiezas; k >0; k--)
+						for (unsigned int k = 0; k <cantpiezas; k++)
 						{
 							Casilla* cas_pieza_copia = piezasjd[k]->getCasilla();
 							Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
@@ -561,7 +561,7 @@ int Ajedrez::jaque()
 						if (jaque == true) //si se cumple,borramos el posible movimiento
 						{
 							std::vector<Casilla>::iterator it;
-							it = posmovcompB.begin() + m;
+							it = posmovcompN.begin() + m;
 							std::vector<Pieza*> borrarposmov = _j1.getPiezas();
 							borrarposmov[l]->get_PosMov().erase(it);
 							return 2;
