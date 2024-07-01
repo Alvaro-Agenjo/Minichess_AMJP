@@ -106,7 +106,7 @@ void Gestor::mueve(double t)
 	else if (_estado == INSTRUCCIONES)
 	{
 		counter++;
-		if (counter > 60 && caida < 33) 
+		if (counter > 60 && caida < 34) 
 		{
 			caida++;
 			counter = 0;
@@ -191,14 +191,15 @@ void Gestor::dibuja()
 		printxy("del teclado, esto movera una casilla iluminada que refleja la pieza que va a seleccionar.", -10, caida - 10);
 		printxy("Al pulsar enter seleccionara la pieza.", -10, caida - 11);
 
-		printxy("Una vez seleccionada, se iluminaran los posibles destinos; verde -> mover,", -8, caida - 15);
-		printxy("rojo->capturar. Utilice las flechas para seleccionar el destino y enter para confirmarlo.", -10, caida - 16);
-		printxy("Si desea mover otra pieza, pulse backspace y podra volver a seleccionar una.", -10, caida - 17);
+		printxy("Una vez seleccionada, el indicador se volvera mas claro y se iluminaran los", -8, caida - 15);
+		printxy("posibles destinos; verde -> mover, azul -> capturar. Utilice las flechas para seleccionar", -10, caida - 16);
+		printxy("el destino y enter para confirmarlo. Si desea mover otra pieza, pulse backspace y podra", -10, caida - 17);
+		printxy("volver a seleccionar una.", -10, caida - 18);
+		
+		printxy("Si durante una partida desea volver al menu de inicio, pulse la tecla INICIO ", -8, caida - 21);
 
-		printxy("Si durante una partida desea volver al menu de inicio, pulse la tecla INICIO ", -8, caida - 20);
 
-
-		printxy("Pulse BACKSPACE para regresar a la pantalla de inicio", -2, caida - 35);
+		printxy("Pulse BACKSPACE para regresar a la pantalla de inicio", -2, caida - 36);
 	}
 	else if (_estado == JUEGO)
 		_game.dibujar();

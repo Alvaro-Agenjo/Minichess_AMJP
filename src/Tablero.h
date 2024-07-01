@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Casilla.h"
+//#include "ETSIDI.h"
 
 constexpr int filas = 8;
 constexpr int columnas = 8;
@@ -21,6 +22,9 @@ public:
 	std::vector<Casilla*> getCasillasOcupadas();
 	//setters
 	void ClearAmenazas();
+
+	//graficos
+	void dibujar();
 	//testers
 
 private:
