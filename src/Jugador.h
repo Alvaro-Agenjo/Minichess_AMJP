@@ -25,7 +25,7 @@ public:
 	void BorrarPieza(Casilla & c);
 	void CambiarTablero( std::vector<Casilla>& tab);
 	void modificarPosicion(Vector2D dir);
-	inline void GRAPH_setPripero(bool bo) { primero = bo; }
+	inline void GRAPH_setPrimero(bool bo) { primero = bo; }
 	//getters
 	inline Vector2D getPosicion() const { return _pos; }
 	inline std::vector<Pieza*> getPiezas() { return _misPiezas; }
@@ -41,11 +41,11 @@ public:
 	void AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab);
 
 	bool HayMovimiento();
-	bool ComprobarJaque();
 	
 	//Gr�ficos
 	void mover();
 	void dibujar(Color c ,int tipo = 0);
+	void deselect(int indice_p);
 	//tester
 	std::ostream& print(std::ostream& o, Casilla cas) const;
 

@@ -14,8 +14,6 @@ constexpr Vector2D SUDOESTE = { -1,-1 };
 
 constexpr Vector2D out_of_bounds = { -1,-1 };
 
-constexpr float correccion_tam = 2;
-constexpr Vector2D offset_izda = { 3,0 };
 
 enum class Color { Blanco = 1, Negro = -1 };
 enum class t_pieza { PEON, TORRE, CABALLO, ALFIL, REINA, REY };
@@ -33,10 +31,12 @@ public:
 	inline t_pieza getT_Pieza() const { return _t_pieza; }
 	inline bool getEn_Mov() const { return en_mov; }
 	inline std::vector<Casilla> get_PosMov() const { return _posiblesMov; }
+	inline bool getSelected() const { return selected; }
 	//Setters
 	inline void Clear() { _posiblesMov.clear(); }
 	inline void setCasilla(Casilla* c) { _myCasilla = c; }
-
+	inline void setSelected(bool sel) { selected = sel; }
+	
 	//Otros
 	virtual void PosiblesMov(const std::vector<Casilla>& tab) = 0;
 	virtual void ActualizarTablero(std::vector<Casilla>& tab);
@@ -45,17 +45,13 @@ public:
 	int ValidarDestino(Vector2D pos, const std::vector<Casilla>& tab);
 
 	virtual bool ActualizarPosicion(std::vector<Casilla>& tab, int indice_c);
-	virtual void ActualizarPosicion(Casilla* c);
+	void ActualizarPosicion(Casilla* c);
 	void Gravedad(std::vector<Casilla>& tab);
-
-	virtual bool ComprobarJaque() const;
 
 	//graficos
 	void mover(double t);
-	void calcularMovimiento(Vector2D inicio, Vector2D destino, bool caida=true);
-	bool distancia();
-
 	void dibujar();
+	
 	//tester
 	virtual std::ostream& operator << (std::ostream& o) const = 0;
 
@@ -81,9 +77,14 @@ protected:
 	ETSIDI::Vector2D _posicion{};
 	ETSIDI::Vector2D _velocidad{};
 	ETSIDI::Vector2D _aceleracion{};
-	ETSIDI::Sprite _pieza = { "imagenes/logo peon.png",5 };
+	ETSIDI::Sprite _pieza;
 
-	bool en_mov = 0;
+	bool selected = false;
+	bool en_mov = false;
+	
+	void calcularMovimiento(Vector2D inicio, Vector2D destino, bool caida = true);
+	bool distancia();
+	void SelectApariencia();
 };
 
 bool operator == (const Dominio& d, const Color& c);

@@ -4,14 +4,18 @@
 Pieza::Pieza(Casilla* cas, Color col, t_pieza tp) :
 	_myCasilla(cas),
 	_color(col),
-	_t_pieza(tp)
+	_t_pieza(tp),
+	_pieza( { "imagenes/Peon_B.png",5 })
 {
+	
 	_myCasilla->setOcupacion(static_cast<Dominio>(col));
+	
 
 	//graficos
+	SelectApariencia();
 	_posicion = (ETSIDI::Vector2D)(_myCasilla->getPosicion() - offset_izda) * correccion_tam;
-	_pieza.setSize(1.5, 1.5);
-	_pieza.setCenter(1.5/2.0,1.5/2.0 );
+	_pieza.setSize(2, 2);
+	_pieza.setCenter(1,1);
 	if (col == Color::Blanco)
 	{
 		_pieza.flip(1, 0);
@@ -46,7 +50,7 @@ bool Pieza::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c)
 	_myCasilla->setOcupacion(Dominio::Vacio);
 	_myCasilla = &tab[indice_c];
 	_myCasilla->setOcupacion(static_cast<Dominio>(_color));
-	return false;
+	return false;	// devuelve falso si no es un peon que pueda coronar
 }
 void Pieza::ActualizarPosicion(Casilla* c)
 {
@@ -73,17 +77,6 @@ void Pieza::Gravedad(std::vector<Casilla>& tab)
 
 }
 
-bool Pieza::ComprobarJaque() const
-{
-	for (const Casilla c : _posiblesMov)
-	{
-		if (c.getOcupante()) // si tiene rey
-		{
-
-		}
-	}
-	return false;
-}
 
 //graficos
 void Pieza::mover(double t)
@@ -127,10 +120,64 @@ bool Pieza::distancia()
 
 }
 
+void Pieza::SelectApariencia()
+{
+	std::string img;
+	img.append("imagenes/");
+	switch (_t_pieza)
+	{
+	case t_pieza::PEON:
+	{
+		img.append("Peon_");
+		break;
+	}
+	case t_pieza::TORRE:
+	{
+		img.append("Torre_");
+		break;
+	}
+	case t_pieza::CABALLO:
+	{
+		img.append("Caballo_");
+		break;
+	}
+	case t_pieza::ALFIL:
+	{
+		img.append("Alfil_");
+		break;
+	}
+	case t_pieza::REINA:
+	{
+		img.append("Reina_");
+		break;
+	}
+	case t_pieza::REY:
+	{
+		img.append("Rey_");
+		break;
+	}
+	default:
+		break;
+	}
+	if (_color == Color::Blanco) img.append("B.png");
+	else img.append("N.png");
+	
+
+	_pieza = { img.c_str(), 5 };
+}
+
 void Pieza::dibujar()
 {
 	_pieza.setPos(_posicion.x, _posicion.y);
 	_pieza.draw();
+
+	if (selected)
+	{
+		for (auto c : _posiblesMov)
+		{
+			c.HighlightCasilla();
+		}
+	}
 }
 
 
@@ -198,6 +245,7 @@ bool Pieza::validarCasilla(const Casilla destino)
 	return true;
 
 }
+
 
 
 bool operator==(const Dominio& d, const Color& c)

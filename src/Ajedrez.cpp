@@ -1,5 +1,4 @@
 #include "Ajedrez.h"
-#include <iostream>
 
 Ajedrez::Ajedrez() :
 	_estado(GameState::Creaccion),
@@ -10,7 +9,7 @@ Ajedrez::Ajedrez() :
 	_estado = GameState::B_Actualizar_Amenazas;
 }
 
-
+static Vector2D indices{};
 void Ajedrez::Stateflow()
 {
 	switch (_estado)
@@ -39,7 +38,7 @@ void Ajedrez::Stateflow()
 	}
 	case B_Mov:
 	{
-		std::cout << *this << std::endl;
+		//std::cout << *this << std::endl;
 		static bool caida;
 		if (!HayMovimiento() && caida)
 		{
@@ -48,17 +47,15 @@ void Ajedrez::Stateflow()
 		}
 		else if (!HayMovimiento())
 		{
+			_j2.BorrarPieza(_tablero.getTablero()[indices.y]);
 			AplicarGravedad();
 			caida = true;
 		}
-		
-		// graficos, mover pieza;
 		break;
 	}
 	case B_Comprobar_Jaques:
 	{
 		std::cout << *this << std::endl;
-		_j1.ComprobarJaque(); //Comprueba si alguna de las piezas blancas esta dando jaque al rey negro
 		_estado = N_Actualizar_Amenazas;
 		break;
 	}
@@ -90,10 +87,10 @@ void Ajedrez::Stateflow()
 		}
 		else if (!HayMovimiento())
 		{
+			_j1.BorrarPieza(_tablero.getTablero()[indices.y]);
 			AplicarGravedad();
 			caida = true;
 		}
-		// graficos, mover pieza;
 		break;
 	}
 	case N_Comprobar_Jaques:
@@ -191,8 +188,11 @@ void Ajedrez::tecla(unsigned char key)
 	{
 	case 8: //backspace
 	{
-		_j1.GRAPH_setPripero(true);
-		_j2.GRAPH_setPripero(true);
+		_j1.GRAPH_setPrimero(true);
+		_j2.GRAPH_setPrimero(true);
+
+		_j1.deselect(indices.x);
+		_j2.deselect(indices.x);
 		if (pieza_selec > 0)
 			pieza_selec--;
 		break;
@@ -201,31 +201,34 @@ void Ajedrez::tecla(unsigned char key)
 	{
 		if (_estado == B_Espera)
 		{
-			_j1.GRAPH_setPripero(false);
-			Vector2D indices = _j1.Movimiento(_tablero.getTableroConst(), pieza_selec);
+			_j1.GRAPH_setPrimero(false);
+			 indices = _j1.Movimiento(_tablero.getTableroConst(), pieza_selec);
+
 			if (pieza_selec == 2)
 			{
 				pieza_selec = 0;
-				_j2.BorrarPieza(_tablero.getTablero()[indices.y]);
 				_j1.ActualizarMovimiento(indices, _tablero.getTablero());
 				_estado = B_Mov;
-				_j1.GRAPH_setPripero(true);
+				_j1.GRAPH_setPrimero(true);
 			}
 		}
 		else if (_estado == N_Espera)
 		{
-			_j2.GRAPH_setPripero(false);
-			Vector2D indices = _j2.Movimiento(_tablero.getTableroConst(), pieza_selec);
+			_j2.GRAPH_setPrimero(false);
+			indices = _j2.Movimiento(_tablero.getTableroConst(), pieza_selec);
 			if (pieza_selec == 2)
 			{
-
-				_j1.BorrarPieza(_tablero.getTablero()[indices.y]);
 				_j2.ActualizarMovimiento(indices, _tablero.getTablero());
 				_estado = N_Mov;
 				pieza_selec = 0;
-				_j2.GRAPH_setPripero(true);
+				_j2.GRAPH_setPrimero(true);
 			}
 		}
+		break;
+	}
+	case 'z':
+	{
+		printTablero();
 		break;
 	}
 	default:
@@ -252,8 +255,8 @@ void Ajedrez::dibujar()
 	}
 	else if (_estado == N_Espera)
 	{
-		_j1.dibujar(Color::Blanco);
 		_j2.dibujar(Color::Negro, 1);
+		_j1.dibujar(Color::Blanco);
 	}
 	else
 	{
@@ -282,7 +285,7 @@ void Ajedrez::dibujar()
 std::ostream& Ajedrez::printTablero(std::ostream& o)
 {
 	int n = 0;
-	for (const auto cas : _tablero.getTableroConst())
+	for (const Casilla& cas : _tablero.getTableroConst())
 	{
 		if (cas.getOcupacion() == Dominio::Vacio)
 		{
@@ -326,10 +329,6 @@ bool Ajedrez::HayMovimiento()
 	if (_j1.HayMovimiento() || _j2.HayMovimiento()) return true;
 	return false;
 }
-
-
-
-
 
 std::ostream& operator << (std::ostream& o, const Ajedrez& aj)
 {

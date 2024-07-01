@@ -50,8 +50,6 @@ private:
 
 	//gráficos
 	bool HayMovimiento();
-
-	//?¿?¿
 };
 
 //tester

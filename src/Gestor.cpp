@@ -192,7 +192,7 @@ void Gestor::dibuja()
 		printxy("Al pulsar enter seleccionara la pieza.", -10, caida - 11);
 
 		printxy("Una vez seleccionada, el indicador se volvera mas claro y se iluminaran los", -8, caida - 15);
-		printxy("posibles destinos; verde -> mover, rojo->capturar. Utilice las flechas para seleccionar", -10, caida - 16);
+		printxy("posibles destinos; verde -> mover, azul -> capturar. Utilice las flechas para seleccionar", -10, caida - 16);
 		printxy("el destino y enter para confirmarlo. Si desea mover otra pieza, pulse backspace y podra", -10, caida - 17);
 		printxy("volver a seleccionar una.", -10, caida - 18);
 		
