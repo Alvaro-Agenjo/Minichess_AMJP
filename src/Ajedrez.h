@@ -8,13 +8,17 @@ enum GameState
 {
 	Creaccion,
 	B_Actualizar_Amenazas,
-	B_Espera,
-	B_Mov,
 	B_Comprobar_Jaques,
+	B_Espera,
+	B_CompMov,
+	B_Mov,
 	N_Actualizar_Amenazas,
-	N_Espera,
-	N_Mov,
 	N_Comprobar_Jaques,
+	N_Espera,
+	N_CompMov,
+	N_Mov,
+	B_Win,
+	N_Win,
 };
 
 class Ajedrez

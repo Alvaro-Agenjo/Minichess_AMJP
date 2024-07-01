@@ -10,7 +10,12 @@ Ajedrez::Ajedrez() :
 	_estado = GameState::B_Actualizar_Amenazas;
 }
 
+<<<<<<< Updated upstream
 
+=======
+static Vector2D indices{};
+static Vector2D indicecompB{};
+>>>>>>> Stashed changes
 void Ajedrez::Stateflow()
 {
 	switch (_estado)
@@ -27,8 +32,33 @@ void Ajedrez::Stateflow()
 		_j2.ActualizarAmenazas(_tablero.getTablero());
 		_j1.PosiblesMov(_tablero.getTableroConst());
 
-		_estado = B_Espera;
+		_estado = B_Comprobar_Jaques;
 		break;
+	}
+	case B_Comprobar_Jaques:
+	{
+		int jaqueBlancas;
+		jaqueBlancas = jaque();
+		if (jaqueBlancas == 1) // no jaque
+		{
+			_estado = B_Espera;
+		}
+		if (jaqueBlancas == 2) // jaque mate, ganan las negras
+		{
+			_estado = N_Win;
+		}
+		if (jaqueBlancas == 3) //jaque
+		{
+			//aviso en pantalla de que blancas esta en jaque
+			_estado = B_Espera;
+		}
+		break;
+	}
+	case B_CompMov:
+	{
+		int stateB = jaque();
+		if (jaque != 0)
+			_estado = B_Espera;
 	}
 	case B_Espera:
 	{
@@ -37,6 +67,7 @@ void Ajedrez::Stateflow()
 		//_estado = B_Mov;
 		break;
 	}
+
 	case B_Mov:
 	{
 		std::cout << *this << std::endl;
@@ -55,6 +86,7 @@ void Ajedrez::Stateflow()
 		// graficos, mover pieza;
 		break;
 	}
+<<<<<<< Updated upstream
 	case B_Comprobar_Jaques:
 	{
 		std::cout << *this << std::endl;
@@ -62,6 +94,8 @@ void Ajedrez::Stateflow()
 		_estado = N_Actualizar_Amenazas;
 		break;
 	}
+=======
+>>>>>>> Stashed changes
 	case N_Actualizar_Amenazas:
 	{
 		std::cout << *this << std::endl;
@@ -98,9 +132,36 @@ void Ajedrez::Stateflow()
 	}
 	case N_Comprobar_Jaques:
 	{
-		std::cout << *this << std::endl;
-		_estado = B_Actualizar_Amenazas;
+		int jaqueNegras;
+		jaqueNegras = jaque();
+		if (jaqueNegras == 1) // no jaque
+		{
+			_estado = N_Espera;
+		}
+		if (jaqueNegras == 2) // jaque mate, ganan las blancas
+		{
+			_estado = B_Win;
+		}
+		if (jaqueNegras == 3) //jaque
+		{
+			//aviso en pantalla de que negras esta en jaque
+			_estado = N_Espera;
+		}
 		break;
+	}
+	case N_CompMov:
+	{
+		int stateN = jaque();
+		if (jaque != 0)
+			_estado = B_Espera;
+	}
+	case B_Win:
+	{
+
+	}
+	case N_Win:
+	{
+
 	}
 	default:
 		break;
@@ -305,8 +366,8 @@ bool Ajedrez::jaquemate()
 
 int Ajedrez::jaque()
 {
-	bool jaque;
-	bool checkmate;
+	bool jaque=false;
+	bool checkmate=false;
 	Dominio dom;
 	switch (_estado)
 	{
@@ -392,6 +453,122 @@ int Ajedrez::jaque()
 					return 1;//no hay jaque
 			}
 		}
+	}
+	case B_CompMov:
+	{
+		Tablero tablerocompB = _tablero;
+		std::vector<Casilla> tabB;
+		tabB = tablerocompB.getTablero();
+		Jugador jdefcompB(_j1, tabB);
+		Jugador jatcompB(_j2, tabB);
+		std::vector<Pieza*> piezasjd = jdefcompB.getPiezas();
+		size_t cantpiezas = piezasjd.size();
+		size_t tamtableroB = tabB.size();
+
+		for (size_t l = 0; l < cantpiezas; l++)
+		{
+			jdefcompB = _j1;
+			piezasjd = jdefcompB.getPiezas();
+			std::vector<Casilla> posmovcompB= piezasjd[l]->get_PosMov();
+			for (size_t m = 0; m < posmovcompB.size(); m++)
+			{//avanzamos por todos los posibles movimientos de las piezas
+				//asignamos la posicion de estas a "a"
+				Vector2D a {posmovcompB[m].getPosicion().x, posmovcompB[m].getPosicion().y};
+				Casilla* c = &tabB[indices.y];
+				piezasjd[l]->ActualizarPosicion(c); //actualizamos la posicion de la pieza
+				jdefcompB.CambiarTablero(tabB);
+				tablerocompB.ClearAmenazas();
+				jatcompB.ActualizarAmenazas(tablerocompB.getTablero());
+				for (size_t i = 0; i < tamtableroB; i++) //recorremos todas las casillas
+				{
+					Vector2D posB{};
+					//dom=cas.getOcupacion()
+					dom = tabB[i].getOcupacion();
+					if (dom == Dominio::Blanca)
+					{
+						posB = tabB[i].getPosicion();
+						for (unsigned int k = 0; k < cantpiezas; k++)
+						{
+							Casilla* cas_pieza_copia = piezasjd[k]->getCasilla();
+							Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
+							if ((posB.x == pos_cas_copia.x) && (posB.y == pos_cas_copia.y)) //cuando encontra la pieza que coincide con esas coordenadas
+								if (piezasjd[k]->getT_Pieza() == t_pieza::REY)//comprueba si se trata del rey
+									jaque = tabB[k].getAmenaza();//si es rey, comprueba si esta amenazado, siendo true si lo está
+						}
+						if (jaque == true) //si se cumple,borramos el posible movimiento
+						{
+							std::vector<Casilla>::iterator it;
+							it = posmovcompB.begin() + m;
+							std::vector<Pieza*> borrarposmov = _j1.getPiezas();
+							borrarposmov[l]->get_PosMov().erase(it);
+							return 2;
+						}
+						else
+							return 1;//no hay jaque
+					}
+				}
+			}
+		}
+
+		return 0;
+	}
+	case N_CompMov:
+	{
+		Tablero tablerocompN = _tablero;
+		std::vector<Casilla> tabB;
+		tabB = tablerocompN.getTablero();
+		Jugador jdefcompN(_j2, tabB);
+		Jugador jatcompN(_j1, tabB);
+		std::vector<Pieza*> piezasjd = jdefcompN.getPiezas();
+		size_t cantpiezas = piezasjd.size();
+		size_t tamtableroN = tabB.size();
+
+		for (size_t l = 0; l < cantpiezas; l++)
+		{
+			jdefcompN = _j1;
+			piezasjd = jdefcompN.getPiezas();
+			std::vector<Casilla> posmovcompB = piezasjd[l]->get_PosMov();
+			for (size_t m = 0; m < posmovcompB.size(); m++)
+			{//avanzamos por todos los posibles movimientos de las piezas
+				//asignamos la posicion de estas a "a"
+				Vector2D a{ posmovcompB[m].getPosicion().x, posmovcompB[m].getPosicion().y };
+				Casilla* c = &tabB[indices.y];
+				piezasjd[l]->ActualizarPosicion(c); //actualizamos la posicion de la pieza
+				jdefcompN.CambiarTablero(tabB);
+				tablerocompN.ClearAmenazas();
+				jatcompN.ActualizarAmenazas(tablerocompN.getTablero());
+				for (size_t i = 0; i < tamtableroN; i++) //recorremos todas las casillas
+				{
+					Vector2D posB{};
+					//dom=cas.getOcupacion()
+					dom = tabB[i].getOcupacion();
+					if (dom == Dominio::Blanca)
+					{
+						posB = tabB[i].getPosicion();
+						for (unsigned int k = 0; k < cantpiezas; k++)
+						{
+							Casilla* cas_pieza_copia = piezasjd[k]->getCasilla();
+							Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
+							if ((posB.x == pos_cas_copia.x) && (posB.y == pos_cas_copia.y)) //cuando encontra la pieza que coincide con esas coordenadas
+								if (piezasjd[k]->getT_Pieza() == t_pieza::REY)//comprueba si se trata del rey
+									jaque = tabB[k].getAmenaza();//si es rey, comprueba si esta amenazado, siendo true si lo está
+						}
+						if (jaque == true) //si se cumple,borramos el posible movimiento
+						{
+							std::vector<Casilla>::iterator it;
+							it = posmovcompB.begin() + m;
+							std::vector<Pieza*> borrarposmov = _j1.getPiezas();
+							borrarposmov[l]->get_PosMov().erase(it);
+							return 2;
+						}
+						else
+							return 1;//no hay jaque
+					}
+				}
+			}
+		}
+
+		return 0;
 	}
 	}
 	return 0;
