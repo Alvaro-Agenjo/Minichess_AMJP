@@ -15,6 +15,11 @@ Ajedrez::Ajedrez() :
 =======
 static Vector2D indices{};
 static Vector2D indicecompB{};
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+
+
 >>>>>>> Stashed changes
 void Ajedrez::Stateflow()
 {
@@ -57,7 +62,7 @@ void Ajedrez::Stateflow()
 	case B_CompMov:
 	{
 		int stateB = jaque();
-		if (jaque != 0)
+		if (stateB != 0)
 			_estado = B_Espera;
 	}
 	case B_Espera:
@@ -152,7 +157,7 @@ void Ajedrez::Stateflow()
 	case N_CompMov:
 	{
 		int stateN = jaque();
-		if (jaque != 0)
+		if (stateN != 0)
 			_estado = B_Espera;
 	}
 	case B_Win:
@@ -487,7 +492,7 @@ int Ajedrez::jaque()
 					if (dom == Dominio::Blanca)
 					{
 						posB = tabB[i].getPosicion();
-						for (unsigned int k = 0; k < cantpiezas; k++)
+						for (unsigned int k = cantpiezas; k >0 ; k--)
 						{
 							Casilla* cas_pieza_copia = piezasjd[k]->getCasilla();
 							Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
@@ -545,7 +550,7 @@ int Ajedrez::jaque()
 					if (dom == Dominio::Blanca)
 					{
 						posB = tabB[i].getPosicion();
-						for (unsigned int k = 0; k < cantpiezas; k++)
+						for (unsigned int k = cantpiezas; k >0; k--)
 						{
 							Casilla* cas_pieza_copia = piezasjd[k]->getCasilla();
 							Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
