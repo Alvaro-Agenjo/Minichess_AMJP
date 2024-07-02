@@ -5,17 +5,17 @@ Pieza::Pieza(Casilla* cas, Color col, t_pieza tp) :
 	_myCasilla(cas),
 	_color(col),
 	_t_pieza(tp),
-	_pieza( { "imagenes/Peon_B.png",5 })
+	_pieza({ "imagenes/Peon_B.png",5 })
 {
-	
+
 	_myCasilla->setOcupacion(static_cast<Dominio>(col));
-	
+
 
 	//graficos
 	SelectApariencia();
 	_posicion = (ETSIDI::Vector2D)(_myCasilla->getPosicion() - offset_izda) * correccion_tam;
 	_pieza.setSize(2, 2);
-	_pieza.setCenter(1,1);
+	_pieza.setCenter(1, 1);
 	if (col == Color::Blanco)
 	{
 		_pieza.flip(1, 0);
@@ -46,7 +46,7 @@ int Pieza::ValidarDestino(Vector2D pos, const std::vector<Casilla>& tab)
 
 bool Pieza::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c)
 {
- 	calcularMovimiento(_myCasilla->getPosicion(), tab[indice_c].getPosicion(), 0);
+	calcularMovimiento(_myCasilla->getPosicion(), tab[indice_c].getPosicion(), 0);
 	_myCasilla->setOcupacion(Dominio::Vacio);
 	_myCasilla = &tab[indice_c];
 	_myCasilla->setOcupacion(static_cast<Dominio>(_color));
@@ -91,9 +91,9 @@ void Pieza::calcularMovimiento(Vector2D inicio, Vector2D destino, bool caida)
 {
 	if (!caida)
 	{
-
+		//ETSIDI::playMusica("sonidos/arrastrar.mp3");
 		ETSIDI::Vector2D v = static_cast<ETSIDI::Vector2D>(destino - inicio);
-		_velocidad = v;// v.unit()*2;
+		_velocidad = v.unit()*3;
 		_aceleracion = { 0,0 };
 	}
 	else
@@ -104,12 +104,18 @@ void Pieza::calcularMovimiento(Vector2D inicio, Vector2D destino, bool caida)
 }
 bool Pieza::distancia()
 {
-	ETSIDI::Vector2D aux = _posicion - static_cast<ETSIDI::Vector2D>(correccion_tam * (_myCasilla->getPosicion()- offset_izda));
+	ETSIDI::Vector2D aux = _posicion - static_cast<ETSIDI::Vector2D>(correccion_tam * (_myCasilla->getPosicion() - offset_izda));
 	if (aux.module() < 0.2)
 	{
-		_posicion = static_cast<ETSIDI::Vector2D> (correccion_tam * (_myCasilla->getPosicion()- offset_izda));
-		_velocidad = {0,0};
-		_aceleracion = {0,0};
+
+		if (en_mov)
+		{
+			//ETSIDI::stopMusica();
+			ETSIDI::play("sonidos/poner_pieza.wav"); 
+		}
+		_posicion = static_cast<ETSIDI::Vector2D> (correccion_tam * (_myCasilla->getPosicion() - offset_izda));
+		_velocidad = { 0,0 };
+		_aceleracion = { 0,0 };
 		en_mov = false;
 	}
 	else
@@ -161,7 +167,7 @@ void Pieza::SelectApariencia()
 	}
 	if (_color == Color::Blanco) img.append("B.png");
 	else img.append("N.png");
-	
+
 
 	_pieza = { img.c_str(), 5 };
 }

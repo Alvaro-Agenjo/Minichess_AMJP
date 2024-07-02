@@ -2,7 +2,8 @@
 
 Gestor::Gestor()
 {
-
+	ETSIDI::playMusica("sonidos/INICIO.mp3", true);
+	Sleep(60);
 	_estado = INICIO;
 }
 
@@ -14,6 +15,8 @@ void Gestor::teclaEspecial(unsigned char key)
 	{
 		if (key == GLUT_KEY_HOME)
 		{
+			ETSIDI::stopMusica();
+			ETSIDI::playMusica("sonidos/INICIO.mp3", true);
 			_estado = INICIO;
 			return;
 		}
@@ -36,6 +39,7 @@ void Gestor::telcla(unsigned char key)
 		}
 		case 'I':
 		{
+			
 			AnimacionGravedad(2);
 			counter = 0; 
 			break;
@@ -54,9 +58,13 @@ void Gestor::telcla(unsigned char key)
 	{
 		if (key == 8)
 		{
+			ETSIDI::stopMusica();
+			ETSIDI::playMusica("sonidos/INICIO.mp3", true);
+			Sleep(60);
 			AnimacionGravedad(0);
 			counter = 0;
 			_estado = INICIO;
+			
 		}
 	}
 
@@ -88,19 +96,30 @@ void Gestor::mueve(double t)
 		//comprobacion texto instrucciones alcanzado
 		if (_pos_cursor.y < -2 && _pos_cursor.x < -5)
 		{
+			ETSIDI::stopMusica();
+			ETSIDI::playMusica("sonidos/INSTRUCCIONES.mp3",true);
+			ETSIDI::play("sonidos/poner_pieza.wav");
+			//Sleep(60);
 			_estado = INSTRUCCIONES;
 			AnimacionGravedad(0);
+		
 		}
 		//comprobacion texto salida alcanzado
 		else if (_pos_cursor.y < -2 && _pos_cursor.x > 5)
 		{
+			ETSIDI::play("sonidos/poner_pieza.wav");
+			Sleep(200);
 			exit(0);
 		}
 		//comprobacion texto empezar alcanzado
 		else if (_pos_cursor.y < -2 && _pos_cursor.x>-1)
 		{
+			ETSIDI::play("sonidos/poner_pieza.wav");
+			ETSIDI::stopMusica();
+			ETSIDI::playMusica("sonidos/JUEGO1.mp3", false);
 			_estado = JUEGO;
 			AnimacionGravedad(0);
+			Sleep(60);
 		}
 	}
 	else if (_estado == INSTRUCCIONES)
@@ -209,6 +228,25 @@ void Gestor::Update()
 	if (_estado == JUEGO)
 	{
 		_game.Stateflow();
+		cambiarMusica();
+	}
+}
+
+void Gestor::cambiarMusica()
+{
+	static bool track;
+	static long tiempo_inicio =0, tiempo_actual =0;
+	tiempo_actual = ETSIDI::getMillis();
+
+	if (tiempo_actual - tiempo_inicio > 300000)	//han pasado mas de 2 min
+	{
+		ETSIDI::stopMusica();  
+		if(track)
+			ETSIDI::playMusica("sonidos/JUEGO2.mp3", false);
+		else
+			ETSIDI::playMusica("sonidos/JUEGO1.mp3", false);
+		tiempo_inicio = tiempo_actual;
+		track = !track;
 	}
 }
 
@@ -219,17 +257,20 @@ void Gestor::AnimacionGravedad(int destino)
 	{
 	case 1:
 	{
+		ETSIDI::play("sonidos/salto.wav");
 		_vel_cursor = { 0, 8 };
 		_accel_cursor = { 0, -9.8 };
 		break;
 	}
 	case 2: {
+		ETSIDI::play("sonidos/salto.wav");
 		_vel_cursor = { cos(60) * 8, -sin(60) * 8 };
 		_accel_cursor = { 0, -9.8 };
 		break;
 	}
 	case 3:
 	{
+		ETSIDI::play("sonidos/salto.wav");
 		_vel_cursor = { -cos(60) * 8, -sin(60) * 8 };
 		_accel_cursor = { 0, -9.8 };
 		break;
@@ -244,5 +285,4 @@ void Gestor::AnimacionGravedad(int destino)
 	}
 	}
 }
-
 

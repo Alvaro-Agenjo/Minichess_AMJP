@@ -730,8 +730,8 @@ void Ajedrez::mover()
 }
 void Ajedrez::Notificacion(Color col)
 {
-	if(col==Color::Blanco) ETSIDI::setTextColor(1, 1, 1);
-	else ETSIDI::setTextColor(0, 0, 0);
+	if(col==Color::Blanco) ETSIDI::setTextColor(0.7843,0.5686 ,0.0980);
+	else ETSIDI::setTextColor(0.4274, 0.4313, 0.4);
 
 	ETSIDI::setFont("fuentes/Action Man Shaded Italic.ttf", 48);
 	ETSIDI::printxy("JAQUE", -4, 9);

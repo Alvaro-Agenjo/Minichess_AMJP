@@ -15,7 +15,7 @@ public:
 	void mueve(double t);
 	void dibuja();
 	void Update();
-
+	void cambiarMusica();
 
 protected:
 	Ajedrez _game;
