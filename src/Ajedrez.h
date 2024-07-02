@@ -8,15 +8,13 @@ enum GameState
 {
 	Creaccion,
 	B_Actualizar_Amenazas,
-	B_Comprobar_Jaques,
 	B_Espera,
-	B_CompMov,
 	B_Mov,
+	B_Comprobar_Jaques,
 	N_Actualizar_Amenazas,
-	N_Comprobar_Jaques,
 	N_Espera,
-	N_CompMov,
 	N_Mov,
+	N_Comprobar_Jaques,
 	B_Win,
 	N_Win,
 };
@@ -42,6 +40,7 @@ public:
 	void tecla(unsigned char key);
 	void dibujar();
 	void mover();
+	void Notificacion(Color col);
 	
 	
 	//tester
