@@ -69,13 +69,13 @@ void Ajedrez::Stateflow()
 		}
 		case 2:
 		{
-			tempo = 100;
-			std::cout << "\njaqueB\n";
+			tempo = 150;
 			_estado = N_Espera;
 			break;
 		}
 		case 3:
 		{
+			tempo = 150;
 			_estado = B_Win;
 			break;
 		}
@@ -128,13 +128,13 @@ void Ajedrez::Stateflow()
 		}
 		case 2:
 		{
-			tempo = 100;
-			std::cout << "\njaqueB\n";
+			tempo = 150;
 			_estado = B_Espera;
 			break;
 		}
 		case 3:
 		{
+			tempo = 150;
 			_estado = N_Win;
 			break;
 		}
@@ -606,11 +606,21 @@ void Ajedrez::tecla(unsigned char key)
 		}
 		break;
 	}
+	
+	/*
 	case 'z':
 	{
+	//debug posicion
 		printTablero();
 		break;
 	}
+	case '1':
+	{
+	//debug color jaque
+		tempo = 150;
+		break;
+	}
+	*/
 	default:
 		break;
 	}
@@ -621,10 +631,10 @@ void Ajedrez::mover()
 	_j1.mover();
 	_j2.mover();
 }
-void Ajedrez::Notificacion(Color col, bool mate, int& tempo)
+void Ajedrez::Notificacion(Color col, bool mate, int &tempo)
 {
-	if (col == Color::Blanco) ETSIDI::setTextColor(0.7843, 0.5686, 0.0980);
-	else ETSIDI::setTextColor(0.4374, 0.4413, 0.35);
+	if (col == Color::Blanco) ETSIDI::setTextColor(0.7843, 0.5686, 0.0780);
+	else ETSIDI::setTextColor(0.05, 0.052, 0);
 
 	ETSIDI::setFont("fuentes/A.C.M.E. Secret Agent.ttf", 48);
 	if (mate)
@@ -632,7 +642,6 @@ void Ajedrez::Notificacion(Color col, bool mate, int& tempo)
 	else
 		ETSIDI::printxy("JAQUE", -2, 16);
 	tempo--;
-	glutPostOverlayRedisplay();
 }
 void Ajedrez::dibujar()
 {
@@ -641,6 +650,22 @@ void Ajedrez::dibujar()
 		0.0, 7.5, 0.0, // hacia que punto mira (0,7.5,0) 
 		0.0, 1.0, 0.0); // definimos hacia arriba (eje Y) 	
 
+	
+	if (_estado == B_Espera)
+	{
+		_j1.dibujar(Color::Blanco, 1);
+		_j2.dibujar(Color::Negro);
+	}
+	else if (_estado == N_Espera)
+	{
+		_j2.dibujar(Color::Negro, 1);
+		_j1.dibujar(Color::Blanco);
+	}
+	else
+	{
+		_j1.dibujar(Color::Blanco);
+		_j2.dibujar(Color::Negro);
+	}
 	_tablero.dibujar();
 
 	//dibuja la mesa
@@ -657,51 +682,34 @@ void Ajedrez::dibujar()
 	glEnable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
 
-
-	switch (_estado)
+	if (tempo > 0)
 	{
-	case B_Espera:
-	{
-		_j1.dibujar(Color::Blanco, 1);
-		_j2.dibujar(Color::Negro);
-		if (tempo > 0)
+		switch (_estado)
+		{
+		case B_Espera:
 		{
 			Notificacion(Color::Negro, 0, tempo);
+			break;
 		}
-		break;
-	}
-	case N_Espera:
-	{
-		_j2.dibujar(Color::Negro, 1);
-		_j1.dibujar(Color::Blanco);
-		if (tempo > 0)
+		case N_Espera:
 		{
 			Notificacion(Color::Blanco, 0, tempo);
+			break;
 		}
-		break;
+		case B_Win:
+		{
+			Notificacion(Color::Blanco, 1, tempo);
+			break;
+		}
+		case N_Win:
+		{
+			Notificacion(Color::Negro, 1, tempo);
+			break;
+		}
+		default:
+			break;
+		}
 	}
-	case B_Win:
-	{
-		Notificacion(Color::Blanco, 1, tempo);
-		_j1.dibujar(Color::Blanco);
-		_j2.dibujar(Color::Negro);
-		break;
-	}
-	case N_Win:
-	{
-		Notificacion(Color::Negro, 1, tempo);
-		_j1.dibujar(Color::Blanco);
-		_j2.dibujar(Color::Negro);
-		break;
-	}
-	default:
-	{
-		_j1.dibujar(Color::Blanco);
-		_j2.dibujar(Color::Negro);
-		break;
-	}
-	}
-
 	
 
 }
