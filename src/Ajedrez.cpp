@@ -69,12 +69,14 @@ void Ajedrez::Stateflow()
 		}
 		case 2:
 		{
+			std::cout << "\njaque\n";
 			tempo = 150;
 			_estado = N_Espera;
 			break;
 		}
 		case 3:
 		{
+			std::cout << "\njaquemate\n";
 			tempo = 150;
 			_estado = B_Win;
 			break;
@@ -128,12 +130,14 @@ void Ajedrez::Stateflow()
 		}
 		case 2:
 		{
+			std::cout << "\njaque\n";
 			tempo = 150;
 			_estado = B_Espera;
 			break;
 		}
 		case 3:
 		{
+			std::cout << "\njaquemate\n";
 			tempo = 150;
 			_estado = N_Win;
 			break;
@@ -163,187 +167,131 @@ void Ajedrez::AplicarGravedad()
 
 bool Ajedrez::jaquemate()
 {
-	Dominio color;
-	Dominio coloramenazado;
-	bool jaque = true;
+
+	bool jaque;
 	switch (_estado)
 	{
 	case N_Comprobar_Jaques:	//comprueba si las negras dan jaque a las blancas
 	{
-		coloramenazado = Dominio::Blanca;
 		Tablero copia_jaquemate(_tablero);
-		std::vector<Casilla> copy;
 		std::vector<Pieza*> piezasdef;
-		std::vector<Pieza*> piezasat;
 		std::vector<Casilla> movimientospieza;
-
-		Jugador jamenazado_copia(_j1, copia_jaquemate.getTablero());//copiamos jugador defensor y enlazamos a tablero copia
-		Jugador jatacante_copia(_j2, copia_jaquemate.getTablero()); //copiamos jugador atacante " " " " "
-
-		piezasat = jatacante_copia.getPiezas();//" " " " " " atacante
-		piezasdef = jamenazado_copia.getPiezas(); //getter de vector piezas del jugador defensor
-		size_t vecsize = piezasdef.size();
-		for (size_t i = 0; i < vecsize; i++) //recorremos todas las piezas del jugador
+		for (size_t i = 0; i < _j1.getPiezas().size(); i++) //recorremos todas las piezas del jugador
 		{
-			jamenazado_copia = _j1;
-			jatacante_copia = _j2;
+			Tablero copia_t_it(_tablero);
+			Jugador Jamenazado_iteracion(_j1,copia_t_it.getTablero());
+			Jugador Jatacante_iteracion(_j2,copia_t_it.getTablero());//copiamos los valores originales copiados para resetear los movimientos comprobados
+			piezasdef = Jamenazado_iteracion.getPiezas();
 			//cada iteracion se reinician las posiciones de las piezas para evitar que se acumulen los cambios de las simulaciones
-			copia_jaquemate.ClearAmenazas();
-			jamenazado_copia.ActualizarAmenazas(copia_jaquemate.getTablero());
-			jatacante_copia.ActualizarAmenazas(copia_jaquemate.getTablero());
-			movimientospieza = piezasdef[i]->get_PosMov(); //getter de vector posibles movimientos de la pieza
-			size_t cantmov = movimientospieza.size();
-			for (size_t j = 0; j < cantmov; j++)//con este bucle recorreremos los posibles movimientos de la pieza
+			copia_t_it.ClearAmenazas();
+			Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
+			Jamenazado_iteracion.PosiblesMov(copia_t_it.getTableroConst());
+			for (size_t j = 0; j < Jamenazado_iteracion.getPiezas()[i]->get_PosMov().size(); j++)//con este bucle recorreremos los posibles movimientos de la pieza
 			{
 				Vector2D posmovelegido;
-				posmovelegido = movimientospieza[j].getPosicion();
-				//al principio de cada posible mov, hay que copiar el tablero real en uno fantasma
-			//... aquí tengo que hacer el movimiento elegido del vector
-				jamenazado_copia = _j1;
-				jatacante_copia = _j2;
-				copia_jaquemate.ClearAmenazas();
-				jamenazado_copia.ActualizarAmenazas(copia_jaquemate.getTablero());
-				jatacante_copia.ActualizarAmenazas(copia_jaquemate.getTablero());
+				posmovelegido = Jamenazado_iteracion.getPiezas()[i]->get_PosMov()[j].getPosicion();
+	
+				copia_t_it.ClearAmenazas();
+				Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
 				Dominio dom;
-				jamenazado_copia.ActualizarMovimiento(posmovelegido, copia_jaquemate.getTablero()); //como la posicion ya es adecuada al ser un pos mov, movemos la pieza ahi
-				//AHORA BUSCAMOS SI HABIA UNA PIEZA DEL OTRO COLOR EN LA CASILLA
-				piezasat = jatacante_copia.getPiezas();
-				Casilla casat;
-				Casilla casat2;
-				const Casilla* dircasat = &casat;
-				Vector2D posat;
-				for (size_t k = 0; k < piezasat.size(); k++)
+				//movemos la pieza "i" a la posicion del posible movimimiento "j".
+				Jamenazado_iteracion.getPiezas()[i]->setCasilla(&Jamenazado_iteracion.getPiezas()[i]->get_PosMov()[j]);
+				for (size_t m = 0; m < copia_t_it.getTablero().size(); m++) //buscamos la casilla destino
 				{
-					dircasat = piezasat[k]->getCasilla();
-					casat2 = casat;
-					posat = casat2.getPosicion();
-					if ((posat.x == posmovelegido.x) && (posat.y == posmovelegido.y))
-						jatacante_copia.BorrarPieza(casat);//borramos la pieza que haya del atacante en esa posicion si la hay
-				}
-				//	cuando el movimiento esté hecho en el jugador fantasma, lo utilizamos para actualizamar amenazas tablero copia y recorremos este para ver si el rey sigue amenazado
-				copia_jaquemate.ClearAmenazas();
-				jatacante_copia.ActualizarAmenazas(copia_jaquemate.getTablero()); //quitamos las amenazas previas y ponemos las actuales con el posible cambio por piezas comidas o bloqueos
-				//movimiento iteración
-				copy = copia_jaquemate.getTablero();
-				size_t tamvector = copy.size();
-
-				for (size_t i = 0; i < tamvector; i++) //recorremos todas las casillas
-				{
-					Vector2D pos_am{};
-					//dom=cas.getOcupacion()
-					dom = copy[i].getOcupacion();
-					if (dom == coloramenazado)//si es del color que sufre el jaque, comprobamos si es el rey
+					//Vector2D posacomerit = copia_t_it.getTablero()[m].getPosicion();
+					if (copia_t_it.getTablero()[m].getPosicion() == Jamenazado_iteracion.getPiezas()[i]->get_PosMov()[j].getPosicion())//encuentra la casilla seleccionada para mover
 					{
-						pos_am = copy[i].getPosicion();
-						std::vector<Pieza> piezasjam;
-						//piezasjam= jdef_copia.getpiezas(); //getter de dirección vector de piezas del jugador copiado
-						size_t cantpiezas = piezasjam.size();
-						for (size_t k = 0; i < cantpiezas; k++)
-						{//avanzamos
-							Casilla* cas_pieza_copia = piezasjam[k].getCasilla();
-							Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
-							if ((pos_am.x == pos_cas_copia.x) && (pos_am.y == pos_cas_copia.y)) //cuando encontra la pieza que coincide con esas coordenadas
-								if (piezasjam[k].getT_Pieza() == t_pieza::REY)//comprueba si se trata del rey
-									jaque = copy[k].getAmenaza();//si es rey, comprueba si esta amenazado, siendo true si lo está
-							if (jaque == false)
-								return jaque;
-						}
-					}	//asi hacemos comprobacion de jaque sin volver a llamar a jaque maten en caso de true
+						Jatacante_iteracion.BorrarPieza(copia_t_it.getTablero()[m]);//si hay una pieza enemiga en ese casilla, la borra
+						Jamenazado_iteracion.getPiezas()[i]->setCasilla(&copia_t_it.getTablero()[m]);//colocamos la pieza a mover a
+						Jamenazado_iteracion.AplicarGravedad(Jamenazado_iteracion.getPiezas()[i]->getCasilla(),copia_t_it.getTablero());//comprobamos gravedad para el caso de que se haya movido a una casilla sin pieza debajo
+						copia_t_it.ClearAmenazas();
+						Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
+					}
 				}
+				//ahora que hemos movido la pieza, comprobamos si el rey esta amenazado todavia
+				bool jaqueit;
+				jaqueit = Jamenazado_iteracion.ComprobarJaque();
+				if (jaqueit == false)
+					return false;
 			}
 
 		}
+	return true;
 	}
 	case B_Comprobar_Jaques: // comprobamos si las blancas dan jaque a las negras
 	{
-		coloramenazado = Dominio::Blanca;
-		Tablero copia_jaquemate = _tablero;
-		std::vector<Casilla> copy;
+		Tablero copia_jaquemate(_tablero);
 		std::vector<Pieza*> piezasdef;
-		std::vector<Pieza*> piezasat;
 		std::vector<Casilla> movimientospieza;
-
-		Jugador jamenazado_copia(_j2, copia_jaquemate.getTablero());//copiamos jugador defensor y enlazamos a tablero copia
-		Jugador jatacante_copia(_j1, copia_jaquemate.getTablero()); //copiamos jugador atacante " " " " "
-
-		piezasat = jatacante_copia.getPiezas();//" " " " " " atacante
-		piezasdef = jamenazado_copia.getPiezas(); //getter de vector piezas del jugador defensor
-		size_t vecsize = piezasdef.size();
-		for (size_t i = 0; i < vecsize; i++) //recorremos todas las piezas del jugador
+		for (size_t i = 0; i < _j2.getPiezas().size(); i++) //recorremos todas las piezas del jugador
 		{
-			jamenazado_copia = _j2;
-			jatacante_copia = _j1;
-			copia_jaquemate = _tablero;
-			//cada iteracion se reinician las posiciones de las piezas y se vuelve a copiar el tablero para evitar que se acumulen los cambios de las simulaciones
-			copia_jaquemate.ClearAmenazas();
-			jamenazado_copia.ActualizarAmenazas(copia_jaquemate.getTablero());
-			jatacante_copia.ActualizarAmenazas(copia_jaquemate.getTablero());
-			movimientospieza = piezasdef[i]->get_PosMov(); //getter de vector posibles movimientos de la pieza
-			size_t cantmov = movimientospieza.size();
-			for (size_t j = 0; j < cantmov; j++)//con este bucle recorreremos los posibles movimientos de la pieza
+			std::cout << "\nprimer bucle=recorriendo piezas\n";
+			Tablero copia_t_it(_tablero);
+			//Jugador Jamenazado_iteracion(_j2, copia_t_it.getTablero());
+			Jugador Jamenazado_iteracion(_j2);
+			Jamenazado_iteracion.CambiarTablero(copia_t_it.getTablero());
+			Jugador Jatacante_iteracion(_j1);
+			Jatacante_iteracion.CambiarTablero(copia_t_it.getTablero());
+			//Jugador Jatacante_iteracion(_j1, copia_t_it.getTablero());//copiamos los valores originales copiados para resetear los movimientos comprobados
+			//cada iteracion se reinician las posiciones de las piezas para evitar que se acumulen los cambios de las simulaciones
+			for (auto p : _j2.getPiezas()[i]->get_PosMov())
 			{
-				Vector2D posmovelegido;
-				posmovelegido = movimientospieza[j].getPosicion();
-				//al principio de cada posible mov, hay que copiar el tablero real en uno fantasma
-			//... aquí tengo que hacer el movimiento elegido del vector
-				jamenazado_copia = _j1;
-				jatacante_copia = _j2;
-				copia_jaquemate.ClearAmenazas();
-				jamenazado_copia.ActualizarAmenazas(copia_jaquemate.getTablero());
-				jatacante_copia.ActualizarAmenazas(copia_jaquemate.getTablero());
-				Dominio dom;
-				jamenazado_copia.ActualizarMovimiento(posmovelegido, copia_jaquemate.getTablero()); //como la posicion ya es adecuada al ser un pos mov, movemos la pieza ahi
-				//AHORA BUSCAMOS SI HABIA UNA PIEZA DEL OTRO COLOR EN LA CASILLA
-				piezasat = jatacante_copia.getPiezas();
-				Casilla casat;
-				Casilla casat2;
-				const Casilla* dircasat = &casat;
-				Vector2D posat;
-				for (size_t k = 0; k < piezasat.size(); k++)
+				std::cout << "\nsegundo bucle=recorriendo pos mov\n";
+				copia_t_it.ClearAmenazas();
+				Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
+				for (size_t m = 0; m < copia_t_it.getTablero().size(); m++) //buscamos la casilla destino
 				{
-					dircasat = piezasat[k]->getCasilla();
-					casat2 = casat;
-					posat = casat2.getPosicion();
-					if ((posat.x == posmovelegido.x) && (posat.y == posmovelegido.y))
-						jatacante_copia.BorrarPieza(casat);//borramos la pieza que haya del atacante en esa posicion si la hay
-				}
-				//	cuando el movimiento esté hecho en el jugador fantasma, lo utilizamos para actualizamar amenazas tablero copia y recorremos este para ver si el rey sigue amenazado
-				copia_jaquemate.ClearAmenazas();
-				jatacante_copia.ActualizarAmenazas(copia_jaquemate.getTablero()); //quitamos las amenazas previas y ponemos las actuales con el posible cambio por piezas comidas o bloqueos
-				//movimiento iteración
-				copy = copia_jaquemate.getTablero();
-				size_t tamvector = copy.size();
-
-				for (size_t i = 0; i < tamvector; i++) //recorremos todas las casillas
-				{
-					Vector2D pos_am{};
-					//dom=cas.getOcupacion()
-					dom = copy[i].getOcupacion();
-					if (dom == coloramenazado)//si es del color que sufre el jaque, comprobamos si es el rey
+					std::cout << "\n tercer bucle=buscando casilla destino\n";
+					if ((copia_t_it.getTablero()[m].getPosicion() == p.getPosicion()))//encuentra la casilla seleccionada para mover
 					{
-						pos_am = copy[i].getPosicion();
-						std::vector<Pieza> piezasjam;
-						//piezasjam= jdef_copia.getpiezas(); //getter de dirección vector de piezas del jugador copiado
-						size_t cantpiezas = piezasjam.size();
-						for (size_t k = 0; i < cantpiezas; k++)
-						{//avanzamos
-							Casilla* cas_pieza_copia = piezasjam[k].getCasilla();
-							Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
-							if ((pos_am.x == pos_cas_copia.x) && (pos_am.y == pos_cas_copia.y)) //cuando encontra la pieza que coincide con esas coordenadas
-								if (piezasjam[k].getT_Pieza() == t_pieza::REY)//comprueba si se trata del rey
-									jaque = copy[k].getAmenaza();//si es rey, comprueba si esta amenazado, siendo true si lo está
-							if (jaque == false)
-								return jaque;
-						}
-					}	//asi hacemos comprobacion de jaque sin volver a llamar a jaque maten en caso de true
+						std::cout << "\nborrarpieza\n";
+						Jatacante_iteracion.BorrarPieza(copia_t_it.getTablero()[m]);//si hay una pieza enemiga en ese casilla, la borra
+						Jamenazado_iteracion.getPiezas()[i]->setCasilla(&copia_t_it.getTablero()[m]);//colocamos la pieza a mover a
+						Jamenazado_iteracion.AplicarGravedad(Jamenazado_iteracion.getPiezas()[i]->getCasilla(), copia_t_it.getTablero());//comprobamos gravedad para el caso de que se haya movido a una casilla sin pieza debajo
+						copia_t_it.ClearAmenazas();
+						Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
+						bool jaqueit;
+						jaqueit = Jamenazado_iteracion.ComprobarJaque();
+						if (jaqueit == false)
+							return false;
+					}
 				}
 			}
+			/*for (size_t j = 0; j < Jamenazado_iteracion.getPiezas()[i]->get_PosMov().size(); j++)//con este bucle recorreremos los posibles movimientos de la pieza
+			{
+				std::cout << "\nsegundo bucle=recorriendo pos mov\n";
+				Vector2D posmovelegido;
+				posmovelegido = Jamenazado_iteracion.getPiezas()[i]->get_PosMov()[j].getPosicion();
 
+				copia_t_it.ClearAmenazas();
+				Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
+				//movemos la pieza "i" a la posicion del posible movimimiento "j".
+				//Jamenazado_iteracion.getPiezas()[i]->setCasilla(&Jamenazado_iteracion.getPiezas()[i]->get_PosMov()[j]);
+				for (size_t m = 0; m < copia_t_it.getTablero().size(); m++) //buscamos la casilla destino
+				{
+					std::cout << "\n tercer bucle=buscando casilla destino\n";
+					//Vector2D posacomerit = copia_t_it.getTablero()[m].getPosicion();
+					if ((copia_t_it.getTablero()[m].getPosicion() == Jamenazado_iteracion.getPiezas()[i]->get_PosMov()[j].getPosicion())&&(copia_t_it.getTablero()[m].getOcupacion()==Jatacante_iteracion.getPiezas()[0]->getCasilla()->getOcupacion()))//encuentra la casilla seleccionada para mover
+					{
+						std::cout << "\nborrarpieza\n";
+						Jatacante_iteracion.BorrarPieza(copia_t_it.getTablero()[m]);//si hay una pieza enemiga en ese casilla, la borra
+						Jamenazado_iteracion.getPiezas()[i]->setCasilla(&copia_t_it.getTablero()[m]);//colocamos la pieza a mover a
+						Jamenazado_iteracion.AplicarGravedad(Jamenazado_iteracion.getPiezas()[i]->getCasilla(), copia_t_it.getTablero());//comprobamos gravedad para el caso de que se haya movido a una casilla sin pieza debajo
+						copia_t_it.ClearAmenazas();
+						Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
+						bool jaqueit;
+						jaqueit = Jamenazado_iteracion.ComprobarJaque();
+						if (jaqueit == false)
+							return false;
+					}
+				}
+			}
+			*/
 		}
+		return true;
 	}
 
 	}
-	return true;
 }
 int Ajedrez::jaque()
 {
@@ -358,7 +306,7 @@ int Ajedrez::jaque()
 		jaque = _j1.ComprobarJaque();
 		if (jaque == true) //si se cumple, hará llamada a jaquemate
 		{
-			//checkmate = jaquemate();
+			checkmate = jaquemate();
 			if (checkmate == true)	return 3; //hay jaque mate				}
 			else return 2;//hay jaque
 		}
@@ -371,7 +319,7 @@ int Ajedrez::jaque()
 
 		if (jaque == true) //si se cumple, hará llamada a jaquemate
 		{
-			//checkmate = jaquemate();
+			checkmate = jaquemate();
 			if (checkmate == true)	return 3; //hay jaque mate				}
 			else return 2;//hay jaque
 		}
