@@ -192,6 +192,18 @@ bool Jugador::HayMovimiento()
 }
 
 
+bool Jugador::ComprobarJaque()
+{
+	for (auto p : _misPiezas)
+	{
+		if (p->getT_Pieza() == t_pieza::REY)
+		{
+			return p->getCasilla()->getAmenaza();
+		}
+	}
+	return false;
+}
+
 void Jugador::mover()
 {
 	for (auto p : _misPiezas)

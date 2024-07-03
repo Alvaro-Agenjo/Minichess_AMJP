@@ -10,8 +10,6 @@
 #include "freeglut.h"
 
 
-constexpr Vector2D go_back{ -1,-1 };
-
 class Jugador
 {
 public:
@@ -42,6 +40,8 @@ public:
 
 	bool HayMovimiento();
 	
+	//jaques?
+	bool ComprobarJaque();
 	//Gr�ficos
 	void mover();
 	void dibujar(Color c ,int tipo = 0);

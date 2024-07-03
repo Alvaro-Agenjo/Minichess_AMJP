@@ -40,7 +40,7 @@ public:
 	void tecla(unsigned char key);
 	void dibujar();
 	void mover();
-	void Notificacion(Color col);
+	void Notificacion(Color col, bool mate, int &tempo);
 	
 	
 	//tester

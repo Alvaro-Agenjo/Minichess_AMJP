@@ -11,9 +11,7 @@ Ajedrez::Ajedrez() :
 
 
 static Vector2D indices{};
-//static Vector2D indicecompB{};
-
-
+static int tempo;
 void Ajedrez::Stateflow()
 {
 	switch (_estado)
@@ -30,19 +28,9 @@ void Ajedrez::Stateflow()
 		_j2.ActualizarAmenazas(_tablero.getTablero());
 		_j1.PosiblesMov(_tablero.getTableroConst());
 
-		_estado = B_Espera;
+		_estado = N_Comprobar_Jaques;
 		break;
 	}
-
-	/*
-
-	case B_CompMov:
-	{
-		int stateB = jaque();
-		if (stateB != 0)
-			_estado = B_Espera;
-	}
-	*/
 	case B_Espera:
 	{
 		//std::cout << *this << std::endl;
@@ -57,7 +45,7 @@ void Ajedrez::Stateflow()
 		static bool caida;
 		if (!HayMovimiento() && caida)
 		{
-			_estado = B_Comprobar_Jaques;
+			_estado = N_Actualizar_Amenazas;
 			caida = false;
 		}
 		else if (!HayMovimiento())
@@ -71,45 +59,27 @@ void Ajedrez::Stateflow()
 
 	case B_Comprobar_Jaques:
 	{
-		int resjaque = jaque();
-		switch (resjaque)
+
+		switch (jaque())
 		{
 		case 1:
 		{
-			_estado = N_Actualizar_Amenazas;
-			break;
-		}
-		case 3:
-		{
-			Notificacion(Color::Blanco);
-			std::cout << "\njaqueB\n";
-			_estado = N_Actualizar_Amenazas;
+			_estado = N_Espera;
 			break;
 		}
 		case 2:
+		{
+			tempo = 100;
+			std::cout << "\njaqueB\n";
+			_estado = N_Espera;
+			break;
+		}
+		case 3:
 		{
 			_estado = B_Win;
 			break;
 		}
 		}
-
-		/*
-		int jaqueBlancas;
-		jaqueBlancas = jaque();
-		if (jaqueBlancas == 1) // no jaque
-		{
-			_estado = B_Espera;
-		}
-		if (jaqueBlancas == 2) // jaque mate, ganan las negras
-		{
-			_estado = N_Win;
-		}
-		if (jaqueBlancas == 3) //jaque
-		{
-			//aviso en pantalla de que blancas esta en jaque
-			_estado = B_Espera;
-		}
-		*/
 		break;
 	}
 	case N_Actualizar_Amenazas:
@@ -119,7 +89,7 @@ void Ajedrez::Stateflow()
 		_j1.ActualizarAmenazas(_tablero.getTablero());
 		_j2.PosiblesMov(_tablero.getTableroConst());
 
-		_estado = N_Espera;
+		_estado = B_Comprobar_Jaques;
 		break;
 	}
 	case N_Espera:
@@ -135,7 +105,7 @@ void Ajedrez::Stateflow()
 		static bool caida;
 		if (!HayMovimiento() && caida)
 		{
-			_estado = N_Comprobar_Jaques;
+			_estado = B_Actualizar_Amenazas;
 			caida = false;
 		}
 		else if (!HayMovimiento())
@@ -153,59 +123,30 @@ void Ajedrez::Stateflow()
 		{
 		case 1:
 		{
-			_estado = B_Actualizar_Amenazas;
-			break;
-		}
-		case 3:
-		{
-			Notificacion(Color::Negro);
-			std::cout << "\njaqueN\n";
-			_estado = B_Actualizar_Amenazas;
+			_estado = B_Espera;
 			break;
 		}
 		case 2:
+		{
+			tempo = 100;
+			std::cout << "\njaqueB\n";
+			_estado = B_Espera;
+			break;
+		}
+		case 3:
 		{
 			_estado = N_Win;
 			break;
 		}
 		}
-		/*
-				int jaqueNegras;
-			jaqueNegras = jaque();
-			if (jaqueNegras == 1) // no jaque
-			{
-				_estado = N_Espera;
-			}
-			if (jaqueNegras == 2) // jaque mate, ganan las blancas
-			{
-				_estado = B_Win;
-			}
-			if (jaqueNegras == 3) //jaque
-			{
-				//aviso en pantalla de que negras esta en jaque
-				_estado = N_Espera;
-			}
-			*/
 		break;
 	}
-	/*
-	case N_CompMov:
+	default: //para las pantllas de vistoria espera un poco para ver la notificacion
 	{
-		int stateN = jaque();
-		if (stateN != 0)
-			_estado = B_Espera;
-	}
-	case B_Win:
-	{
-
-	}
-	case N_Win:
-	{
-
-	}
-	*/
-	default:
+		Sleep(1500);
 		break;
+	}
+
 	}
 }
 void Ajedrez::AplicarGravedad()
@@ -227,10 +168,10 @@ bool Ajedrez::jaquemate()
 	bool jaque = true;
 	switch (_estado)
 	{
-	case B_Comprobar_Jaques:
+	case N_Comprobar_Jaques:	//comprueba si las negras dan jaque a las blancas
 	{
 		coloramenazado = Dominio::Blanca;
-		Tablero copia_jaquemate = _tablero;
+		Tablero copia_jaquemate(_tablero);
 		std::vector<Casilla> copy;
 		std::vector<Pieza*> piezasdef;
 		std::vector<Pieza*> piezasat;
@@ -313,7 +254,7 @@ bool Ajedrez::jaquemate()
 
 		}
 	}
-	case N_Comprobar_Jaques:
+	case B_Comprobar_Jaques: // comprobamos si las blancas dan jaque a las negras
 	{
 		coloramenazado = Dominio::Blanca;
 		Tablero copia_jaquemate = _tablero;
@@ -404,7 +345,6 @@ bool Ajedrez::jaquemate()
 	}
 	return true;
 }
-
 int Ajedrez::jaque()
 {
 	bool jaque = false;
@@ -412,50 +352,28 @@ int Ajedrez::jaque()
 	Dominio dom;
 	switch (_estado)
 	{
-	case B_Comprobar_Jaques: //jaque de negras sobre blancas
+	case N_Comprobar_Jaques: //jaque de negras sobre blancas
 	{
 
-		for (size_t i = 0; i < _tablero.getTablero().size(); i++) //recorremos todas las casillas
+		jaque = _j1.ComprobarJaque();
+		if (jaque == true) //si se cumple, hará llamada a jaquemate
 		{
-			for (size_t k = 0; k < _j1.getPiezas().size(); k++)
-			{
-
-				if ((_tablero.getTablero()[i].getPosicion().x == _j1.getPiezas()[k]->getCasilla()->getPosicion().x) && (_tablero.getTablero()[i].getPosicion().y == _j1.getPiezas()[k]->getCasilla()->getPosicion().y)) //cuando encontra la pieza que coincide con esas coordenadas
-					if (_j1.getPiezas()[k]->getT_Pieza() == t_pieza::REY)//comprueba si se trata del rey
-						jaque = _tablero.getTablero()[i].getAmenaza();//si es rey, comprueba si esta amenazado, siendo true si lo está
-			}
-			if (jaque == true) //si se cumple, hará llamada a jaquemate
-			{
-				//checkmate = jaquemate();
-				if (checkmate == true)	return 2; //hay jaque mate				}
-				else return 3;//hay jaque
-			}
-
-		
-
+			//checkmate = jaquemate();
+			if (checkmate == true)	return 3; //hay jaque mate				}
+			else return 2;//hay jaque
 		}
 		return 1;
 		break;
 	}
-	case N_Comprobar_Jaques: //jaque de blancas sobre negras
+	case B_Comprobar_Jaques: //jaque de blancas sobre negras
 	{
-		for (size_t i = 0; i < _tablero.getTablero().size(); i++) //recorremos todas las casillas
+		jaque = _j2.ComprobarJaque();
+
+		if (jaque == true) //si se cumple, hará llamada a jaquemate
 		{
-			for (size_t k = 0; k < _j2.getPiezas().size(); k++)
-			{
-
-				if ((_tablero.getTablero()[i].getPosicion().x == _j2.getPiezas()[k]->getCasilla()->getPosicion().x) && (_tablero.getTablero()[i].getPosicion().y == _j2.getPiezas()[k]->getCasilla()->getPosicion().y)) //cuando encontra la pieza que coincide con esas coordenadas
-					if (_j2.getPiezas()[k]->getT_Pieza() == t_pieza::REY)//comprueba si se trata del rey
-						jaque = _tablero.getTablero()[i].getAmenaza();//si es rey, comprueba si esta amenazado, siendo true si lo está
-			}
-			if (jaque == true) //si se cumple, hará llamada a jaquemate
-			{
-				//checkmate = jaquemate();
-				if (checkmate == true)	return 2; //hay jaque mate				}
-				else return 3;//hay jaque
-			}
-
-
+			//checkmate = jaquemate();
+			if (checkmate == true)	return 3; //hay jaque mate				}
+			else return 2;//hay jaque
 		}
 		return 1;
 		break;
@@ -636,12 +554,6 @@ void Ajedrez::tecla_especial(unsigned char key)
 		}
 		break;
 	}
-	case GLUT_KEY_HOME:
-	{
-		exit(0);
-		break;
-	}
-
 	default:
 		break;
 	}
@@ -709,17 +621,18 @@ void Ajedrez::mover()
 	_j1.mover();
 	_j2.mover();
 }
-void Ajedrez::Notificacion(Color col)
+void Ajedrez::Notificacion(Color col, bool mate, int& tempo)
 {
 	if (col == Color::Blanco) ETSIDI::setTextColor(0.7843, 0.5686, 0.0980);
-	else ETSIDI::setTextColor(0.4274, 0.4313, 0.4);
+	else ETSIDI::setTextColor(0.4374, 0.4413, 0.35);
 
-	ETSIDI::setFont("fuentes/Action Man Shaded Italic.ttf", 48);
-	ETSIDI::printxy("JAQUE", -4, 9);
-	glutPostRedisplay();
-	glutSwapBuffers();
-	Sleep(20);
-
+	ETSIDI::setFont("fuentes/A.C.M.E. Secret Agent.ttf", 48);
+	if (mate)
+		ETSIDI::printxy("JAQUE MATE", -5, 16);
+	else
+		ETSIDI::printxy("JAQUE", -2, 16);
+	tempo--;
+	glutPostOverlayRedisplay();
 }
 void Ajedrez::dibujar()
 {
@@ -728,21 +641,6 @@ void Ajedrez::dibujar()
 		0.0, 7.5, 0.0, // hacia que punto mira (0,7.5,0) 
 		0.0, 1.0, 0.0); // definimos hacia arriba (eje Y) 	
 
-	if (_estado == B_Espera)
-	{
-		_j1.dibujar(Color::Blanco, 1);
-		_j2.dibujar(Color::Negro);
-	}
-	else if (_estado == N_Espera)
-	{
-		_j2.dibujar(Color::Negro, 1);
-		_j1.dibujar(Color::Blanco);
-	}
-	else
-	{
-		_j1.dibujar(Color::Blanco);
-		_j2.dibujar(Color::Negro);
-	}
 	_tablero.dibujar();
 
 	//dibuja la mesa
@@ -758,6 +656,53 @@ void Ajedrez::dibujar()
 	glEnd();
 	glEnable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
+
+
+	switch (_estado)
+	{
+	case B_Espera:
+	{
+		_j1.dibujar(Color::Blanco, 1);
+		_j2.dibujar(Color::Negro);
+		if (tempo > 0)
+		{
+			Notificacion(Color::Negro, 0, tempo);
+		}
+		break;
+	}
+	case N_Espera:
+	{
+		_j2.dibujar(Color::Negro, 1);
+		_j1.dibujar(Color::Blanco);
+		if (tempo > 0)
+		{
+			Notificacion(Color::Blanco, 0, tempo);
+		}
+		break;
+	}
+	case B_Win:
+	{
+		Notificacion(Color::Blanco, 1, tempo);
+		_j1.dibujar(Color::Blanco);
+		_j2.dibujar(Color::Negro);
+		break;
+	}
+	case N_Win:
+	{
+		Notificacion(Color::Negro, 1, tempo);
+		_j1.dibujar(Color::Blanco);
+		_j2.dibujar(Color::Negro);
+		break;
+	}
+	default:
+	{
+		_j1.dibujar(Color::Blanco);
+		_j2.dibujar(Color::Negro);
+		break;
+	}
+	}
+
+	
 
 }
 
