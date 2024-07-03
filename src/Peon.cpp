@@ -13,9 +13,9 @@ void Peon::PosiblesMov(const std::vector<Casilla>& tab)
 	Casilla aux = *_myCasilla;
 
 	aux = getCasilla_copia(aux, Vector2D{ (int)_color, 0 }, tab);
-	validarCasilla(aux, false);
+	continuar = validarCasilla(aux, false);
 
-	if (_primermov)
+	if (continuar && _primermov)
 	{
 		aux = getCasilla_copia(aux, Vector2D{ (int)_color, 0 }, tab);
 		validarCasilla(aux, false);
@@ -68,15 +68,16 @@ std::ostream& Peon::operator<< (std::ostream& o) const
 	return o;
 }
 
-void Peon::validarCasilla(Casilla destino, bool com)
+bool Peon::validarCasilla(Casilla destino, bool com)
 {
+	// devuelve true si la casilla es valida
 	Casilla aux = destino;
 	Dominio ocupacion = destino.getOcupacion();
 
-	if (destino.getPosicion() == out_of_bounds)	return;
-	else if (ocupacion == this->_color) return;
-	else if (!com && ocupacion != Dominio::Vacio) return;
-	else if (com && ocupacion == Dominio::Vacio) return;
+	if (destino.getPosicion() == out_of_bounds)	return false;
+	else if (ocupacion == this->_color) return false;
+	else if (!com && ocupacion != Dominio::Vacio) return false;
+	else if (com && ocupacion == Dominio::Vacio) return false;
 	if (!com) aux.setMover(true);
 
 	else 
@@ -85,6 +86,6 @@ void Peon::validarCasilla(Casilla destino, bool com)
 		aux.setComer(true);
 	}
 	_posiblesMov.push_back(aux);
-
+	return true;
 }
 

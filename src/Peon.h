@@ -24,5 +24,5 @@ public:
 private:
 	bool _primermov;
 
-	void validarCasilla(Casilla c, bool com);
+	bool validarCasilla(Casilla c, bool com);
 };
