@@ -243,7 +243,7 @@ bool Ajedrez::jaquemate()
 			//Jugador Jatacante_iteracionB(_j1, copia_t_it.getTablero());//copiamos los valores originales copiados para resetear los movimientos comprobados
 			//cada iteracion se reinician las posiciones de las piezas para evitar que se acumulen los cambios de las simulaciones
 			//for (auto p : _j2.getPiezas()[i]->get_PosMov())
-			for(size_t j=0; j<_j2.getPiezas()[i]->get_PosMov().size(); j++)
+			for(size_t j=0; j<Jamenazado_iteracionB.getPiezas()[i]->get_PosMov().size(); j++)
 			{
 				std::cout << "\nsegundo bucle=recorriendo pos mov\n";
 				copia_t_it = _tablero;
@@ -251,22 +251,31 @@ bool Ajedrez::jaquemate()
 				Jamenazado_iteracionB = _j2;
 				copia_t_it.ClearAmenazas();
 				Jatacante_iteracionB.ActualizarAmenazas(copia_t_it.getTablero());
-				for (size_t m = 0; m < _tablero.getTablero().size(); m++) //buscamos la casilla destino
+				for (size_t m = 0; m < copia_t_it.getTablero().size(); m++) //buscamos la casilla destino
 				{
 					Jatacante_iteracionB = _j1;
 					Jamenazado_iteracionB = _j2;
 					//copia_t_it.ClearAmenazas();
 					//Jatacante_iteracionB.ActualizarAmenazas(copia_t_it.getTablero());
 					std::cout << "\n tercer bucle=buscando casilla destino\n";
-					if ((copia_t_it.getTablero()[m].getPosicion() == _j2.getPiezas()[i]->get_PosMov()[j].getPosicion()))//encuentra la casilla seleccionada para mover
+					if ((copia_t_it.getTablero()[m].getPosicion() == Jamenazado_iteracionB.getPiezas()[i]->get_PosMov()[j].getPosicion()))//encuentra la casilla seleccionada para mover
 					{
 						std::cout << "\nborrarpieza\n";
+						//Jamenazado_iteracionB.getPiezas()[i]->setCasilla(&copia_t_it.getTablero()[m]);//colocamos la pieza a mover a
+						Vector2D in;
+						in.x = i; //indice pos pieza
+						in.y = m;//indice pos casilla
+						//if((Jamenazado_iteracionB.getPiezas()[i]->getT_Pieza() == t_pieza::REY)&&(_tablero.getTablero()[m].getProteccion()==true))
+						Jamenazado_iteracionB.ActualizarMovimiento(in, copia_t_it.getTablero());
 						Jatacante_iteracionB.BorrarPieza(copia_t_it.getTablero()[m]);//si hay una pieza enemiga en ese casilla, la borra
-						Jamenazado_iteracionB.getPiezas()[i]->setCasilla(&copia_t_it.getTablero()[m]);//colocamos la pieza a mover a
-						Jamenazado_iteracionB.AplicarGravedad(Jamenazado_iteracionB.getPiezas()[i]->getCasilla(), copia_t_it.getTablero());//comprobamos gravedad para el caso de que se haya movido a una casilla sin pieza debajo
+						//Jamenazado_iteracionB.AplicarGravedad(Jamenazado_iteracionB.getPiezas()[i]->getCasilla(), copia_t_it.getTablero());//comprobamos gravedad para el caso de que se haya movido a una casilla sin pieza debajo
 						//Jamenazado_iteracion.CambiarTablero(copia_t_it.getTablero());
 						//Jatacante_iteracion.CambiarTablero(copia_t_it.getTablero());
 						copia_t_it.ClearAmenazas();
+						for (auto k : Jatacante_iteracionB.getPiezas())
+						{
+							k->ActualizarTablero(copia_t_it.getTablero());
+						}
 						Jatacante_iteracionB.ActualizarAmenazas(copia_t_it.getTablero());
 						jaqueit=Jamenazado_iteracionB.ComprobarJaque();
 						if (jaqueit == false)

@@ -20,6 +20,7 @@ Jugador& Jugador::operator=(const Jugador& player)
 		for (int n = 0; n < player._misPiezas.size(); n++)
 		{
 			CrearPieza(player._misPiezas[n]->getCasilla(), player._misPiezas[n]->getColor(), player._misPiezas[n]->getT_Pieza());
+			*_misPiezas[n] = *player._misPiezas[n];
 		}
 
 		_pos = player._pos;
