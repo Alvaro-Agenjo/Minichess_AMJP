@@ -3,7 +3,8 @@
 Ajedrez::Ajedrez() :
 	_estado(GameState::Creaccion),
 	_j1(_tablero.getTablero(), Color::Blanco),
-	_j2(_tablero.getTablero(), Color::Negro)
+	_j2(_tablero.getTablero(), Color::Negro),
+	copia_t_it{}
 {
 	std::cout << "Todo creado" << std::endl;
 	_estado = GameState::B_Actualizar_Amenazas;
@@ -173,14 +174,20 @@ bool Ajedrez::jaquemate()
 	{
 	case N_Comprobar_Jaques:	//comprueba si las negras dan jaque a las blancas
 	{
+		/*
+		bool jaqueit;
 		Tablero copia_jaquemate(_tablero);
 		std::vector<Pieza*> piezasdef;
 		std::vector<Casilla> movimientospieza;
 		for (size_t i = 0; i < _j1.getPiezas().size(); i++) //recorremos todas las piezas del jugador
 		{
 			Tablero copia_t_it(_tablero);
-			Jugador Jamenazado_iteracion(_j1,copia_t_it.getTablero());
-			Jugador Jatacante_iteracion(_j2,copia_t_it.getTablero());//copiamos los valores originales copiados para resetear los movimientos comprobados
+			Jugador Jamenazado_iteracion(_j1);
+			Jamenazado_iteracion.CambiarTablero(copia_t_it.getTablero());
+			Jugador Jatacante_iteracion(_j2);
+			Jatacante_iteracion.CambiarTablero(copia_t_it.getTablero());
+			//Jugador Jamenazado_iteracion(_j1,copia_t_it.getTablero());
+			//Jugador Jatacante_iteracion(_j2,copia_t_it.getTablero());//copiamos los valores originales copiados para resetear los movimientos comprobados
 			piezasdef = Jamenazado_iteracion.getPiezas();
 			//cada iteracion se reinician las posiciones de las piezas para evitar que se acumulen los cambios de las simulaciones
 			copia_t_it.ClearAmenazas();
@@ -209,49 +216,59 @@ bool Ajedrez::jaquemate()
 					}
 				}
 				//ahora que hemos movido la pieza, comprobamos si el rey esta amenazado todavia
-				bool jaqueit;
+
 				jaqueit = Jamenazado_iteracion.ComprobarJaque();
 				if (jaqueit == false)
 					return false;
 			}
 
-		}
-	return true;
+		}*/
+		return false;
+
 	}
 	case B_Comprobar_Jaques: // comprobamos si las blancas dan jaque a las negras
 	{
-		Tablero copia_jaquemate(_tablero);
-		std::vector<Pieza*> piezasdef;
-		std::vector<Casilla> movimientospieza;
-		for (size_t i = 0; i < _j2.getPiezas().size(); i++) //recorremos todas las piezas del jugador
+		copia_t_it = _tablero;
+		bool jaqueit{ true };
+		//Tablero copia_jaquemate(_tablero);
+		//std::vector<Pieza*> piezasdef;
+		//std::vector<Casilla> movimientospieza;
+		Jugador Jatacante_iteracionB(_j1, copia_t_it.getTablero());
+		Jugador Jamenazado_iteracionB(_j2, copia_t_it.getTablero());
+		for (size_t i = 0; i < Jamenazado_iteracionB.getPiezas().size(); i++) //recorremos todas las piezas del jugador
 		{
 			std::cout << "\nprimer bucle=recorriendo piezas\n";
-			Tablero copia_t_it(_tablero);
-			//Jugador Jamenazado_iteracion(_j2, copia_t_it.getTablero());
-			Jugador Jamenazado_iteracion(_j2);
-			Jamenazado_iteracion.CambiarTablero(copia_t_it.getTablero());
-			Jugador Jatacante_iteracion(_j1);
-			Jatacante_iteracion.CambiarTablero(copia_t_it.getTablero());
-			//Jugador Jatacante_iteracion(_j1, copia_t_it.getTablero());//copiamos los valores originales copiados para resetear los movimientos comprobados
+			//Tablero copia_t_it(_tablero);
+			//Jugador Jamenazado_iteracionB(_j2, copia_t_it.getTablero());
+			//Jugador Jatacante_iteracionB(_j1, copia_t_it.getTablero());//copiamos los valores originales copiados para resetear los movimientos comprobados
 			//cada iteracion se reinician las posiciones de las piezas para evitar que se acumulen los cambios de las simulaciones
-			for (auto p : _j2.getPiezas()[i]->get_PosMov())
+			//for (auto p : _j2.getPiezas()[i]->get_PosMov())
+			for(size_t j=0; j<_j2.getPiezas()[i]->get_PosMov().size(); j++)
 			{
 				std::cout << "\nsegundo bucle=recorriendo pos mov\n";
+				copia_t_it = _tablero;
+				Jatacante_iteracionB = _j1;
+				Jamenazado_iteracionB = _j2;
 				copia_t_it.ClearAmenazas();
-				Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
-				for (size_t m = 0; m < copia_t_it.getTablero().size(); m++) //buscamos la casilla destino
+				Jatacante_iteracionB.ActualizarAmenazas(copia_t_it.getTablero());
+				for (size_t m = 0; m < _tablero.getTablero().size(); m++) //buscamos la casilla destino
 				{
+					Jatacante_iteracionB = _j1;
+					Jamenazado_iteracionB = _j2;
+					//copia_t_it.ClearAmenazas();
+					//Jatacante_iteracionB.ActualizarAmenazas(copia_t_it.getTablero());
 					std::cout << "\n tercer bucle=buscando casilla destino\n";
-					if ((copia_t_it.getTablero()[m].getPosicion() == p.getPosicion()))//encuentra la casilla seleccionada para mover
+					if ((copia_t_it.getTablero()[m].getPosicion() == _j2.getPiezas()[i]->get_PosMov()[j].getPosicion()))//encuentra la casilla seleccionada para mover
 					{
 						std::cout << "\nborrarpieza\n";
-						Jatacante_iteracion.BorrarPieza(copia_t_it.getTablero()[m]);//si hay una pieza enemiga en ese casilla, la borra
-						Jamenazado_iteracion.getPiezas()[i]->setCasilla(&copia_t_it.getTablero()[m]);//colocamos la pieza a mover a
-						Jamenazado_iteracion.AplicarGravedad(Jamenazado_iteracion.getPiezas()[i]->getCasilla(), copia_t_it.getTablero());//comprobamos gravedad para el caso de que se haya movido a una casilla sin pieza debajo
+						Jatacante_iteracionB.BorrarPieza(copia_t_it.getTablero()[m]);//si hay una pieza enemiga en ese casilla, la borra
+						Jamenazado_iteracionB.getPiezas()[i]->setCasilla(&copia_t_it.getTablero()[m]);//colocamos la pieza a mover a
+						Jamenazado_iteracionB.AplicarGravedad(Jamenazado_iteracionB.getPiezas()[i]->getCasilla(), copia_t_it.getTablero());//comprobamos gravedad para el caso de que se haya movido a una casilla sin pieza debajo
+						//Jamenazado_iteracion.CambiarTablero(copia_t_it.getTablero());
+						//Jatacante_iteracion.CambiarTablero(copia_t_it.getTablero());
 						copia_t_it.ClearAmenazas();
-						Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
-						bool jaqueit;
-						jaqueit = Jamenazado_iteracion.ComprobarJaque();
+						Jatacante_iteracionB.ActualizarAmenazas(copia_t_it.getTablero());
+						jaqueit=Jamenazado_iteracionB.ComprobarJaque();
 						if (jaqueit == false)
 							return false;
 					}
@@ -661,8 +678,6 @@ void Ajedrez::dibujar()
 	
 
 }
-
-
 std::ostream& Ajedrez::printTablero(std::ostream& o)
 {
 	int n = 0;

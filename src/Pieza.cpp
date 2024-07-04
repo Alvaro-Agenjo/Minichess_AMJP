@@ -235,7 +235,7 @@ bool Pieza::validarCasilla(const Casilla destino)
 	Dominio ocupacion = destino.getOcupacion();
 
 	if (posicion == out_of_bounds) return false;
-	else if (ocupacion == this->_color) return false;
+	if((ocupacion==this->_color)&& (this->_color == Color::Negro)) return false;
 	else if (p1) return false;
 
 	Casilla aux = destino;

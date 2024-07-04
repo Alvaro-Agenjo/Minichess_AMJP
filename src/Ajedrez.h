@@ -49,7 +49,7 @@ public:
 
 private:
 	GameState _estado;
-	Tablero _tablero;
+	Tablero _tablero, copia_t_it;
 	Jugador _j1, _j2;
 
 	//gráficos

@@ -27,6 +27,7 @@ public:
 
 	//Getters
 	inline Casilla* getCasilla() const { return _myCasilla; }
+	inline Casilla* getCasillait() { return _myCasilla; }
 	inline Color getColor() const { return _color; }
 	inline t_pieza getT_Pieza() const { return _t_pieza; }
 	inline bool getEn_Mov() const { return en_mov; }
