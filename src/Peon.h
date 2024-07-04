@@ -7,7 +7,7 @@ class Peon : public Pieza
 public:
 	//Constructor
 	Peon(Casilla* coord, Color col);
-	
+	//Peon& operator = (const Peon& pieza);
 	
 	//getters
 	

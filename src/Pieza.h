@@ -24,7 +24,7 @@ class Pieza
 public:
 	//Constructor
 	Pieza(Casilla* cas, Color col, t_pieza tp);
-
+	
 	//Getters
 	inline Casilla* getCasilla() const { return _myCasilla; }
 	inline Color getColor() const { return _color; }
@@ -34,6 +34,7 @@ public:
 	inline bool getSelected() const { return selected; }
 	//Setters
 	inline void Clear() { _posiblesMov.clear(); }
+	void BorrarMovimiento(int movimiento);
 	inline void setCasilla(Casilla* c) { _myCasilla = c; }
 	inline void setSelected(bool sel) { selected = sel; }
 	
@@ -47,6 +48,7 @@ public:
 	virtual bool ActualizarPosicion(std::vector<Casilla>& tab, int indice_c);
 	void ActualizarPosicion(Casilla* c);
 	void Gravedad(std::vector<Casilla>& tab);
+	int IndiceCasilla(const Vector2D pos, const std::vector<Casilla>& tab);
 
 	//graficos
 	void mover(double t);
@@ -65,7 +67,6 @@ protected:
 	//Metodos
 	Casilla getCasilla_copia(Casilla origen, Vector2D direccion, const std::vector<Casilla>& tab);
 	Casilla* getCasilla_ref(Casilla origen, Vector2D direccion, std::vector<Casilla>& tab);
-	int IndiceCasilla(const Vector2D pos, const std::vector<Casilla>& tab);
 	bool validarCasilla(const Casilla destino);
 
 	static bool p1;  //flag indica si ha encontrado una pieza enemiga a la que puede atacar

@@ -22,6 +22,15 @@ Pieza::Pieza(Casilla* cas, Color col, t_pieza tp) :
 	}
 }
 
+
+
+void Pieza::BorrarMovimiento(int movimiento)
+{
+	std::vector<Casilla>::iterator it;
+	it = _posiblesMov.begin() + movimiento;
+	_posiblesMov.erase(it);
+}
+
 void Pieza::ActualizarTablero(std::vector<Casilla>& tab)
 {
 	Vector2D posicion{};
@@ -74,7 +83,15 @@ void Pieza::Gravedad(std::vector<Casilla>& tab)
 	{
 		ActualizarPosicion(destino);
 	}
-
+}
+int Pieza::IndiceCasilla(const Vector2D pos, const std::vector<Casilla>& tab)
+{
+	for (int n = 0; n < tab.size(); n++)
+	{
+		if (pos == tab[n].getPosicion())
+			return n;
+	}
+	return -1;
 }
 
 
@@ -93,7 +110,7 @@ void Pieza::calcularMovimiento(Vector2D inicio, Vector2D destino, bool caida)
 	{
 		//ETSIDI::playMusica("sonidos/arrastrar.mp3");
 		ETSIDI::Vector2D v = static_cast<ETSIDI::Vector2D>(destino - inicio);
-		_velocidad = v.unit()*3;
+		_velocidad = v.unit() * 3;
 		_aceleracion = { 0,0 };
 	}
 	else
@@ -111,7 +128,7 @@ bool Pieza::distancia()
 		if (en_mov)
 		{
 			//ETSIDI::stopMusica();
-			ETSIDI::play("sonidos/poner_pieza.wav"); 
+			ETSIDI::play("sonidos/poner_pieza.wav");
 		}
 		_posicion = static_cast<ETSIDI::Vector2D> (correccion_tam * (_myCasilla->getPosicion() - offset_izda));
 		_velocidad = { 0,0 };
@@ -217,15 +234,6 @@ Casilla* Pieza::getCasilla_ref(Casilla origen, Vector2D direccion, std::vector<C
 		indice += 8 * direccion.y + direccion.x;
 		return &tab.at(indice);
 	}
-}
-int Pieza::IndiceCasilla(const Vector2D pos, const std::vector<Casilla>& tab)
-{
-	for (int n = 0; n < tab.size(); n++)
-	{
-		if (pos == tab[n].getPosicion())
-			return n;
-	}
-	return -1;
 }
 bool Pieza::validarCasilla(const Casilla destino)
 {

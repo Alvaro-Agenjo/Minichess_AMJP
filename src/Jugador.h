@@ -21,6 +21,7 @@ public:
 
 	//setters
 	void BorrarPieza(Casilla & c);
+	void BorrarMovimiento(int pieza, int movimiento);
 	void CambiarTablero( std::vector<Casilla>& tab);
 	void modificarPosicion(Vector2D dir);
 	inline void GRAPH_setPrimero(bool bo) { primero = bo; }
@@ -41,7 +42,8 @@ public:
 	bool HayMovimiento();
 	
 	//jaques?
-	bool ComprobarJaque();
+	//devuelve true si el rey esta amenazado;
+	bool ComprobarJaque();	
 	//Gr�ficos
 	void mover();
 	void dibujar(Color c ,int tipo = 0);

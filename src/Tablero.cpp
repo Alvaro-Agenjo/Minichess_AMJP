@@ -24,7 +24,9 @@ Tablero& Tablero::operator=(const Tablero& tab)
 	{
 		for (int n = 0; n < tab._tablero.size(); n++)
 		{
-			_tablero.push_back(tab._tablero[n]);
+			Casilla* aux = new Casilla();
+			*aux = tab._tablero[n];
+			_tablero.push_back(*aux);
 		}
 	}
 	return *this;

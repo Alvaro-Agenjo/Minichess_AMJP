@@ -1,4 +1,6 @@
 #include "Ajedrez.h"
+//????
+#include <algorithm>
 
 Ajedrez::Ajedrez() :
 	_estado(GameState::Creaccion),
@@ -167,147 +169,185 @@ void Ajedrez::AplicarGravedad()
 
 bool Ajedrez::jaquemate()
 {
-
-	bool jaque;
 	switch (_estado)
 	{
-	case N_Comprobar_Jaques:	//comprueba si las negras dan jaque a las blancas
+	case N_Comprobar_Jaques:	//comprueba si las negras dan jaque mate a las blancas
 	{
-		Tablero copia_jaquemate(_tablero);
-		std::vector<Pieza*> piezasdef;
-		std::vector<Casilla> movimientospieza;
-		for (size_t i = 0; i < _j1.getPiezas().size(); i++) //recorremos todas las piezas del jugador
+		for (int n = 0; n < _j1.getPiezas().size(); n++)
 		{
-			Tablero copia_t_it(_tablero);
-			Jugador Jamenazado_iteracion(_j1,copia_t_it.getTablero());
-			Jugador Jatacante_iteracion(_j2,copia_t_it.getTablero());//copiamos los valores originales copiados para resetear los movimientos comprobados
-			piezasdef = Jamenazado_iteracion.getPiezas();
-			//cada iteracion se reinician las posiciones de las piezas para evitar que se acumulen los cambios de las simulaciones
-			copia_t_it.ClearAmenazas();
-			Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
-			Jamenazado_iteracion.PosiblesMov(copia_t_it.getTableroConst());
-			for (size_t j = 0; j < Jamenazado_iteracion.getPiezas()[i]->get_PosMov().size(); j++)//con este bucle recorreremos los posibles movimientos de la pieza
+			for (int m = 0; m < _j1.getPiezas()[n]->get_PosMov().size(); m++)
 			{
-				Vector2D posmovelegido;
-				posmovelegido = Jamenazado_iteracion.getPiezas()[i]->get_PosMov()[j].getPosicion();
-	
-				copia_t_it.ClearAmenazas();
-				Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
-				Dominio dom;
-				//movemos la pieza "i" a la posicion del posible movimimiento "j".
-				Jamenazado_iteracion.getPiezas()[i]->setCasilla(&Jamenazado_iteracion.getPiezas()[i]->get_PosMov()[j]);
-				for (size_t m = 0; m < copia_t_it.getTablero().size(); m++) //buscamos la casilla destino
+				Tablero Copia(_tablero);
+				Jugador blancas(_j1, _tablero.getTablero());
+				Jugador negras(_j2, _tablero.getTablero());
+				Vector2D indice_mate{ n,blancas.getPiezas()[n]->IndiceCasilla(blancas.getPiezas()[n]->get_PosMov()[m].getPosicion(),Copia.getTableroConst()) };
+				///////////////////////////////////////////////
+				printTablero();
+				std::cout << std::endl;
+				int n = 0;
+				std::ostream& o= std::cout;
+				for (const Casilla& cas : _tablero.getTableroConst())
 				{
-					//Vector2D posacomerit = copia_t_it.getTablero()[m].getPosicion();
-					if (copia_t_it.getTablero()[m].getPosicion() == Jamenazado_iteracion.getPiezas()[i]->get_PosMov()[j].getPosicion())//encuentra la casilla seleccionada para mover
+					if (cas.getOcupacion() == Dominio::Vacio)
 					{
-						Jatacante_iteracion.BorrarPieza(copia_t_it.getTablero()[m]);//si hay una pieza enemiga en ese casilla, la borra
-						Jamenazado_iteracion.getPiezas()[i]->setCasilla(&copia_t_it.getTablero()[m]);//colocamos la pieza a mover a
-						Jamenazado_iteracion.AplicarGravedad(Jamenazado_iteracion.getPiezas()[i]->getCasilla(),copia_t_it.getTablero());//comprobamos gravedad para el caso de que se haya movido a una casilla sin pieza debajo
-						copia_t_it.ClearAmenazas();
-						Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
+						cas.print(o);
 					}
-				}
-				//ahora que hemos movido la pieza, comprobamos si el rey esta amenazado todavia
-				bool jaqueit;
-				jaqueit = Jamenazado_iteracion.ComprobarJaque();
-				if (jaqueit == false)
-					return false;
-			}
+					else if (cas.getOcupacion() == Dominio::Blanca)
+					{
+						_j1.print(o, cas);
+					}
+					else _j2.print(o, cas);
 
-		}
-	return true;
-	}
-	case B_Comprobar_Jaques: // comprobamos si las blancas dan jaque a las negras
-	{
-		Tablero copia_jaquemate(_tablero);
-		std::vector<Pieza*> piezasdef;
-		std::vector<Casilla> movimientospieza;
-		for (size_t i = 0; i < _j2.getPiezas().size(); i++) //recorremos todas las piezas del jugador
-		{
-			std::cout << "\nprimer bucle=recorriendo piezas\n";
-			Tablero copia_t_it(_tablero);
-			//Jugador Jamenazado_iteracion(_j2, copia_t_it.getTablero());
-			Jugador Jamenazado_iteracion(_j2);
-			Jamenazado_iteracion.CambiarTablero(copia_t_it.getTablero());
-			Jugador Jatacante_iteracion(_j1);
-			Jatacante_iteracion.CambiarTablero(copia_t_it.getTablero());
-			//Jugador Jatacante_iteracion(_j1, copia_t_it.getTablero());//copiamos los valores originales copiados para resetear los movimientos comprobados
-			//cada iteracion se reinician las posiciones de las piezas para evitar que se acumulen los cambios de las simulaciones
-			for (auto p : _j2.getPiezas()[i]->get_PosMov())
-			{
-				std::cout << "\nsegundo bucle=recorriendo pos mov\n";
-				copia_t_it.ClearAmenazas();
-				Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
-				for (size_t m = 0; m < copia_t_it.getTablero().size(); m++) //buscamos la casilla destino
-				{
-					std::cout << "\n tercer bucle=buscando casilla destino\n";
-					if ((copia_t_it.getTablero()[m].getPosicion() == p.getPosicion()))//encuentra la casilla seleccionada para mover
+					//separacion cada 8 casillas
+					n++;
+					if (n == 8)
 					{
-						std::cout << "\nborrarpieza\n";
-						Jatacante_iteracion.BorrarPieza(copia_t_it.getTablero()[m]);//si hay una pieza enemiga en ese casilla, la borra
-						Jamenazado_iteracion.getPiezas()[i]->setCasilla(&copia_t_it.getTablero()[m]);//colocamos la pieza a mover a
-						Jamenazado_iteracion.AplicarGravedad(Jamenazado_iteracion.getPiezas()[i]->getCasilla(), copia_t_it.getTablero());//comprobamos gravedad para el caso de que se haya movido a una casilla sin pieza debajo
-						copia_t_it.ClearAmenazas();
-						Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
-						bool jaqueit;
-						jaqueit = Jamenazado_iteracion.ComprobarJaque();
-						if (jaqueit == false)
-							return false;
+						o << std::endl;
+						n = 0;
 					}
 				}
-			}
-			/*for (size_t j = 0; j < Jamenazado_iteracion.getPiezas()[i]->get_PosMov().size(); j++)//con este bucle recorreremos los posibles movimientos de la pieza
-			{
-				std::cout << "\nsegundo bucle=recorriendo pos mov\n";
-				Vector2D posmovelegido;
-				posmovelegido = Jamenazado_iteracion.getPiezas()[i]->get_PosMov()[j].getPosicion();
+				std::cout << std::endl;
+				std::cout << std::endl;
+				std::cout << std::endl;
+				///////////////////////////////////////////////////
+				
+				blancas.ActualizarMovimiento(indice_mate,Copia.getTablero());
+				
+				///////////////////////////////////////////////
+				printTablero();
+				std::cout << std::endl;
+				n = 0;
+				for (const Casilla& cas : _tablero.getTableroConst())
+				{
+					if (cas.getOcupacion() == Dominio::Vacio)
+					{
+						cas.print(o);
+					}
+					else if (cas.getOcupacion() == Dominio::Blanca)
+					{
+						_j1.print(o, cas);
+					}
+					else _j2.print(o, cas);
 
-				copia_t_it.ClearAmenazas();
-				Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
-				//movemos la pieza "i" a la posicion del posible movimimiento "j".
-				//Jamenazado_iteracion.getPiezas()[i]->setCasilla(&Jamenazado_iteracion.getPiezas()[i]->get_PosMov()[j]);
-				for (size_t m = 0; m < copia_t_it.getTablero().size(); m++) //buscamos la casilla destino
-				{
-					std::cout << "\n tercer bucle=buscando casilla destino\n";
-					//Vector2D posacomerit = copia_t_it.getTablero()[m].getPosicion();
-					if ((copia_t_it.getTablero()[m].getPosicion() == Jamenazado_iteracion.getPiezas()[i]->get_PosMov()[j].getPosicion())&&(copia_t_it.getTablero()[m].getOcupacion()==Jatacante_iteracion.getPiezas()[0]->getCasilla()->getOcupacion()))//encuentra la casilla seleccionada para mover
+					//separacion cada 8 casillas
+					n++;
+					if (n == 8)
 					{
-						std::cout << "\nborrarpieza\n";
-						Jatacante_iteracion.BorrarPieza(copia_t_it.getTablero()[m]);//si hay una pieza enemiga en ese casilla, la borra
-						Jamenazado_iteracion.getPiezas()[i]->setCasilla(&copia_t_it.getTablero()[m]);//colocamos la pieza a mover a
-						Jamenazado_iteracion.AplicarGravedad(Jamenazado_iteracion.getPiezas()[i]->getCasilla(), copia_t_it.getTablero());//comprobamos gravedad para el caso de que se haya movido a una casilla sin pieza debajo
-						copia_t_it.ClearAmenazas();
-						Jatacante_iteracion.ActualizarAmenazas(copia_t_it.getTablero());
-						bool jaqueit;
-						jaqueit = Jamenazado_iteracion.ComprobarJaque();
-						if (jaqueit == false)
-							return false;
+						o << std::endl;
+						n = 0;
 					}
 				}
+				std::cout << std::endl;
+				std::cout << std::endl;
+				std::cout << std::endl;
+				///////////////////////////////////////////////////
+
+
+
+				negras.BorrarPieza(Copia.getTablero()[indice_mate.y]);
+				AplicarGravedad();
+				Copia.ClearAmenazas();
+				negras.ActualizarAmenazas(Copia.getTablero());
+				if (!blancas.ComprobarJaque()) return false;
 			}
-			*/
 		}
 		return true;
 	}
+	case B_Comprobar_Jaques: // comprobamos si las blancas dan jaque mate a las negras
+	{
+		for (int n = 0; n < _j2.getPiezas().size(); n++)
+		{
+			for (int m = 0; m < _j2.getPiezas()[n]->get_PosMov().size(); m++)
+			{
+				Tablero Copia(_tablero);
+				Jugador blancas(_j1, _tablero.getTablero());
+				Jugador negras(_j2, _tablero.getTablero());
+				Vector2D indice_mate{ n,negras.getPiezas()[n]->IndiceCasilla(negras.getPiezas()[n]->get_PosMov()[m].getPosicion(),Copia.getTableroConst()) };
 
+				///////////////////////////////////////////////
+				printTablero();
+				std::cout << std::endl;
+				int n = 0;
+				std::ostream& o = std::cout;
+				for (const Casilla& cas : _tablero.getTableroConst())
+				{
+					if (cas.getOcupacion() == Dominio::Vacio)
+					{
+						cas.print(o);
+					}
+					else if (cas.getOcupacion() == Dominio::Blanca)
+					{
+						_j1.print(o, cas);
+					}
+					else _j2.print(o, cas);
+
+					//separacion cada 8 casillas
+					n++;
+					if (n == 8)
+					{
+						o << std::endl;
+						n = 0;
+					}
+				}
+				std::cout << std::endl;
+				std::cout << std::endl;
+				std::cout << std::endl;
+				///////////////////////////////////////////////////
+
+				negras.ActualizarMovimiento(indice_mate, Copia.getTablero());
+
+				///////////////////////////////////////////////
+				printTablero();
+				std::cout << std::endl;
+				n = 0;
+				for (const Casilla& cas : _tablero.getTableroConst())
+				{
+					if (cas.getOcupacion() == Dominio::Vacio)
+					{
+						cas.print(o);
+					}
+					else if (cas.getOcupacion() == Dominio::Blanca)
+					{
+						_j1.print(o, cas);
+					}
+					else _j2.print(o, cas);
+
+					//separacion cada 8 casillas
+					n++;
+					if (n == 8)
+					{
+						o << std::endl;
+						n = 0;
+					}
+				}
+				std::cout << std::endl;
+				std::cout << std::endl;
+				std::cout << std::endl;
+				///////////////////////////////////////////////////
+
+				
+				blancas.BorrarPieza(Copia.getTablero()[indice_mate.y]);
+				AplicarGravedad();
+				Copia.ClearAmenazas();
+				blancas.ActualizarAmenazas(Copia.getTablero());
+				if (!negras.ComprobarJaque()) return false;
+			}
+		}
+		return true;
+	}
 	}
 }
 int Ajedrez::jaque()
 {
 	bool jaque = false;
 	bool checkmate = false;
-	Dominio dom;
 	switch (_estado)
 	{
 	case N_Comprobar_Jaques: //jaque de negras sobre blancas
 	{
-
-		jaque = _j1.ComprobarJaque();
-		if (jaque == true) //si se cumple, hará llamada a jaquemate
+		if (_j1.ComprobarJaque()) //si se cumple, hará llamada a jaquemate
 		{
-			checkmate = jaquemate();
-			if (checkmate == true)	return 3; //hay jaque mate				}
+			if (jaquemate())	return 3; //hay jaque mate				}
 			else return 2;//hay jaque
 		}
 		return 1;
@@ -554,14 +594,15 @@ void Ajedrez::tecla(unsigned char key)
 		}
 		break;
 	}
+
 	
-	/*
 	case 'z':
 	{
 	//debug posicion
 		printTablero();
 		break;
 	}
+	/*
 	case '1':
 	{
 	//debug color jaque
@@ -579,7 +620,7 @@ void Ajedrez::mover()
 	_j1.mover();
 	_j2.mover();
 }
-void Ajedrez::Notificacion(Color col, bool mate, int &tempo)
+void Ajedrez::Notificacion(Color col, bool mate, int& tempo)
 {
 	if (col == Color::Blanco) ETSIDI::setTextColor(0.7843, 0.5686, 0.0780);
 	else ETSIDI::setTextColor(0.05, 0.052, 0);
@@ -598,7 +639,7 @@ void Ajedrez::dibujar()
 		0.0, 7.5, 0.0, // hacia que punto mira (0,7.5,0) 
 		0.0, 1.0, 0.0); // definimos hacia arriba (eje Y) 	
 
-	
+
 	if (_estado == B_Espera)
 	{
 		_j1.dibujar(Color::Blanco, 1);
@@ -658,7 +699,7 @@ void Ajedrez::dibujar()
 			break;
 		}
 	}
-	
+
 
 }
 
