@@ -178,9 +178,10 @@ bool Ajedrez::jaquemate()
 			for (int m = 0; m < _j1.getPiezas()[n]->get_PosMov().size(); m++)
 			{
 				Tablero Copia(_tablero);
-				Jugador blancas(_j1, _tablero.getTablero());
-				Jugador negras(_j2, _tablero.getTablero());
+				Jugador blancas(_j1, Copia.getTablero());
+				Jugador negras(_j2, Copia.getTablero());
 				Vector2D indice_mate{ n,blancas.getPiezas()[n]->IndiceCasilla(blancas.getPiezas()[n]->get_PosMov()[m].getPosicion(),Copia.getTableroConst()) };
+				/*
 				///////////////////////////////////////////////
 				printTablero();
 				std::cout << std::endl;
@@ -210,9 +211,9 @@ bool Ajedrez::jaquemate()
 				std::cout << std::endl;
 				std::cout << std::endl;
 				///////////////////////////////////////////////////
-				
+				*/
 				blancas.ActualizarMovimiento(indice_mate,Copia.getTablero());
-				
+				/*
 				///////////////////////////////////////////////
 				printTablero();
 				std::cout << std::endl;
@@ -243,9 +244,9 @@ bool Ajedrez::jaquemate()
 				///////////////////////////////////////////////////
 
 
-
+				*/
 				negras.BorrarPieza(Copia.getTablero()[indice_mate.y]);
-				AplicarGravedad(_tablero, _j1, _j2);
+				AplicarGravedad(Copia, blancas, negras);
 				Copia.ClearAmenazas();
 				negras.ActualizarAmenazas(Copia.getTablero());
 				if (!blancas.ComprobarJaque()) return false;
@@ -263,7 +264,7 @@ bool Ajedrez::jaquemate()
 				Jugador blancas(_j1, Copia.getTablero());
 				Jugador negras(_j2, Copia.getTablero());
 				Vector2D indice_mate{ n,negras.getPiezas()[n]->IndiceCasilla(negras.getPiezas()[n]->get_PosMov()[m].getPosicion(),Copia.getTableroConst()) };
-
+/*
 				///////////////////////////////////////////////
 				printTablero();
 				std::cout << std::endl;
@@ -293,9 +294,10 @@ bool Ajedrez::jaquemate()
 				std::cout << std::endl;
 				std::cout << std::endl;
 				///////////////////////////////////////////////////
+				*/
 
 				negras.ActualizarMovimiento(indice_mate, Copia.getTablero());
-
+				/*
 				///////////////////////////////////////////////
 				printTablero();
 				std::cout << std::endl;
@@ -325,7 +327,7 @@ bool Ajedrez::jaquemate()
 				std::cout << std::endl;
 				///////////////////////////////////////////////////
 
-				
+				*/
 				blancas.BorrarPieza(Copia.getTablero()[indice_mate.y]);
 				AplicarGravedad(Copia, blancas, negras);
 				Copia.ClearAmenazas();
