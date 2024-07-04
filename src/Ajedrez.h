@@ -32,7 +32,7 @@ public:
 	
 	//otros
 	void Stateflow();
-	void AplicarGravedad();
+	void AplicarGravedad(Tablero& tab , Jugador &blancas, Jugador & negras);
 	bool jaquemate();
 	int jaque();
 	// Graficos

@@ -53,7 +53,7 @@ void Ajedrez::Stateflow()
 		else if (!HayMovimiento())
 		{
 			_j2.BorrarPieza(_tablero.getTablero()[indices.y]);
-			AplicarGravedad();
+			AplicarGravedad(_tablero,_j1,_j2);
 			caida = true;
 		}
 		break;
@@ -115,7 +115,7 @@ void Ajedrez::Stateflow()
 		else if (!HayMovimiento())
 		{
 			_j1.BorrarPieza(_tablero.getTablero()[indices.y]);
-			AplicarGravedad();
+			AplicarGravedad(_tablero, _j1, _j2);
 			caida = true;
 		}
 		break;
@@ -155,15 +155,15 @@ void Ajedrez::Stateflow()
 
 	}
 }
-void Ajedrez::AplicarGravedad()
+void Ajedrez::AplicarGravedad(Tablero & tab, Jugador & blancas, Jugador& negras)
 {
-	std::vector<Casilla*> cas_oc = _tablero.getCasillasOcupadas();
+	std::vector<Casilla*> cas_oc = tab.getCasillasOcupadas();
 	for (Casilla* casilla : cas_oc)
 	{
 		if (casilla->getOcupacion() == Dominio::Blanca)
-			_j1.AplicarGravedad(casilla, _tablero.getTablero());
+			blancas.AplicarGravedad(casilla, tab.getTablero());
 		else
-			_j2.AplicarGravedad(casilla, _tablero.getTablero());
+			negras.AplicarGravedad(casilla, tab.getTablero());
 	}
 }
 
@@ -245,7 +245,7 @@ bool Ajedrez::jaquemate()
 
 
 				negras.BorrarPieza(Copia.getTablero()[indice_mate.y]);
-				AplicarGravedad();
+				AplicarGravedad(_tablero, _j1, _j2);
 				Copia.ClearAmenazas();
 				negras.ActualizarAmenazas(Copia.getTablero());
 				if (!blancas.ComprobarJaque()) return false;
@@ -327,7 +327,7 @@ bool Ajedrez::jaquemate()
 
 				
 				blancas.BorrarPieza(Copia.getTablero()[indice_mate.y]);
-				AplicarGravedad();
+				AplicarGravedad(_tablero, _j1, _j2);
 				Copia.ClearAmenazas();
 				blancas.ActualizarAmenazas(Copia.getTablero());
 				if (!negras.ComprobarJaque()) return false;
