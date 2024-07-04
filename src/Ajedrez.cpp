@@ -260,8 +260,8 @@ bool Ajedrez::jaquemate()
 			for (int m = 0; m < _j2.getPiezas()[n]->get_PosMov().size(); m++)
 			{
 				Tablero Copia(_tablero);
-				Jugador blancas(_j1, _tablero.getTablero());
-				Jugador negras(_j2, _tablero.getTablero());
+				Jugador blancas(_j1, Copia.getTablero());
+				Jugador negras(_j2, Copia.getTablero());
 				Vector2D indice_mate{ n,negras.getPiezas()[n]->IndiceCasilla(negras.getPiezas()[n]->get_PosMov()[m].getPosicion(),Copia.getTableroConst()) };
 
 				///////////////////////////////////////////////
@@ -269,7 +269,7 @@ bool Ajedrez::jaquemate()
 				std::cout << std::endl;
 				int n = 0;
 				std::ostream& o = std::cout;
-				for (const Casilla& cas : _tablero.getTableroConst())
+				for (const Casilla& cas : Copia.getTableroConst())
 				{
 					if (cas.getOcupacion() == Dominio::Vacio)
 					{
@@ -277,9 +277,9 @@ bool Ajedrez::jaquemate()
 					}
 					else if (cas.getOcupacion() == Dominio::Blanca)
 					{
-						_j1.print(o, cas);
+						blancas.print(o, cas);
 					}
-					else _j2.print(o, cas);
+					else negras.print(o, cas);
 
 					//separacion cada 8 casillas
 					n++;
@@ -300,7 +300,7 @@ bool Ajedrez::jaquemate()
 				printTablero();
 				std::cout << std::endl;
 				n = 0;
-				for (const Casilla& cas : _tablero.getTableroConst())
+				for (const Casilla& cas : Copia.getTableroConst())
 				{
 					if (cas.getOcupacion() == Dominio::Vacio)
 					{
@@ -308,9 +308,9 @@ bool Ajedrez::jaquemate()
 					}
 					else if (cas.getOcupacion() == Dominio::Blanca)
 					{
-						_j1.print(o, cas);
+						blancas.print(o, cas);
 					}
-					else _j2.print(o, cas);
+					else negras.print(o, cas);
 
 					//separacion cada 8 casillas
 					n++;
@@ -327,7 +327,7 @@ bool Ajedrez::jaquemate()
 
 				
 				blancas.BorrarPieza(Copia.getTablero()[indice_mate.y]);
-				AplicarGravedad(_tablero, _j1, _j2);
+				AplicarGravedad(Copia, blancas, negras);
 				Copia.ClearAmenazas();
 				blancas.ActualizarAmenazas(Copia.getTablero());
 				if (!negras.ComprobarJaque()) return false;
