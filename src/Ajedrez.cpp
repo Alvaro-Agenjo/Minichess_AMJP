@@ -249,6 +249,11 @@ bool Ajedrez::jaquemate()
 				AplicarGravedad(Copia, blancas, negras);
 				Copia.ClearAmenazas();
 				negras.ActualizarAmenazas(Copia.getTablero());
+				// segun esta escrito ahora, cuando encuentra un posible movimiento que no es jaque para de comprobar.
+				//para que guarde los movimientos lo que haria seria si el movimiento te saca del jaque almacenas indice_mate, que contiene la pieza que mueves y la casilla donde la mueves, 
+				//y al final de comprobar los movimientos de una pieza limpias el vector de posibles movimientos en la original y le copias los del indice_mate que has almacenado
+
+				//la idea seria pasarlo a funciones dentro de jugador o otra clase.
 				if (!blancas.ComprobarJaque()) return false;
 			}
 		}
