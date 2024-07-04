@@ -29,7 +29,7 @@ public:
 
 	//getters
 	inline GameState getEstado() const { return _estado; }
-	
+	inline bool getWait() const { return wait; }
 	//otros
 	void Stateflow();
 	void AplicarGravedad(Tablero& tab , Jugador &blancas, Jugador & negras);
@@ -54,6 +54,7 @@ private:
 
 	//gráficos
 	bool HayMovimiento();
+	bool wait = false;
 };
 
 //tester

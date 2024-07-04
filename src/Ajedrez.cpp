@@ -53,7 +53,7 @@ void Ajedrez::Stateflow()
 		else if (!HayMovimiento())
 		{
 			_j2.BorrarPieza(_tablero.getTablero()[indices.y]);
-			AplicarGravedad(_tablero,_j1,_j2);
+			AplicarGravedad(_tablero, _j1, _j2);
 			caida = true;
 		}
 		break;
@@ -66,20 +66,24 @@ void Ajedrez::Stateflow()
 		{
 		case 1:
 		{
+			tempo = 0;
 			_estado = N_Espera;
 			break;
 		}
 		case 2:
 		{
-			std::cout << "\njaque\n";
+			//std::cout << "\njaque\n";
 			tempo = 150;
 			_estado = N_Espera;
 			break;
 		}
 		case 3:
 		{
-			std::cout << "\njaquemate\n";
-			tempo = 150;
+			//std::cout << "\njaquemate\n";
+			ETSIDI::stopMusica();
+			ETSIDI::play("sonidos/VICTORIA.wav");
+			tempo = 250;
+			wait = true;
 			_estado = B_Win;
 			break;
 		}
@@ -127,6 +131,7 @@ void Ajedrez::Stateflow()
 		{
 		case 1:
 		{
+			tempo = 0;
 			_estado = B_Espera;
 			break;
 		}
@@ -139,23 +144,23 @@ void Ajedrez::Stateflow()
 		}
 		case 3:
 		{
-			std::cout << "\njaquemate\n";
-			tempo = 150;
+			ETSIDI::stopMusica();
+			ETSIDI::play("sonidos/VICTORIA.wav");
+			tempo = 250;
+			wait = true;
 			_estado = N_Win;
 			break;
 		}
 		}
 		break;
 	}
-	default: //para las pantllas de vistoria espera un poco para ver la notificacion
-	{
-		Sleep(1500);
+	default: 
+	{		
 		break;
 	}
-
 	}
 }
-void Ajedrez::AplicarGravedad(Tablero & tab, Jugador & blancas, Jugador& negras)
+void Ajedrez::AplicarGravedad(Tablero& tab, Jugador& blancas, Jugador& negras)
 {
 	std::vector<Casilla*> cas_oc = tab.getCasillasOcupadas();
 	for (Casilla* casilla : cas_oc)
@@ -212,7 +217,7 @@ bool Ajedrez::jaquemate()
 				std::cout << std::endl;
 				///////////////////////////////////////////////////
 				*/
-				blancas.ActualizarMovimiento(indice_mate,Copia.getTablero());
+				blancas.ActualizarMovimiento(indice_mate, Copia.getTablero());
 				/*
 				///////////////////////////////////////////////
 				printTablero();
@@ -269,37 +274,37 @@ bool Ajedrez::jaquemate()
 				Jugador blancas(_j1, Copia.getTablero());
 				Jugador negras(_j2, Copia.getTablero());
 				Vector2D indice_mate{ n,negras.getPiezas()[n]->IndiceCasilla(negras.getPiezas()[n]->get_PosMov()[m].getPosicion(),Copia.getTableroConst()) };
-/*
-				///////////////////////////////////////////////
-				printTablero();
-				std::cout << std::endl;
-				int n = 0;
-				std::ostream& o = std::cout;
-				for (const Casilla& cas : Copia.getTableroConst())
-				{
-					if (cas.getOcupacion() == Dominio::Vacio)
-					{
-						cas.print(o);
-					}
-					else if (cas.getOcupacion() == Dominio::Blanca)
-					{
-						blancas.print(o, cas);
-					}
-					else negras.print(o, cas);
+				/*
+								///////////////////////////////////////////////
+								printTablero();
+								std::cout << std::endl;
+								int n = 0;
+								std::ostream& o = std::cout;
+								for (const Casilla& cas : Copia.getTableroConst())
+								{
+									if (cas.getOcupacion() == Dominio::Vacio)
+									{
+										cas.print(o);
+									}
+									else if (cas.getOcupacion() == Dominio::Blanca)
+									{
+										blancas.print(o, cas);
+									}
+									else negras.print(o, cas);
 
-					//separacion cada 8 casillas
-					n++;
-					if (n == 8)
-					{
-						o << std::endl;
-						n = 0;
-					}
-				}
-				std::cout << std::endl;
-				std::cout << std::endl;
-				std::cout << std::endl;
-				///////////////////////////////////////////////////
-				*/
+									//separacion cada 8 casillas
+									n++;
+									if (n == 8)
+									{
+										o << std::endl;
+										n = 0;
+									}
+								}
+								std::cout << std::endl;
+								std::cout << std::endl;
+								std::cout << std::endl;
+								///////////////////////////////////////////////////
+								*/
 
 				negras.ActualizarMovimiento(indice_mate, Copia.getTablero());
 				/*
@@ -602,21 +607,48 @@ void Ajedrez::tecla(unsigned char key)
 		break;
 	}
 
-	
+
 	case 'z':
 	{
-	//debug posicion
+		//debug posicione
 		printTablero();
 		break;
 	}
 	/*
 	case '1':
 	{
-	//debug color jaque
+		//debug color jaque
 		tempo = 150;
 		break;
 	}
 	*/
+	case 'n':
+	{
+		//debug jaque mate
+		ETSIDI::stopMusica();
+		ETSIDI::play("sonidos/VICTORIA.wav");
+		std::cout << "\njaquemate\n";
+		tempo = 250;
+		_estado = N_Win;
+		wait = true;
+		break;
+	}
+	case 'b':
+	{
+		//debug jaque mate
+		ETSIDI::stopMusica();
+		ETSIDI::play("sonidos/VICTORIA.wav");
+		std::cout << "\njaquemate\n";
+		tempo = 250;
+		_estado = B_Win;
+		wait = true;
+		break;
+	}
+	case 'r':
+	{
+		_estado = B_Actualizar_Amenazas;
+		wait = false;
+	}
 	default:
 		break;
 	}
@@ -632,9 +664,15 @@ void Ajedrez::Notificacion(Color col, bool mate, int& tempo)
 	if (col == Color::Blanco) ETSIDI::setTextColor(0.7843, 0.5686, 0.0780);
 	else ETSIDI::setTextColor(0.05, 0.052, 0);
 
-	ETSIDI::setFont("fuentes/A.C.M.E. Secret Agent.ttf", 48);
+	ETSIDI::setFont("fuentes/Action Man Shaded Italic.ttf", 48);
 	if (mate)
+	{
 		ETSIDI::printxy("JAQUE MATE", -5, 16);
+		if (col == Color::Blanco)
+			ETSIDI::printxy("Ganan  Blancas", -7, -3);
+		else
+			ETSIDI::printxy("Ganan Negras", -6, -3);
+	}
 	else
 		ETSIDI::printxy("JAQUE", -2, 16);
 	tempo--;
@@ -706,6 +744,8 @@ void Ajedrez::dibujar()
 			break;
 		}
 	}
+	else
+		wait = false;
 
 
 }
