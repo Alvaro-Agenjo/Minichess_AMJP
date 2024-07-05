@@ -9,6 +9,7 @@ bool Vector2D::out_of_bounds()
 	return false;
 }
 
+
 Vector2D::operator ETSIDI::Vector2D()
 {
 	ETSIDI::Vector2D aux;
@@ -16,6 +17,7 @@ Vector2D::operator ETSIDI::Vector2D()
 	aux.y = this->y;
 	return aux;
 }
+
 
 Vector2D& Vector2D::operator+=(int valor)
 {
@@ -31,7 +33,7 @@ Vector2D& Vector2D::operator+=(int valor)
 		this->x--;
 	}
 	return *this;
-}	 //avanzar casilla a casilla
+}
 Vector2D& Vector2D::operator+=(const Vector2D& rhs)
 {
 	this->x += rhs.x;
@@ -57,8 +59,11 @@ Vector2D operator-(Vector2D lhs, const Vector2D& rhs)
 	lhs -= rhs;
 	return lhs;
 }
-
 Vector2D operator*(int valor, Vector2D lhs)
+{
+	return { lhs.x * valor, lhs.y * valor };
+}
+Vector2D operator*(Vector2D lhs, int valor)
 {
 	return { lhs.x * valor, lhs.y * valor };
 }
@@ -67,10 +72,6 @@ Vector2D operator/(int valor, Vector2D lhs)
 	return { lhs.x / valor, lhs.y / valor };
 }
 
-Vector2D operator*(Vector2D lhs, int valor)
-{
-	return { lhs.x * valor, lhs.y * valor };
-}
 
 bool operator == (const Vector2D& lhs, const Vector2D& rhs)		//sobrecarga del operador ==
 {
@@ -81,6 +82,7 @@ bool operator!=(const Vector2D& lhs, const Vector2D& rhs)
 {
 	return ! operator== (lhs,rhs);
 }
+
 
 std::ostream& operator<<(std::ostream& o, const Vector2D lhs)
 {

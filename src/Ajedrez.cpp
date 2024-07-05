@@ -1,6 +1,5 @@
 #include "Ajedrez.h"
-//????
-#include <algorithm>
+
 
 Ajedrez::Ajedrez() :
 	_estado(GameState::Creaccion),
@@ -12,7 +11,10 @@ Ajedrez::Ajedrez() :
 }
 
 
-static Vector2D indices{};
+//almacena el indice de la pieza seleccionada (respecto al vector de piezas)
+// y el indice de la casilla de destino (respecto al tablero)
+static Vector2D indices{};	
+//se utiliza como temporizador para mostrar los mensajes de jaque y jaque mate
 static int tempo;
 void Ajedrez::Stateflow()
 {
@@ -44,25 +46,28 @@ void Ajedrez::Stateflow()
 
 	case B_Mov:
 	{
-		//std::cout << *this << std::endl;
+		std::cout << *this << std::endl;
+		
+		//indica si el movimiento de las piezas es devido a la gravedad (true) o al jugador (false)
 		static bool caida;
+
 		if (!HayMovimiento() && caida)
 		{
 			_estado = N_Actualizar_Amenazas;
 			caida = false;
 		}
+		
 		else if (!HayMovimiento())
 		{
 			_j2.BorrarPieza(_tablero.getTablero()[indices.y]);
 			AplicarGravedad(_tablero, _j1, _j2);
 			caida = true;
 		}
+		
 		break;
 	}
-
 	case B_Comprobar_Jaques:
 	{
-
 		switch (jaque())
 		{
 		case 1:
@@ -73,18 +78,18 @@ void Ajedrez::Stateflow()
 		}
 		case 2:
 		{
-			//std::cout << "\njaque\n";
 			tempo = 150;
 			_estado = N_Espera;
 			break;
 		}
 		case 3:
 		{
-			//std::cout << "\njaquemate\n";
 			ETSIDI::stopMusica();
 			ETSIDI::play("sonidos/VICTORIA.wav");
+		
 			tempo = 250;
 			wait = true;
+			
 			_estado = B_Win;
 			break;
 		}
@@ -94,8 +99,10 @@ void Ajedrez::Stateflow()
 	case N_Actualizar_Amenazas:
 	{
 		std::cout << *this << std::endl;
+		
 		_tablero.ClearAmenazas();
 		_j1.ActualizarAmenazas(_tablero.getTablero());
+		
 		_j2.PosiblesMov(_tablero.getTableroConst());
 		ValidarMovimientos(_j1, _j2);
 
@@ -112,12 +119,15 @@ void Ajedrez::Stateflow()
 	case N_Mov:
 	{
 		std::cout << *this << std::endl;
+		
 		static bool caida;
+		
 		if (!HayMovimiento() && caida)
 		{
 			_estado = B_Actualizar_Amenazas;
 			caida = false;
 		}
+		
 		else if (!HayMovimiento())
 		{
 			_j1.BorrarPieza(_tablero.getTablero()[indices.y]);
@@ -139,7 +149,6 @@ void Ajedrez::Stateflow()
 		}
 		case 2:
 		{
-			std::cout << "\njaque\n";
 			tempo = 150;
 			_estado = B_Espera;
 			break;
@@ -148,8 +157,10 @@ void Ajedrez::Stateflow()
 		{
 			ETSIDI::stopMusica();
 			ETSIDI::play("sonidos/VICTORIA.wav");
+		
 			tempo = 250;
 			wait = true;
+			
 			_estado = N_Win;
 			break;
 		}
@@ -162,217 +173,6 @@ void Ajedrez::Stateflow()
 	}
 	}
 }
-void Ajedrez::AplicarGravedad(Tablero& tab, Jugador& blancas, Jugador& negras)
-{
-	std::vector<Casilla*> cas_oc = tab.getCasillasOcupadas();
-	for (Casilla* casilla : cas_oc)
-	{
-		if (casilla->getOcupacion() == Dominio::Blanca)
-			blancas.AplicarGravedad(casilla, tab.getTablero());
-		else
-			negras.AplicarGravedad(casilla, tab.getTablero());
-	}
-}
-
-bool Ajedrez::jaquemate()
-{
-	switch (_estado)
-	{
-	case N_Comprobar_Jaques:	//comprueba si las negras dan jaque mate a las blancas
-	{
-		return ValidarMovimientos(_j2, _j1);		
-	}
-	case B_Comprobar_Jaques: // comprobamos si las blancas dan jaque mate a las negras
-	{
-		return ValidarMovimientos(_j1, _j2);
-	}
-	}
-}
-int Ajedrez::jaque()
-{
-	bool jaque = false;
-	bool checkmate = false;
-	switch (_estado)
-	{
-	case N_Comprobar_Jaques: //jaque de negras sobre blancas
-	{
-		if (_j1.ComprobarJaque()) //si se cumple, hará llamada a jaquemate
-		{
-			if (jaquemate())	return 3; //hay jaque mate				}
-			else return 2;//hay jaque
-		}
-		return 1;
-		break;
-	}
-	case B_Comprobar_Jaques: //jaque de blancas sobre negras
-	{
-		jaque = _j2.ComprobarJaque();
-
-		if (jaque == true) //si se cumple, hará llamada a jaquemate
-		{
-			checkmate = jaquemate();
-			if (checkmate == true)	return 3; //hay jaque mate				}
-			else return 2;//hay jaque
-		}
-		return 1;
-		break;
-	}
-	/*
-	case B_CompMov:
-	{
-		Tablero tablerocompB(_tablero);
-		std::vector<Casilla> tabB(tablerocompB.getTablero());
-		Jugador jdefcompB(_j1, tabB);
-		Jugador jatcompB(_j2, tabB);
-		std::vector<Pieza*> piezasjd = jdefcompB.getPiezas();
-		size_t cantpiezas = piezasjd.size();
-		size_t tamtableroB = tabB.size();
-
-		for (size_t l = 0; l < cantpiezas; l++)
-		{
-			jdefcompB = _j1;
-			piezasjd = jdefcompB.getPiezas();
-			std::vector<Casilla> posmovcompB= piezasjd[l]->get_PosMov();
-			for (size_t m = posmovcompB.size(); m > 0; m--)
-			{//avanzamos por todos los posibles movimientos de las piezas
-				//asignamos la posicion de estas a "a"
-				Vector2D a {posmovcompB[m].getPosicion().x, posmovcompB[m].getPosicion().y};
-				Casilla* c = &tabB[indices.y];
-				piezasjd[l]->ActualizarPosicion(c); //actualizamos la posicion de la pieza
-				jdefcompB.CambiarTablero(tabB);
-				tablerocompB.ClearAmenazas();
-				jatcompB.ActualizarAmenazas(tablerocompB.getTablero());
-				for (size_t i = 0; i < tamtableroB; i++) //recorremos todas las casillas
-				{
-					Vector2D posB{};
-					//dom=cas.getOcupacion()
-					dom = tabB[i].getOcupacion();
-					if (dom == Dominio::Blanca)
-					{
-						posB = tabB[i].getPosicion();
-						for (unsigned int k = 0; k <cantpiezas ; k++)
-						{
-							Casilla* cas_pieza_copia = piezasjd[k]->getCasilla();
-							Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
-							if ((posB.x == pos_cas_copia.x) && (posB.y == pos_cas_copia.y)) //cuando encontra la pieza que coincide con esas coordenadas
-								if (piezasjd[k]->getT_Pieza() == t_pieza::REY)//comprueba si se trata del rey
-									jaque = tabB[k].getAmenaza();//si es rey, comprueba si esta amenazado, siendo true si lo está
-						}
-						if (jaque == true) //si se cumple,borramos el posible movimiento
-						{
-							std::vector<Casilla>::iterator it;
-							it = posmovcompB.begin() + m;
-							std::vector<Pieza*> borrarposmov = _j1.getPiezas();
-							borrarposmov[l]->get_PosMov().erase(it);
-							return 2;
-						}
-						else
-							return 1;//no hay jaque
-					}
-				}
-			}
-		}
-
-		return 0;
-	}
-	case N_CompMov:
-	{
-		Tablero tablerocompN = _tablero;
-		std::vector<Casilla> tabB;
-		tabB = tablerocompN.getTablero();
-		Jugador jdefcompN(_j2, tabB);
-		Jugador jatcompN(_j1, tabB);
-		std::vector<Pieza*> piezasjd = jdefcompN.getPiezas();
-		size_t cantpiezas = piezasjd.size();
-		size_t tamtableroN = tabB.size();
-
-		for (size_t l = 0; l < cantpiezas; l++)
-		{
-			jdefcompN = _j1;
-			piezasjd = jdefcompN.getPiezas();
-			std::vector<Casilla> posmovcompN = piezasjd[l]->get_PosMov();
-			for (size_t m = posmovcompN.size(); m > 0; m--)
-			{//avanzamos por todos los posibles movimientos de las piezas
-				//asignamos la posicion de estas a "a"
-				Vector2D a{ posmovcompN[m].getPosicion().x, posmovcompN[m].getPosicion().y };
-				Casilla* c = &tabB[indices.y];
-				piezasjd[l]->ActualizarPosicion(c); //actualizamos la posicion de la pieza
-				jdefcompN.CambiarTablero(tabB);
-				tablerocompN.ClearAmenazas();
-				jatcompN.ActualizarAmenazas(tablerocompN.getTablero());
-				for (size_t i = 0; i < tamtableroN; i++) //recorremos todas las casillas
-				{
-					Vector2D posB{};
-					//dom=cas.getOcupacion()
-					dom = tabB[i].getOcupacion();
-					if (dom == Dominio::Blanca)
-					{
-						posB = tabB[i].getPosicion();
-						for (unsigned int k = 0; k <cantpiezas; k++)
-						{
-							Casilla* cas_pieza_copia = piezasjd[k]->getCasilla();
-							Vector2D pos_cas_copia = cas_pieza_copia->getPosicion();
-							if ((posB.x == pos_cas_copia.x) && (posB.y == pos_cas_copia.y)) //cuando encontra la pieza que coincide con esas coordenadas
-								if (piezasjd[k]->getT_Pieza() == t_pieza::REY)//comprueba si se trata del rey
-									jaque = tabB[k].getAmenaza();//si es rey, comprueba si esta amenazado, siendo true si lo está
-						}
-						if (jaque == true) //si se cumple,borramos el posible movimiento
-						{
-							std::vector<Casilla>::iterator it;
-							it = posmovcompN.begin() + m;
-							std::vector<Pieza*> borrarposmov = _j1.getPiezas();
-							borrarposmov[l]->get_PosMov().erase(it);
-							return 2;
-						}
-						else
-							return 1;//no hay jaque
-					}
-				}
-			}
-		}
-
-		return 0;
-	}*/
-
-	}
-	return 0;
-}
-
-bool Ajedrez::ValidarMovimientos(Jugador& da, Jugador& recibe)
-{
-	//j1 da el jaque, j2 lo recibe
-	bool jaquemate = true;
-	bool jaque = true;
-	for (int n = 0; n < recibe.getMisPiezasSize(); n++)
-	{
-		for (int m = recibe.getPosMovSize(n) - 1; m >= 0; m--)
-		{
-			jaque = false;
-			Tablero Copia(_tablero);
-			Jugador blancas(da, Copia.getTablero());
-			Jugador negras(recibe, Copia.getTablero());
-			Vector2D indice_mate{ n,negras.getIndiceTab(n,m,Copia.getTableroConst()) };
-			
-			negras.ActualizarMovimiento(indice_mate, Copia.getTablero());
-			blancas.BorrarPieza(Copia.getTablero()[indice_mate.y]);
-			AplicarGravedad(Copia, blancas, negras);
-			
-			Copia.ClearAmenazas();
-			blancas.ActualizarAmenazas(Copia.getTablero());
-			if (negras.ComprobarJaque())
-			{
-				jaque = true;
-				recibe.BorrarMovimiento(n, m);
-			}
-		}
-		if (!jaque)
-		{
-			jaquemate = false;
-		}
-	}
-	return jaquemate;
-}
-
 
 
 void Ajedrez::tecla_especial(unsigned char key)
@@ -434,131 +234,118 @@ void Ajedrez::tecla_especial(unsigned char key)
 }
 void Ajedrez::tecla(unsigned char key)
 {
-	static int pieza_selec;
+	//indica la fase dentro del proceso de movimiento.
+	// 0 no se ha seleccionado pieza, 1 pieza seleccionada valida procede a seleccion de destino,
+	// 2 pieza y destino seleccionados validos procede a mover la pieza
+	static int fase;
 
 	switch (key)
 	{
-	case 8: //backspace
+	case 8: //backspace --> deselecciona la pieza
 	{
 		_j1.GRAPH_setPrimero(true);
 		_j2.GRAPH_setPrimero(true);
 
 		_j1.deselect(indices.x);
 		_j2.deselect(indices.x);
-		if (pieza_selec > 0)
-			pieza_selec--;
+		if (fase > 0)
+			fase--;
 		break;
 	}
-	case 13:	//enter confirmar
+	case 13:	//enter confirmar pieza o destino
 	{
 		if (_estado == B_Espera)
 		{
+			indices = _j1.Movimiento(_tablero.getTableroConst(), fase);
+			if (fase != 0)
+				_j1.GRAPH_setPrimero(false);
 
-			indices = _j1.Movimiento(_tablero.getTableroConst(), pieza_selec);
-			if (pieza_selec != 0)_j1.GRAPH_setPrimero(false);
-
-			if (pieza_selec == 2)
+			if (fase == 2)
 			{
-				pieza_selec = 0;
+				fase = 0;
 				_j1.ActualizarMovimiento(indices, _tablero.getTablero());
-				_estado = B_Mov;
 				_j1.GRAPH_setPrimero(true);
+
+				_estado = B_Mov;
 			}
 		}
 		else if (_estado == N_Espera)
 		{
-			indices = _j2.Movimiento(_tablero.getTableroConst(), pieza_selec);
-			if (pieza_selec != 0)_j2.GRAPH_setPrimero(false);
+			indices = _j2.Movimiento(_tablero.getTableroConst(), fase);
+			if (fase != 0)
+				_j2.GRAPH_setPrimero(false);
 
-			if (pieza_selec == 2)
+			if (fase == 2)
 			{
-				_j2.ActualizarMovimiento(indices, _tablero.getTablero());
-				_estado = N_Mov;
-				pieza_selec = 0;
+				fase = 0;
+				_j2.ActualizarMovimiento(indices, _tablero.getTablero());				
 				_j2.GRAPH_setPrimero(true);
+
+				_estado = N_Mov;
 			}
 		}
 		break;
 	}
-
-
+	//////////////////////////////////////////
+	//				DEBUG/ATAJOS			//
+	//////////////////////////////////////////
+	/*
 	case 'z':
 	{
 		//debug posicione
 		printTablero();
 		break;
 	}
-	/*
-	case '1':
-	{
-		//debug color jaque
-		tempo = 150;
-		break;
-	}
-	*/
 	case 'n':
 	{
-		//debug jaque mate
+		//debug jaque mate a favor de negras
 		ETSIDI::stopMusica();
 		ETSIDI::play("sonidos/VICTORIA.wav");
-		std::cout << "\njaquemate\n";
+
 		tempo = 250;
-		_estado = N_Win;
 		wait = true;
+
+		_estado = N_Win;
 		break;
 	}
 	case 'b':
 	{
-		//debug jaque mate
+		//debug jaque mate a favor de blancas
 		ETSIDI::stopMusica();
 		ETSIDI::play("sonidos/VICTORIA.wav");
-		std::cout << "\njaquemate\n";
+
 		tempo = 250;
-		_estado = B_Win;
 		wait = true;
+
+		_estado = B_Win;
 		break;
 	}
+	
 	case 'r':
 	{
-		_estado = B_Actualizar_Amenazas;
+		//retroceso al estado de juego
 		wait = false;
+
+		_estado = B_Actualizar_Amenazas;
+		break;
 	}
+	*/
 	default:
 		break;
 	}
 }
-
 void Ajedrez::mover()
 {
 	_j1.mover();
 	_j2.mover();
 }
-void Ajedrez::Notificacion(Color col, bool mate, int& tempo)
-{
-	if (col == Color::Blanco) ETSIDI::setTextColor(0.7843, 0.5686, 0.0780);
-	else ETSIDI::setTextColor(0.05, 0.052, 0);
-
-	ETSIDI::setFont("fuentes/Action Man Shaded Italic.ttf", 48);
-	if (mate)
-	{
-		ETSIDI::printxy("JAQUE MATE", -5, 16);
-		if (col == Color::Blanco)
-			ETSIDI::printxy("Ganan  Blancas", -7, -3);
-		else
-			ETSIDI::printxy("Ganan Negras", -6, -3);
-	}
-	else
-		ETSIDI::printxy("JAQUE", -2, 16);
-	tempo--;
-}
 void Ajedrez::dibujar()
 {
-	//CODIGO PARA PINTAR UNA PANTALLA NEGRA CON LETRAS 
 	gluLookAt(0, 7.5, 30, // posicion del ojo 
 		0.0, 7.5, 0.0, // hacia que punto mira (0,7.5,0) 
 		0.0, 1.0, 0.0); // definimos hacia arriba (eje Y) 	
 
-
+	//dibujo de piezas de ambos jugadores y cursor si es necesario
 	if (_estado == B_Espera)
 	{
 		_j1.dibujar(Color::Blanco, 1);
@@ -574,9 +361,11 @@ void Ajedrez::dibujar()
 		_j1.dibujar(Color::Blanco);
 		_j2.dibujar(Color::Negro);
 	}
+
+	//dibujo del tablero
 	_tablero.dibujar();
 
-	//dibuja la mesa
+	//dibujo de la mesa
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, ETSIDI::getTexture("imagenes/Mesa.png").id);
 	glDisable(GL_LIGHTING);
@@ -590,6 +379,7 @@ void Ajedrez::dibujar()
 	glEnable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
 
+	//impresion de notificaciones
 	if (tempo > 0)
 	{
 		switch (_estado)
@@ -620,8 +410,6 @@ void Ajedrez::dibujar()
 	}
 	else
 		wait = false;
-
-
 }
 
 
@@ -640,7 +428,7 @@ std::ostream& Ajedrez::printTablero(std::ostream& o)
 		}
 		else _j2.print(o, cas);
 
-		//separacion cada 8 casillas
+		//salto de linea cada 8 casillas
 		n++;
 		if (n == 8)
 		{
@@ -656,7 +444,8 @@ std::ostream& Ajedrez::printAmenazas(std::ostream& o)
 	for (const auto cas : _tablero.getTableroConst())
 	{
 		o << cas.getAmenaza() << " ";
-		//separacion cada 8 casillas
+		
+		//salto de linea cada 8 casillas
 		n++;
 		if (n == 8)
 		{
@@ -667,11 +456,126 @@ std::ostream& Ajedrez::printAmenazas(std::ostream& o)
 	return o;
 }
 
+
+void Ajedrez::AplicarGravedad(Tablero& tab, Jugador& blancas, Jugador& negras)
+{
+	std::vector<Casilla*> cas_oc = tab.getCasillasOcupadas();
+	for (Casilla* casilla : cas_oc)
+	{
+		if (casilla->getOcupacion() == Dominio::Blanca)
+			blancas.AplicarGravedad(casilla, tab.getTablero());
+		else
+			negras.AplicarGravedad(casilla, tab.getTablero());
+	}
+}
+bool Ajedrez::jaquemate()
+{
+	switch (_estado)
+	{
+	case N_Comprobar_Jaques:	//comprueba si las negras dan jaque mate a las blancas
+	{
+		return ValidarMovimientos(_j2, _j1);		
+	}
+	case B_Comprobar_Jaques: // comprobamos si las blancas dan jaque mate a las negras
+	{
+		return ValidarMovimientos(_j1, _j2);
+	}
+	}
+}
+int Ajedrez::jaque()
+{
+	bool jaque = false;
+	bool checkmate = false;
+	switch (_estado)
+	{
+	case N_Comprobar_Jaques: //jaque de negras sobre blancas
+	{
+		if (_j1.ComprobarJaque()) //si detecta jaque, hará llamada a jaquemate
+		{
+			if (jaquemate())
+				return 3; //hay jaque mate
+			else 
+				return 2;//hay jaque
+		}
+		return 1;	//no ha detectado jaque
+	}
+	case B_Comprobar_Jaques: //jaque de blancas sobre negras
+	{
+		if (_j2.ComprobarJaque()) //si detecta jaque, hará llamada a jaquemate
+		{
+			if (jaquemate())
+				return 3; 
+			else
+				return 2;
+		}
+		return 1;
+	}
+	default:
+		break;
+	}
+}
+bool Ajedrez::ValidarMovimientos(Jugador& da, Jugador& recibe)
+{
+	//al finalizar la funcion indica si hay o no jaque mate
+	bool jaquemate = true;
+	//indica en cada posible movimiento evaluado si se mantiene el jaque o no
+	bool jaque = true;
+	for (int n = 0; n < recibe.getMisPiezasSize(); n++)
+	{
+		for (int m = recibe.getPosMovSize(n) - 1; m >= 0; m--)
+		{
+			jaque = false;
+			Tablero Copia(_tablero);
+			Jugador blancas(da, Copia.getTablero());
+			Jugador negras(recibe, Copia.getTablero());
+			Vector2D indice_mate{ n,negras.getIndiceTab(n,m,Copia.getTableroConst()) };
+			
+			negras.ActualizarMovimiento(indice_mate, Copia.getTablero(), false);
+			blancas.BorrarPieza(Copia.getTablero()[indice_mate.y]);
+			AplicarGravedad(Copia, blancas, negras);
+			
+			Copia.ClearAmenazas();
+			blancas.ActualizarAmenazas(Copia.getTablero());
+			if (negras.ComprobarJaque())
+			{
+				jaque = true;
+				recibe.BorrarMovimiento(n, m);
+			}
+		}
+		if (!jaque)
+		{
+			jaquemate = false;
+		}
+	}
+	return jaquemate;
+}
+
+
 bool Ajedrez::HayMovimiento()
 {
 	if (_j1.HayMovimiento() || _j2.HayMovimiento()) return true;
 	return false;
 }
+void Ajedrez::Notificacion(Color col, bool mate, int& tempo)
+{
+	if (col == Color::Blanco) ETSIDI::setTextColor(0.7843, 0.5686, 0.0780);
+	else ETSIDI::setTextColor(0.05, 0.052, 0);
+
+	ETSIDI::setFont("fuentes/Action Man Shaded Italic.ttf", 48);
+	if (mate)
+	{
+		ETSIDI::printxy("JAQUE MATE", -5, 16);
+		if (col == Color::Blanco)
+			ETSIDI::printxy("Ganan  Blancas", -7, -3);
+		else
+			ETSIDI::printxy("Ganan Negras", -6, -3);
+	}
+	else
+		ETSIDI::printxy("JAQUE", -2, 16);
+	
+	tempo--;
+}
+
 
 std::ostream& operator << (std::ostream& o, const Ajedrez& aj)
 {

@@ -7,76 +7,88 @@ Reina::Reina(Casilla* coord, Color col) :
 
 void Reina::PosiblesMov(const std::vector<Casilla>& tab)
 {
-	//Reina movimiento hacia arriba
+	// marca si el bucle debe continuar comprobando la siguiente casilla en la dirección indicada
 	bool continuar = false;
+
+	//Reina movimiento hacia arriba
 	Casilla aux = *_myCasilla;
 
-	do {
+	do 
+	{
 		aux = getCasilla_copia(aux, NORTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	
 	Pieza::ResetP1();
 
-	//Reina movimiento hacia arriba-dcha
-
+	//Reina movimiento hacia arriba-derecha
 	aux = *_myCasilla;
-	do {
+	do 
+	{
 		aux = getCasilla_copia(aux, NORESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	
 	Pieza::ResetP1();
 
-	//Reina movimiento hacia dcha
-
+	//Reina movimiento hacia derecha
 	aux = *_myCasilla;
-	do {
+	do 
+	{
 		aux = getCasilla_copia(aux, ESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	
 	Pieza::ResetP1();
 
-	//Reina movimiento hacia abajo-dcha
-
+	//Reina movimiento hacia abajo-derecha
 	aux = *_myCasilla;
-	do {
+	do 
+	{
 		aux = getCasilla_copia(aux, SUDESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	
 	Pieza::ResetP1();
 
 	//Reina movimiento hacia abajo
 	aux = *_myCasilla;
-	do {
+	do 
+	{
 		aux = getCasilla_copia(aux, SUR, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	
 	Pieza::ResetP1();
 
-	//Reina movimiento hacia abajo-izda
-
+	//Reina movimiento hacia abajo-izquierda
 	aux = *_myCasilla;
-	do {
+	do 
+	{
 		aux = getCasilla_copia(aux, SUDOESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	
 	Pieza::ResetP1();
 
-	//Reina movimiento hacia izda
-
+	//Reina movimiento hacia izquierda
 	aux = *_myCasilla;
-	do {
+	do 
+	{
 		aux = getCasilla_copia(aux, OESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	
 	Pieza::ResetP1();
 
-	//Reina movimiento hacia arriba-izda
-	
+	//Reina movimiento hacia arriba-izquierda
 	aux = *_myCasilla;
-	do {
+	do 
+	{
 		aux = getCasilla_copia(aux, NOROESTE, tab);
 		continuar = validarCasilla(aux);
 	} while (continuar);
+	
 	Pieza::ResetP1();
 }
 
@@ -88,4 +100,3 @@ std::ostream& Reina::operator<< (std::ostream& o) const
 		o << "r ";
 	return o;
 }
-

@@ -2,7 +2,6 @@
 
 #include <vector>
 #include "Casilla.h"
-//#include "ETSIDI.h"
 
 constexpr int filas = 8;
 constexpr int columnas = 8;
@@ -10,24 +9,36 @@ constexpr int columnas = 8;
 class Tablero
 {
 public:
-	//Constructor
+	//////////////////////////////////////////////////////////////////////
+	//				CONSTRUCTORES, ASIGNACIÓN Y DESTRUCTOR 				//
+	//////////////////////////////////////////////////////////////////////
 	Tablero();
 	Tablero(const Tablero& tab);
 	Tablero& operator = (const Tablero& tab);
 	~Tablero();
 
-	//getters
+	//////////////////////////////////////
+	//				GETTERS				//
+	//////////////////////////////////////
 	inline std::vector<Casilla>& getTablero() { return _tablero; }
 	inline std::vector<Casilla> getTableroConst() const { return _tablero; }
 	std::vector<Casilla*> getCasillasOcupadas();
-	//setters
+	
+	//////////////////////////////////////
+	//				SETTERS				//
+	//////////////////////////////////////
+
+	//restablece a false la amenaza de todas las casillas
 	void ClearAmenazas();
 
-	//graficos
+	//////////////////////////////////////////
+	//				GRÁFICOS				//
+	//////////////////////////////////////////
+
 	void dibujar();
-	//testers
 
 private:
+	//contine un vector con todas las casillas
 	std::vector <Casilla> _tablero;
 };
 

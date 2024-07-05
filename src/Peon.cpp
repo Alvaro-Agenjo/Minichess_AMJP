@@ -8,30 +8,32 @@ Peon::Peon(Casilla* coord, Color col) :
 
 void Peon::PosiblesMov(const std::vector<Casilla>& tab)
 {
-	//Peon movimiento hacia arriba
+	//indica si el peon puede o no avanzar una casilla
 	bool continuar = false;
-	Casilla aux = *_myCasilla;
 
+	//Peon movimiento hacia delante
+	Casilla aux = *_myCasilla;
 	aux = getCasilla_copia(aux, Vector2D{ (int)_color, 0 }, tab);
 	continuar = validarCasilla(aux, false);
 
-	if (continuar && _primermov)
+	if (continuar && _primermov)	//comprueba si es el primer movimiento y se puede mover una casilla (evita que atraviese peones)
 	{
 		aux = getCasilla_copia(aux, Vector2D{ (int)_color, 0 }, tab);
 		validarCasilla(aux, false);
 	}
+	//Peon captura delante-abajo
 	aux = getCasilla_copia(*_myCasilla, Vector2D{ (int)_color, -1 }, tab);
 	validarCasilla(aux, true);
 
+	//Peon captura delante-arriba
 	aux = getCasilla_copia(*_myCasilla, Vector2D{ (int)_color, 1 }, tab);
 	validarCasilla(aux, true);
-
 }
 
 void Peon::ActualizarTablero(std::vector<Casilla>& tab)
 {
 	Vector2D posicion{};
-	for (Casilla c : _posiblesMov)
+	for (const Casilla &c : _posiblesMov)
 	{
 		posicion = c.getPosicion();
 		if (c.getComer())
@@ -41,10 +43,10 @@ void Peon::ActualizarTablero(std::vector<Casilla>& tab)
 	}
 }
 
-bool Peon::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c)
+bool Peon::ActualizarPosicion(std::vector<Casilla>& tab, int indice_c, bool sound)
 {
 	_primermov = false;
-	calcularMovimiento(_myCasilla->getPosicion(), tab[indice_c].getPosicion(), 0);
+	calcularMovimiento(_myCasilla->getPosicion(), tab[indice_c].getPosicion(), 0, sound);
 	_myCasilla->setOcupacion(Dominio::Vacio);
 	_myCasilla = &tab[indice_c];
 	_myCasilla->setOcupacion(static_cast<Dominio>(_color));
@@ -74,13 +76,15 @@ bool Peon::validarCasilla(Casilla destino, bool com)
 	Casilla aux = destino;
 	Dominio ocupacion = destino.getOcupacion();
 
-	if (destino.getPosicion() == out_of_bounds)	return false;
-	else if (ocupacion == this->_color) return false;
-	else if (!com && ocupacion != Dominio::Vacio) return false;
-	else if (com && ocupacion == Dominio::Vacio) return false;
-	if (!com) aux.setMover(true);
-
-	else 
+	if (destino.getPosicion() == out_of_bounds)	return false;	//si el destino no se encuentra en el tablero
+	else if (ocupacion == this->_color) return false;	//si el destino lo ocupa una pieza aliada
+	else if (!com && ocupacion != Dominio::Vacio) return false;	//si el destino está ocupado y no es un movimiento de captura
+	else if (com && ocupacion == Dominio::Vacio) return false;	//si el destino está vacio y es un movimiento de captura
+	
+	if (!com)	//movimiento 
+		aux.setMover(true);
+	
+	else	//captura
 	{
 		aux.setMover(true);
 		aux.setComer(true);
@@ -88,4 +92,3 @@ bool Peon::validarCasilla(Casilla destino, bool com)
 	_posiblesMov.push_back(aux);
 	return true;
 }
-

@@ -10,18 +10,18 @@ Casilla::Casilla(Vector2D coord) :
 	_coord(coord)
 {}
 
-void Casilla::ClearCasilla()
-{
-	_amenaza = false;
-}
-
-void Casilla::HighlightCasilla()
+void Casilla::HighlightCasilla() const
 {
 	ETSIDI::Vector2D graf_pos = (ETSIDI::Vector2D)(_coord - offset_izda) * correccion_tam;
-	glDisable(GL_LIGHTING);
-	if (_comer) glColor3ub(32, 153, 248);
-	else if (_mover)  glColor3ub(58, 248, 32);
+	
+	//elige el color dependiendo de si mueve o captura en esa casilla
+	if (_comer) 
+		glColor3ub(32, 153, 248);
+	else if (_mover)  
+		glColor3ub(58, 248, 32);
 
+	//dibuja un cuadrado para indicarlo
+	glDisable(GL_LIGHTING);
 	glBegin(GL_QUADS);
 
 	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
@@ -31,7 +31,6 @@ void Casilla::HighlightCasilla()
 
 	glEnd();
 	glEnable(GL_LIGHTING);
-
 }
 
 std::ostream& Casilla::print(std::ostream& o) const

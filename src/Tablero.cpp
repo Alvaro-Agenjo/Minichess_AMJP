@@ -9,15 +9,12 @@ Tablero::Tablero()
 			_tablero.push_back(*new Casilla({ x, y }));
 		}
 	}
-
 	std::cout << "Tablero creado" << std::endl;
 }
-
 Tablero::Tablero(const Tablero& tab)
 {
 	*this = tab;
 }
-
 Tablero& Tablero::operator=(const Tablero& tab)
 {
 	if (this != &tab)
@@ -31,11 +28,11 @@ Tablero& Tablero::operator=(const Tablero& tab)
 	}
 	return *this;
 }
-
 Tablero::~Tablero()
 {
 	_tablero.clear();
 }
+
 
 std::vector<Casilla*> Tablero::getCasillasOcupadas()
 {
@@ -48,6 +45,7 @@ std::vector<Casilla*> Tablero::getCasillasOcupadas()
 	return cas;
 }
 
+
 void Tablero::ClearAmenazas()
 {
 	for (auto& c : _tablero)
@@ -55,6 +53,7 @@ void Tablero::ClearAmenazas()
 		c.ClearCasilla();
 	}
 }
+
 
 void Tablero::dibujar()
 {

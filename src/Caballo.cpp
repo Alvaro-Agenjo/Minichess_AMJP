@@ -8,50 +8,53 @@ Caballo::Caballo(Casilla* coord, Color col) :
 void Caballo::PosiblesMov(const std::vector<Casilla>& tab)
 {
 	Casilla aux = *_myCasilla;
-	//Caballo movimiento hacia arriba-izda
 
+	//Caballo movimiento hacia arriba-izquierda
 	aux = getCasilla_copia(*_myCasilla, (2*NORTE+OESTE), tab);
 	validarCasilla(aux);
+	
 	Pieza::ResetP1();
 
-	//Caballo movimiento hacia arriba-dcha
-
+	//Caballo movimiento hacia arriba-derecha
 	aux = getCasilla_copia(*_myCasilla, 2*NORTE+ESTE, tab);
 	validarCasilla(aux);
+
 	Pieza::ResetP1();
 
-	//Caballo movimiento hacia dcha-arriba
-
+	//Caballo movimiento hacia derecha -arriba
 	aux = getCasilla_copia(*_myCasilla, 2*ESTE+NORTE, tab);
 	validarCasilla(aux);
-	Pieza::ResetP1();
-	//Caballo movimiento hacia dcha-abajo
 
+	Pieza::ResetP1();
+	
+	//Caballo movimiento hacia derecha-abajo
 	aux = getCasilla_copia(*_myCasilla, 2*ESTE+SUR, tab);
 	validarCasilla(aux);
+
 	Pieza::ResetP1();
 
-	//Caballo movimiento hacia abajo-dcha
-
+	//Caballo movimiento hacia abajo-derecha
 	aux = getCasilla_copia(*_myCasilla, 2*SUR+ESTE, tab);
 	validarCasilla(aux);
+
 	Pieza::ResetP1();
 
-	//Caballo movimiento hacia abajo-izda
-
+	//Caballo movimiento hacia abajo-izquierda
 	aux = getCasilla_copia(*_myCasilla, 2*SUR+OESTE, tab);
 	validarCasilla(aux);
+
 	Pieza::ResetP1();
 
-	//Caballo movimiento hacia izda-abajo
-
+	//Caballo movimiento hacia izquierda-abajo
 	aux = getCasilla_copia(*_myCasilla, 2*OESTE+SUR, tab);
 	validarCasilla(aux);
+
 	Pieza::ResetP1();
 
-	//Caballo movimiento hacia izda-arriba
+	//Caballo movimiento hacia izquierda-arriba
 	aux = getCasilla_copia(*_myCasilla, 2*OESTE+NORTE, tab);
 	validarCasilla(aux);
+
 	Pieza::ResetP1();
 }
 

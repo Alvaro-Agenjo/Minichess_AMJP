@@ -9,13 +9,11 @@ class Gestor
 public:
 	Gestor();
 
-
 	void teclaEspecial(unsigned char key);
 	void telcla(unsigned char key);
 	void mueve(double t);
 	void dibuja();
 	void Update();
-	void cambiarMusica();
 
 protected:
 	Ajedrez _game;
@@ -24,7 +22,7 @@ protected:
 
 private:
 	void AnimacionGravedad(int destino);
-
+	void cambiarMusica();
 
 	ETSIDI::Sprite cursor{ "imagenes/logo peon.png", 5 };
 	ETSIDI::Vector2D _pos_cursor{ 0,6 }, _vel_cursor{}, _accel_cursor{};

@@ -8,54 +8,54 @@ Rey::Rey(Casilla* coord, Color col) :
 
 void Rey::PosiblesMov(const std::vector<Casilla>& tab)
 {
-	Casilla aux = *_myCasilla;
 	//Rey movimiento hacia arriba
-	
+	Casilla aux = *_myCasilla;
 	aux = getCasilla_copia(*_myCasilla, NORTE, tab);
 	validarCasilla(aux);
+	
 	Pieza::ResetP1();
 
-	//Rey movimiento hacia arriba-dcha
-
+	//Rey movimiento hacia arriba-derecha
 	aux = getCasilla_copia(*_myCasilla, NORESTE, tab);
 	validarCasilla(aux);
+
 	Pieza::ResetP1();
 
-	//Rey movimiento hacia dcha
-
+	//Rey movimiento hacia derecha
 	aux = getCasilla_copia(*_myCasilla, ESTE, tab);
 	validarCasilla(aux);
+
 	Pieza::ResetP1();
 
-	//Rey movimiento hacia abajo-dcha
-
+	//Rey movimiento hacia abajo-derecha
 	aux = getCasilla_copia(*_myCasilla, SUDESTE, tab);
 	validarCasilla(aux);
+
 	Pieza::ResetP1();
 	
 	//Rey movimiento hacia abajo
-	
 	aux = getCasilla_copia(*_myCasilla, SUR, tab);
 	validarCasilla(aux);
+
 	Pieza::ResetP1();
 
-	//Rey movimiento hacia abajo-izda
-
+	//Rey movimiento hacia abajo-izquierda
 	aux = getCasilla_copia(*_myCasilla, SUDOESTE, tab);
 	validarCasilla(aux);
+
 	Pieza::ResetP1();
 
-	//Rey movimiento hacia izda
-
+	//Rey movimiento hacia izquierda
 	aux = getCasilla_copia(*_myCasilla, OESTE, tab);
 	validarCasilla(aux);
+	
 	Pieza::ResetP1();
 
-	//Rey movimiento hacia arriba-izda
+	//Rey movimiento hacia arriba-izquierda
 	aux = getCasilla_copia(*_myCasilla, NOROESTE, tab);
 	validarCasilla(aux);
-	Pieza::ResetP1();
 
+	Pieza::ResetP1();
 }
 
 
@@ -67,4 +67,3 @@ std::ostream& Rey::operator<< (std::ostream& o) const
 		o << "y ";
 	return o;
 }
-

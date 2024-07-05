@@ -8,6 +8,8 @@ Jugador::Jugador(std::vector<Casilla>& tab, Color c)
 }
 Jugador::Jugador(const Jugador& player, std::vector<Casilla>& tab)
 {
+	//al usar el operador asignación se duplicn las piezas dentro del mismo tablero
+	//por eso una vez duplicado el jugador, se cambian las piezas a otro tablero pero manteniendo las coordenadas
 	*this = player;
 	this->CambiarTablero(tab);
 }
@@ -32,26 +34,7 @@ Jugador::~Jugador()
 	_misPiezas.clear();
 }
 
-void Jugador::CambiarTablero(std::vector<Casilla>& tab)
-{
-	for (Pieza* p : _misPiezas)
-	{
-		for (int n = 0; n < tab.size(); n++)
-		{
-			if (tab[n].getPosicion() == p->getCasilla()->getPosicion())
-			{
-				p->setCasilla(&tab[n]);
-				p->ActualizarPosicion(p->getCasilla());
-				break;
-			}
-		}
-	}
-}
-void Jugador::modificarPosicion(Vector2D dir)
-{
-	Vector2D aux = _pos + dir;
-	if (!aux.out_of_bounds()) _pos = aux;
-}
+
 void Jugador::BorrarPieza(Casilla& c)
 {
 	std::vector<Pieza*>::iterator it;
@@ -65,17 +48,21 @@ void Jugador::BorrarPieza(Casilla& c)
 		}
 	}
 }
-
 void Jugador::BorrarMovimiento(int pieza, int movimiento)
 {
 	_misPiezas[pieza]->BorrarMovimiento(movimiento);
 }
+void Jugador::modificarPosicion(Vector2D dir)
+{
+	if (!(_pos + dir).out_of_bounds())
+		_pos += dir;
+}
+
 
 int Jugador::getIndiceTab(int pieza, int posMov, const std::vector<Casilla>& tab)
 {
 	return _misPiezas[pieza]->getIndiceTab(posMov, tab);
 }
-
 
 
 void Jugador::PosiblesMov(std::vector<Casilla> tab)
@@ -95,11 +82,10 @@ void Jugador::ActualizarAmenazas(std::vector<Casilla>& tab)
 		p->ActualizarTablero(tab);
 	}
 }
-
 Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab, int& fase)
 {
-	/*Seleccion mediante ratón de la pieza a mover, una vez seleccionada "iluminar" casillas válidas
-	despues, selecionar destino. Una vez confirmado el destino --> siguiente fase*/
+	//almacenan el valor del indice de la pieza seleccionada (respecto al vector de piezas) 
+	//y de la casilla de destino (respecto al tablero)
 	static int indice_p, indice_c;
 
 	if (fase == 1)
@@ -124,59 +110,10 @@ Vector2D Jugador::Movimiento(const std::vector<Casilla>& tab, int& fase)
 		}
 		return { -1,-1 };
 	}
-
-	/*
-	do
-	{
-		do {
-			// desiluminar casillas aquí
-
-			if (indice_p == -1)
-			{
-				std::cout << "No puede mover la pieza seleccionada" << std::endl;
-			}
-			std::cout << "Indique coordenadas de la pieza a mover" << std::endl;
-			std::cin >> pos;
-			indice_p = ValidarPieza(pos);
-		} while (indice_p == -1);
-		do
-		{
-			//iluminar casillas validas aquí
-
-
-			if (indice_c == -1)
-			{
-				std::cout << "No puede mover la pieza seleccionadaa esa casilla" << std::endl;
-			}
-			std::cout << "Indique coordenadas del destino" << std::endl;
-			std::cin >> pos;
-			if (pos != go_back)
-				indice_c = ValidarDestino_pieza(pos, indice_p, tab);
-			else
-				indice_c = 0;
-
-		} while (indice_c == -1);
-	} while (pos == go_back);
-
-	return  { indice_p, indice_c };
-	*/
 }
-int Jugador::ValidarPieza(Vector2D pos)
+void Jugador::ActualizarMovimiento(Vector2D indices, std::vector<Casilla>& tab, bool sound)
 {
-	for (int n = 0; n < _misPiezas.size(); n++)
-	{
-		if (_misPiezas[n]->getCasilla()->getPosicion() == pos) return n;
-	}
-	return -1;
-}
-int Jugador::ValidarDestino_pieza(Vector2D pos, int indice, const std::vector<Casilla>& tab)
-{
-	return _misPiezas[indice]->ValidarDestino(pos, tab);
-}
-
-void Jugador::ActualizarMovimiento(Vector2D indices, std::vector<Casilla>& tab)
-{
-	if (_misPiezas[indices.x]->ActualizarPosicion(tab, indices.y))
+	if (_misPiezas[indices.x]->ActualizarPosicion(tab, indices.y, sound))
 	{
 		_misPiezas.push_back(new Reina(&tab[indices.y], static_cast<Color> (tab[indices.y].getOcupacion())));
 		_misPiezas.erase(_misPiezas.begin() + indices.x);
@@ -193,7 +130,6 @@ void Jugador::AplicarGravedad(Casilla* cas, std::vector<Casilla>& tab)
 		}
 	}
 }
-
 bool Jugador::HayMovimiento()
 {
 	for (auto p : _misPiezas)
@@ -203,8 +139,6 @@ bool Jugador::HayMovimiento()
 	}
 	return false;
 }
-
-
 bool Jugador::ComprobarJaque()
 {
 	for (auto p : _misPiezas)
@@ -216,6 +150,7 @@ bool Jugador::ComprobarJaque()
 	}
 	return false;
 }
+
 
 void Jugador::mover()
 {
@@ -236,7 +171,6 @@ void Jugador::dibujar(Color c, int tipo)
 		dibujarCursor(c, primero);
 	}
 }
-
 void Jugador::deselect(int indice_p)
 {
 	if (indice_p <= _misPiezas.size())
@@ -256,6 +190,7 @@ std::ostream& Jugador::print(std::ostream& o, Casilla cas) const
 	}
 	return o;
 }
+
 
 void Jugador::CrearPieza(Casilla* c, Color col, t_pieza p)
 {
@@ -315,7 +250,9 @@ void Jugador::CrearJugador(std::vector<Casilla>& tab, Vector2D pos_ini, Color c)
 	CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::TORRE);
 	pos_ini += 1;
 
-	if (c == Color::Negro) { pos_ini = { 6,0 }; }
+	if (c == Color::Negro)
+		pos_ini = { 6,0 };
+
 	for (int n = 0; n < 8; n++)
 	{
 		CrearPieza(&tab[pos_ini.x + pos_ini.y * 8], c, t_pieza::PEON);
@@ -323,10 +260,43 @@ void Jugador::CrearJugador(std::vector<Casilla>& tab, Vector2D pos_ini, Color c)
 	}
 }
 
+
+void Jugador::CambiarTablero(std::vector<Casilla>& tab)
+{
+	for (Pieza* p : _misPiezas)
+	{
+		for (int n = 0; n < tab.size(); n++)
+		{
+			if (tab[n].getPosicion() == p->getCasilla()->getPosicion())
+			{
+				p->setCasilla(&tab[n]);
+				p->ActualizarPosicion(p->getCasilla());
+				break;
+			}
+		}
+	}
+}
+
+
+int Jugador::ValidarPieza(Vector2D pos)
+{
+	for (int n = 0; n < _misPiezas.size(); n++)
+	{
+		if (_misPiezas[n]->getCasilla()->getPosicion() == pos) return n;
+	}
+	return -1;
+}
+int Jugador::ValidarDestino_pieza(Vector2D pos, int indice, const std::vector<Casilla>& tab)
+{
+	return _misPiezas[indice]->ValidarDestino(pos, tab);
+}
+
+
 void Jugador::dibujarCursor(Color c, bool primero)
 {
+	//almacena la posición del cursor con las correciones gráficas
 	ETSIDI::Vector2D graf_pos = (ETSIDI::Vector2D)(_pos - offset_izda) * correccion_tam;
-	glDisable(GL_LIGHTING);
+	
 	if (primero)
 	{
 		glColor3ub(200, 145, 25);
@@ -337,6 +307,8 @@ void Jugador::dibujarCursor(Color c, bool primero)
 		glColor3ub(186, 193, 46);
 		if (c == Color::Negro)  glColor3ub(149, 150, 142);
 	}
+
+	glDisable(GL_LIGHTING);
 	glBegin(GL_QUADS);
 
 	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
@@ -362,19 +334,4 @@ void Jugador::dibujarCursor(Color c, bool primero)
 
 	glEnd();
 	glEnable(GL_LIGHTING);
-
-	/*
-	//cuadrado interior (transparente)
-	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y + espesor - (lado / 2.0), 0);
-	glVertex3f(graf_pos.x + espesor - (lado / 2.0), graf_pos.y - espesor + (lado / 2.0), 0);
-	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y - espesor + (lado / 2.0), 0);
-	glVertex3f(graf_pos.x - espesor + (lado / 2.0), graf_pos.y + espesor - (lado / 2.0), 0);
-	//cuadrado exterior
-	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
-	glVertex3f(graf_pos.x - (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
-	glVertex3f(graf_pos.x + (lado / 2.0), graf_pos.y + (lado / 2.0), 0);
-	glVertex3f(graf_pos.x + (lado / 2.0), graf_pos.y - (lado / 2.0), 0);
-
-	*/
-
 }

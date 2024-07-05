@@ -59,11 +59,11 @@ void Gestor::telcla(unsigned char key)
 			_estado = EXIT;
 			break;
 		}
-		
 		default:
 			break;
 		}
 	}
+
 	else if (_estado == INSTRUCCIONES)
 	{
 		if (key == 8)
@@ -77,11 +77,11 @@ void Gestor::telcla(unsigned char key)
 
 		}
 	}
+
 	else if (_estado == EXIT)
 	{
 		exit(0);
 	}
-
 
 	else if (_estado == JUEGO)
 	{
@@ -110,14 +110,15 @@ void Gestor::mueve(double t)
 		//comprobacion texto instrucciones alcanzado
 		if (_pos_cursor.y < -2 && _pos_cursor.x < -5)
 		{
+			ETSIDI::play("sonidos/poner_pieza.wav");
+
 			ETSIDI::stopMusica();
 			ETSIDI::playMusica("sonidos/INSTRUCCIONES.mp3", true);
-			ETSIDI::play("sonidos/poner_pieza.wav");
-			//Sleep(60);
+			
 			_estado = INSTRUCCIONES;
 			AnimacionGravedad(0);
-
 		}
+
 		//comprobacion texto salida alcanzado
 		else if (_pos_cursor.y < -2 && _pos_cursor.x > 5)
 		{
@@ -125,17 +126,20 @@ void Gestor::mueve(double t)
 			Sleep(200);
 			exit(0);
 		}
+		
 		//comprobacion texto empezar alcanzado
 		else if (_pos_cursor.y < -2 && _pos_cursor.x>-1)
 		{
 			ETSIDI::play("sonidos/poner_pieza.wav");
+			
 			ETSIDI::stopMusica();
 			ETSIDI::playMusica("sonidos/JUEGO1.mp3", false);
+			
 			_estado = JUEGO;
 			AnimacionGravedad(0);
-			Sleep(60);
 		}
 	}
+
 	else if (_estado == INSTRUCCIONES || _estado == EXIT)
 	{
 		counter++;
@@ -145,6 +149,7 @@ void Gestor::mueve(double t)
 			counter = 0;
 		}
 	}
+	
 	else if (_estado == JUEGO)
 	{
 		_game.mover();
@@ -154,7 +159,6 @@ void Gestor::dibuja()
 {
 	if (_estado == INICIO)
 	{
-		//CODIGO PARA PINTAR UNA PANTALLA NEGRA CON LETRAS 
 		gluLookAt(0, 7.5, 30, // posicion del ojo 
 			0.0, 7.5, 0.0, // hacia que punto mira (0,7.5,0) 
 			0.0, 1.0, 0.0); // definimos hacia arriba (eje Y) 	
@@ -165,7 +169,6 @@ void Gestor::dibuja()
 		cursor.setPos(_pos_cursor.x, _pos_cursor.y);
 		cursor.draw();
 
-
 		//color de fondo
 		glBegin(GL_POLYGON);
 		glColor3ub(80, 80, 0); glVertex3f(-15.0f, -5.0f, 0.0f);
@@ -174,12 +177,11 @@ void Gestor::dibuja()
 		glColor3ub(150, 150, 80); glVertex3f(15.0f, -5.0f, 0.0f);
 		glEnd();
 
-
-
 		//texto
 		ETSIDI::setTextColor(1, 1, 1);
 		ETSIDI::setFont("fuentes/Action Man Shaded Italic.ttf", 48);
 		ETSIDI::printxy("MINICHESS", -4, 14 - (2 * caida));
+
 		ETSIDI::setTextColor(1, 1, 1);
 		ETSIDI::setFont("fuentes/A.C.M.E. Secret Agent.ttf", 12);
 		ETSIDI::printxy("EMPEZAR [E]", -1, 5 - caida);
@@ -188,7 +190,6 @@ void Gestor::dibuja()
 	}
 	else if (_estado == INSTRUCCIONES)
 	{
-		//CODIGO PARA PINTAR UNA PANTALLA NEGRA CON LETRAS 
 		gluLookAt(0, 7.5, 30, // posicion del ojo 
 			0.0, 7.5, 0.0, // hacia que punto mira (0,7.5,0) 
 			0.0, 1.0, 0.0); // definimos hacia arriba (eje Y) 	
@@ -207,8 +208,8 @@ void Gestor::dibuja()
 		glColor3ub(150, 150, 80); glVertex3f(15.0f, -5.0f, 0.0f);
 		glEnd();
 
-		using ETSIDI::printxy;
 		//texto
+		using ETSIDI::printxy;
 		ETSIDI::setTextColor(1, 1, 1);
 		ETSIDI::setFont("fuentes/Bitwise.ttf", 12);
 		printxy("Bienvenido a Minichess ", -10, caida);
@@ -234,11 +235,12 @@ void Gestor::dibuja()
 		printxy("Pulse BACKSPACE para regresar a la pantalla de inicio", -2, caida - 36);
 		
 	}
+
 	else if (_estado == JUEGO)
 		_game.dibujar();
+	
 	else if (_estado == EXIT)
 	{
-		//CODIGO PARA PINTAR UNA PANTALLA NEGRA CON LETRAS 
 		gluLookAt(0, 7.5, 30, // posicion del ojo 
 			0.0, 7.5, 0.0, // hacia que punto mira (0,7.5,0) 
 			0.0, 1.0, 0.0); // definimos hacia arriba (eje Y) 	
@@ -257,8 +259,9 @@ void Gestor::dibuja()
 		glColor3ub(150, 150, 80); glVertex3f(15.0f, -5.0f, 0.0f);
 		glEnd();
 
-		using ETSIDI::printxy;
 		//texto
+		using ETSIDI::printxy;
+	
 		ETSIDI::setTextColor(1, 1, 1);
 		ETSIDI::setFont("fuentes/Action Man Shaded Italic.ttf", 48);
 		printxy("MINICHESS", -5, caida);
@@ -276,11 +279,12 @@ void Gestor::dibuja()
 
 
 		printxy("Recientemente, hemos comenzado a trabajar para", -7, caida - 17);
-		printxy("añadir la modalidad de JcE devido a los", -6, caida - 18);
+		printxy("añadir la modalidad de JcE debido a los", -6, caida - 18);
 		printxy("apoyos que hemos recibido de vosotros, los jugadores.", -8, caida - 19);
 		printxy("Os iremos informando de nuestros progresos por los canales habituales.", -10, caida - 20);
+		
 		printxy("Gracias por elegirnos", -3, caida - 24);
-		//idza
+		
 		printxy("El equipo:", -10, caida - 28);
 		printxy("-Alvaro Agenjo Ortiz.", -10, caida - 29);
 		printxy("-Pablo Martínez-Conde Albizu", -10, caida - 30);
@@ -298,8 +302,8 @@ void Gestor::Update()
 
 		if (!_game.getWait() && (_game.getEstado() == B_Win || _game.getEstado() == N_Win))
 		{
-			_estado = EXIT;
 			ETSIDI::playMusica("sonidos/EXIT.mp3", true);
+			_estado = EXIT;
 		}
 	}
 }
@@ -317,12 +321,11 @@ void Gestor::cambiarMusica()
 			ETSIDI::playMusica("sonidos/JUEGO2.mp3", false);
 		else
 			ETSIDI::playMusica("sonidos/JUEGO1.mp3", false);
+		
 		tiempo_inicio = tiempo_actual;
 		track = !track;
 	}
 }
-
-
 void Gestor::AnimacionGravedad(int destino)
 {
 	switch (destino)
