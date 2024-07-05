@@ -22,12 +22,16 @@ public:
 	//setters
 	void BorrarPieza(Casilla & c);
 	void BorrarMovimiento(int pieza, int movimiento);
+	
 	void CambiarTablero( std::vector<Casilla>& tab);
 	void modificarPosicion(Vector2D dir);
 	inline void GRAPH_setPrimero(bool bo) { primero = bo; }
 	//getters
 	inline Vector2D getPosicion() const { return _pos; }
-	inline std::vector<Pieza*> getPiezas() { return _misPiezas; }
+	int getIndiceTab(int pieza, int posMov, const std::vector<Casilla>& tab);
+	int getMisPiezasSize() const { return _misPiezas.size(); }
+	int getPosMovSize(int pieza) const { return _misPiezas[pieza]->getPosMovSize(); }
+	
 	//otros
 	void PosiblesMov( std::vector<Casilla> tab);
 	void ActualizarAmenazas(std::vector<Casilla>& tab);
@@ -41,9 +45,10 @@ public:
 
 	bool HayMovimiento();
 	
-	//jaques?
+
 	//devuelve true si el rey esta amenazado;
-	bool ComprobarJaque();	
+	bool ComprobarJaque();
+
 	//Gr�ficos
 	void mover();
 	void dibujar(Color c ,int tipo = 0);
@@ -59,13 +64,12 @@ private:
 	void CrearPieza(Casilla* c, Color col, t_pieza p);
 	void CrearJugador(std::vector<Casilla> &tab, Vector2D pos_ini, Color c);
 
-	//--------------------------------------->>>>> rellenar
+	
 	//graficos
 	bool primero = true;
 	float lado = 1.5;
 	float espesor = 0.2;
 	void dibujarCursor(Color c, bool primero = true);
-	//ETSIDI::Sprite _cursor;
-	//--------------------------------------->>>>> fin
+	
 };
 

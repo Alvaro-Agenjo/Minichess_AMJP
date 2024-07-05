@@ -71,6 +71,11 @@ void Jugador::BorrarMovimiento(int pieza, int movimiento)
 	_misPiezas[pieza]->BorrarMovimiento(movimiento);
 }
 
+int Jugador::getIndiceTab(int pieza, int posMov, const std::vector<Casilla>& tab)
+{
+	return _misPiezas[pieza]->getIndiceTab(posMov, tab);
+}
+
 
 
 void Jugador::PosiblesMov(std::vector<Casilla> tab)

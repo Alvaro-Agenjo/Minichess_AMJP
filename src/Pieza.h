@@ -30,12 +30,20 @@ public:
 	inline Color getColor() const { return _color; }
 	inline t_pieza getT_Pieza() const { return _t_pieza; }
 	inline bool getEn_Mov() const { return en_mov; }
-	inline std::vector<Casilla> get_PosMov() const { return _posiblesMov; }
+	inline int getPosMovSize() const { return _posiblesMov.size(); }
 	inline bool getSelected() const { return selected; }
-	//Setters
+	
+	//////////////////////////////////////////////
+	//					Setters					//
+	//////////////////////////////////////////////
+	
+	//borra _posiblesMov
 	inline void Clear() { _posiblesMov.clear(); }
+	//borra un movimiento concreto
 	void BorrarMovimiento(int movimiento);
+	//modifica la casilla
 	inline void setCasilla(Casilla* c) { _myCasilla = c; }
+	//modifica el flag selected
 	inline void setSelected(bool sel) { selected = sel; }
 	
 	//Otros
@@ -49,7 +57,7 @@ public:
 	void ActualizarPosicion(Casilla* c);
 	void Gravedad(std::vector<Casilla>& tab);
 	int IndiceCasilla(const Vector2D pos, const std::vector<Casilla>& tab);
-
+	int getIndiceTab(int posMov, const std::vector<Casilla>& tab);
 	//graficos
 	void mover(double t);
 	void dibujar();

@@ -94,6 +94,11 @@ int Pieza::IndiceCasilla(const Vector2D pos, const std::vector<Casilla>& tab)
 	return -1;
 }
 
+int Pieza::getIndiceTab(int posMov, const std::vector<Casilla>& tab)
+{
+	return IndiceCasilla(_posiblesMov[posMov].getPosicion(), tab);
+}
+
 
 //graficos
 void Pieza::mover(double t)

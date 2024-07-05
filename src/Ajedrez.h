@@ -30,17 +30,16 @@ public:
 	//getters
 	inline GameState getEstado() const { return _estado; }
 	inline bool getWait() const { return wait; }
+	
 	//otros
 	void Stateflow();
-	void AplicarGravedad(Tablero& tab , Jugador &blancas, Jugador & negras);
-	bool jaquemate();
-	int jaque();
+
 	// Graficos
 	void tecla_especial(unsigned char key);
 	void tecla(unsigned char key);
 	void dibujar();
 	void mover();
-	void Notificacion(Color col, bool mate, int &tempo);
+	
 	
 	
 	//tester
@@ -52,9 +51,16 @@ private:
 	Tablero _tablero;
 	Jugador _j1, _j2;
 
+	void AplicarGravedad(Tablero& tab, Jugador& blancas, Jugador& negras);
+	bool jaquemate();
+	int jaque();
+	bool ValidarMovimientos(Jugador& blancas, Jugador& negras);
+
 	//gráficos
 	bool HayMovimiento();
 	bool wait = false;
+
+	void Notificacion(Color col, bool mate, int& tempo);
 };
 
 //tester

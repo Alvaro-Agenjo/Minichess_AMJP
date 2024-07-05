@@ -29,6 +29,7 @@ void Ajedrez::Stateflow()
 		_tablero.ClearAmenazas();
 		_j2.ActualizarAmenazas(_tablero.getTablero());
 		_j1.PosiblesMov(_tablero.getTableroConst());
+		ValidarMovimientos(_j2, _j1);
 
 		_estado = N_Comprobar_Jaques;
 		break;
@@ -96,6 +97,7 @@ void Ajedrez::Stateflow()
 		_tablero.ClearAmenazas();
 		_j1.ActualizarAmenazas(_tablero.getTablero());
 		_j2.PosiblesMov(_tablero.getTableroConst());
+		ValidarMovimientos(_j1, _j2);
 
 		_estado = B_Comprobar_Jaques;
 		break;
@@ -154,8 +156,8 @@ void Ajedrez::Stateflow()
 		}
 		break;
 	}
-	default: 
-	{		
+	default:
+	{
 		break;
 	}
 	}
@@ -178,174 +180,11 @@ bool Ajedrez::jaquemate()
 	{
 	case N_Comprobar_Jaques:	//comprueba si las negras dan jaque mate a las blancas
 	{
-		for (int n = 0; n < _j1.getPiezas().size(); n++)
-		{
-			for (int m = 0; m < _j1.getPiezas()[n]->get_PosMov().size(); m++)
-			{
-				Tablero Copia(_tablero);
-				Jugador blancas(_j1, Copia.getTablero());
-				Jugador negras(_j2, Copia.getTablero());
-				Vector2D indice_mate{ n,blancas.getPiezas()[n]->IndiceCasilla(blancas.getPiezas()[n]->get_PosMov()[m].getPosicion(),Copia.getTableroConst()) };
-				/*
-				///////////////////////////////////////////////
-				printTablero();
-				std::cout << std::endl;
-				int n = 0;
-				std::ostream& o= std::cout;
-				for (const Casilla& cas : _tablero.getTableroConst())
-				{
-					if (cas.getOcupacion() == Dominio::Vacio)
-					{
-						cas.print(o);
-					}
-					else if (cas.getOcupacion() == Dominio::Blanca)
-					{
-						_j1.print(o, cas);
-					}
-					else _j2.print(o, cas);
-
-					//separacion cada 8 casillas
-					n++;
-					if (n == 8)
-					{
-						o << std::endl;
-						n = 0;
-					}
-				}
-				std::cout << std::endl;
-				std::cout << std::endl;
-				std::cout << std::endl;
-				///////////////////////////////////////////////////
-				*/
-				blancas.ActualizarMovimiento(indice_mate, Copia.getTablero());
-				/*
-				///////////////////////////////////////////////
-				printTablero();
-				std::cout << std::endl;
-				n = 0;
-				for (const Casilla& cas : _tablero.getTableroConst())
-				{
-					if (cas.getOcupacion() == Dominio::Vacio)
-					{
-						cas.print(o);
-					}
-					else if (cas.getOcupacion() == Dominio::Blanca)
-					{
-						_j1.print(o, cas);
-					}
-					else _j2.print(o, cas);
-
-					//separacion cada 8 casillas
-					n++;
-					if (n == 8)
-					{
-						o << std::endl;
-						n = 0;
-					}
-				}
-				std::cout << std::endl;
-				std::cout << std::endl;
-				std::cout << std::endl;
-				///////////////////////////////////////////////////
-
-
-				*/
-				negras.BorrarPieza(Copia.getTablero()[indice_mate.y]);
-				AplicarGravedad(Copia, blancas, negras);
-				Copia.ClearAmenazas();
-				negras.ActualizarAmenazas(Copia.getTablero());
-				// segun esta escrito ahora, cuando encuentra un posible movimiento que no es jaque para de comprobar.
-				//para que guarde los movimientos lo que haria seria si el movimiento te saca del jaque almacenas indice_mate, que contiene la pieza que mueves y la casilla donde la mueves, 
-				//y al final de comprobar los movimientos de una pieza limpias el vector de posibles movimientos en la original y le copias los del indice_mate que has almacenado
-
-				//la idea seria pasarlo a funciones dentro de jugador o otra clase.
-				if (!blancas.ComprobarJaque()) return false;
-			}
-		}
-		return true;
+		return ValidarMovimientos(_j2, _j1);		
 	}
 	case B_Comprobar_Jaques: // comprobamos si las blancas dan jaque mate a las negras
 	{
-		for (int n = 0; n < _j2.getPiezas().size(); n++)
-		{
-			for (int m = 0; m < _j2.getPiezas()[n]->get_PosMov().size(); m++)
-			{
-				Tablero Copia(_tablero);
-				Jugador blancas(_j1, Copia.getTablero());
-				Jugador negras(_j2, Copia.getTablero());
-				Vector2D indice_mate{ n,negras.getPiezas()[n]->IndiceCasilla(negras.getPiezas()[n]->get_PosMov()[m].getPosicion(),Copia.getTableroConst()) };
-				/*
-								///////////////////////////////////////////////
-								printTablero();
-								std::cout << std::endl;
-								int n = 0;
-								std::ostream& o = std::cout;
-								for (const Casilla& cas : Copia.getTableroConst())
-								{
-									if (cas.getOcupacion() == Dominio::Vacio)
-									{
-										cas.print(o);
-									}
-									else if (cas.getOcupacion() == Dominio::Blanca)
-									{
-										blancas.print(o, cas);
-									}
-									else negras.print(o, cas);
-
-									//separacion cada 8 casillas
-									n++;
-									if (n == 8)
-									{
-										o << std::endl;
-										n = 0;
-									}
-								}
-								std::cout << std::endl;
-								std::cout << std::endl;
-								std::cout << std::endl;
-								///////////////////////////////////////////////////
-								*/
-
-				negras.ActualizarMovimiento(indice_mate, Copia.getTablero());
-				/*
-				///////////////////////////////////////////////
-				printTablero();
-				std::cout << std::endl;
-				n = 0;
-				for (const Casilla& cas : Copia.getTableroConst())
-				{
-					if (cas.getOcupacion() == Dominio::Vacio)
-					{
-						cas.print(o);
-					}
-					else if (cas.getOcupacion() == Dominio::Blanca)
-					{
-						blancas.print(o, cas);
-					}
-					else negras.print(o, cas);
-
-					//separacion cada 8 casillas
-					n++;
-					if (n == 8)
-					{
-						o << std::endl;
-						n = 0;
-					}
-				}
-				std::cout << std::endl;
-				std::cout << std::endl;
-				std::cout << std::endl;
-				///////////////////////////////////////////////////
-
-				*/
-				blancas.BorrarPieza(Copia.getTablero()[indice_mate.y]);
-				AplicarGravedad(Copia, blancas, negras);
-				Copia.ClearAmenazas();
-				blancas.ActualizarAmenazas(Copia.getTablero());
-				if (!negras.ComprobarJaque()) return false;
-			}
-		}
-		return true;
+		return ValidarMovimientos(_j1, _j2);
 	}
 	}
 }
@@ -497,6 +336,41 @@ int Ajedrez::jaque()
 
 	}
 	return 0;
+}
+
+bool Ajedrez::ValidarMovimientos(Jugador& da, Jugador& recibe)
+{
+	//j1 da el jaque, j2 lo recibe
+	bool jaquemate = true;
+	bool jaque = true;
+	for (int n = 0; n < recibe.getMisPiezasSize(); n++)
+	{
+		for (int m = recibe.getPosMovSize(n) - 1; m >= 0; m--)
+		{
+			jaque = false;
+			Tablero Copia(_tablero);
+			Jugador blancas(da, Copia.getTablero());
+			Jugador negras(recibe, Copia.getTablero());
+			Vector2D indice_mate{ n,negras.getIndiceTab(n,m,Copia.getTableroConst()) };
+			
+			negras.ActualizarMovimiento(indice_mate, Copia.getTablero());
+			blancas.BorrarPieza(Copia.getTablero()[indice_mate.y]);
+			AplicarGravedad(Copia, blancas, negras);
+			
+			Copia.ClearAmenazas();
+			blancas.ActualizarAmenazas(Copia.getTablero());
+			if (negras.ComprobarJaque())
+			{
+				jaque = true;
+				recibe.BorrarMovimiento(n, m);
+			}
+		}
+		if (!jaque)
+		{
+			jaquemate = false;
+		}
+	}
+	return jaquemate;
 }
 
 
